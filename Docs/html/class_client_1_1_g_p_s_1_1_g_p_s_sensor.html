@@ -85,12 +85,14 @@ $(document).ready(function(){initNavTree('class_client_1_1_g_p_s_1_1_g_p_s_senso
 </div>
 
 <div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
 <div class="title">Client.GPS.GPSSensor Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor.html" title="GPSSensor handles all the GPS clientside calls for both indoor and outdoor activities.">GPSSensor</a> handles all the <a class="el" href="namespace_client_1_1_g_p_s.html">GPS</a> clientside calls for both indoor and outdoor activities.  
+<p>Clientside <a class="el" href="namespace_client_1_1_g_p_s.html">GPS</a> sensor module will be handled by using Mapbox library.  
  <a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor.html#details">More...</a></p>
 <div class="dynheader">
 Inheritance diagram for Client.GPS.GPSSensor:</div>
@@ -98,10 +100,30 @@ Inheritance diagram for Client.GPS.GPSSensor:</div>
  <div class="center">
   <img src="class_client_1_1_g_p_s_1_1_g_p_s_sensor.png" alt=""/>
  </div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_device_location_provider.html">DeviceLocationProvider</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_device_location_provider.html" title="The DeviceLocationProvider is responsible for providing real world location and heading data,...">DeviceLocationProvider</a> is responsible for providing real world location and heading data, served directly from native hardware and OS.  <a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_device_location_provider.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html">EditorLocationProvider</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The <a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html" title="The EditorLocationProvider is responsible for providing mock location and heading data for testing pu...">EditorLocationProvider</a> is responsible for providing mock location and heading data for testing purposes in the Unity editor.  <a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_location.html">Location</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="struct_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_location.html" title="Location contains orientation, latitude, longitute, accuracy and timestamp.">Location</a> contains orientation, latitude, longitute, accuracy and timestamp.  <a href="struct_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_location.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer.html">MapVisualizer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Map Visualizer Represents a map.  <a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer.html#details">More...</a><br /></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor.html" title="GPSSensor handles all the GPS clientside calls for both indoor and outdoor activities.">GPSSensor</a> handles all the <a class="el" href="namespace_client_1_1_g_p_s.html">GPS</a> clientside calls for both indoor and outdoor activities. </p>
+<div class="textblock"><p>Clientside <a class="el" href="namespace_client_1_1_g_p_s.html">GPS</a> sensor module will be handled by using Mapbox library. </p>
+<p>The Mapbox library will be used to handle all of our <a class="el" href="namespace_client_1_1_g_p_s.html">GPS</a> clientside calls. The Mapbox Maps SDK for Unity is a C#-based wrapper for Mapbox's location APIs. It allows us to easily access and interact with our Maps, Geocoding, and Directions services from within the Unity 3D platform. For further Mapbox API information please check this link: <a href="https://docs.mapbox.com/mapbox-unity-sdk/api/unity/Mapbox.Unity.html">https://docs.mapbox.com/mapbox-unity-sdk/api/unity/Mapbox.Unity.html</a></p>
+<p><br  />
+<br  />
+All other classes included in the <a class="el" href="namespace_client_1_1_g_p_s.html">Client.GPS</a> of the API documentation are the primary classes from Mapbox of what we'll be using.  </p>
 </div><hr/>The documentation for this class was generated from the following file:<ul>
-<li>C:/Users/eeng2/GPS_Game_v1/Assets/Scripts/ClientGPS/Location/<a class="el" href="_g_p_s_01_sensor_8cs.html">GPS Sensor.cs</a></li>
+<li>C:/Users/eeng2/source/repos/cis-cs-capstone-course/GPSMobileGameClient/Assets/Scripts/Client/GPS/<a class="el" href="_g_p_s_01_sensor_8cs.html">GPS Sensor.cs</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
@@ -109,7 +131,7 @@ Inheritance diagram for Client.GPS.GPSSensor:</div>
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
     <li class="navelem"><a class="el" href="namespace_client.html">Client</a></li><li class="navelem"><a class="el" href="namespace_client_1_1_g_p_s.html">GPS</a></li><li class="navelem"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor.html">GPSSensor</a></li>
-    <li class="footer">Generated on Fri Oct 11 2019 11:38:14 for GPS_Game_v1 by
+    <li class="footer">Generated on Sun Oct 13 2019 15:11:56 for GPS_Game_v1 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>
   </ul>

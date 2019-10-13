@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['doxyrunner_67',['DoxyRunner',['../class_doxy_runner.html#aed7742f6732027e7427393d727898eba',1,'DoxyRunner']]]
+  ['placetile_47',['PlaceTile',['../class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer.html#a2a0ac503b8b6fecc4c272236558d7c58',1,'Client::GPS::GPSSensor::MapVisualizer']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['oncompletecallback_31',['onCompleteCallBack',['../class_doxy_runner.html#ac1401822d6b3dea5626b786a94aa98d5',1,'DoxyRunner']]],
-  ['ondoxygenfinished_32',['OnDoxygenFinished',['../class_doxygen_window.html#a2809a93b756a6cfc371ee76a9d7168d7',1,'DoxygenWindow']]]
+  ['timestamp_28',['timeStamp',['../struct_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_location.html#a83302c84f317cc329d4ca8c914d523c9',1,'Client::GPS::GPSSensor::Location']]]
 ];
