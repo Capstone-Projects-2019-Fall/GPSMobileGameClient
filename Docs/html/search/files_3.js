@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['unityapiwrapper_2ecs_46',['UnityAPIWrapper.cs',['../_unity_a_p_i_wrapper_8cs.html',1,'']]]
+  ['localstorage_2ecs_91',['LocalStorage.cs',['../_local_storage_8cs.html',1,'']]]
 ];

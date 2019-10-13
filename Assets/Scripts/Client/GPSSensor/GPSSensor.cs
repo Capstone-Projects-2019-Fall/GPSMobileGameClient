@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Client.GPS
+namespace Client.GPSSensor
 {
     /// <summary>
     /// Clientside GPS sensor module will be handled by using Mapbox library.
