@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Client.GameEngine
 {
 
+    /// Test to see if access to github remote is configured properly.
     /// <summary>
     /// Short purpose of class
     /// </summary>
