@@ -45,7 +45,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_crafting_canvas_8cs.html"
+"_doxygen_window_8cs.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

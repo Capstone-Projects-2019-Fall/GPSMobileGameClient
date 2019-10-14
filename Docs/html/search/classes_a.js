@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['uicontroller_86',['UIController',['../class_client_1_1_game_engine_1_1_u_i_controller.html',1,'Client::GameEngine']]],
-  ['unityapiwrapper_87',['UnityAPIWrapper',['../class_git_hub_1_1_unity_1_1_unity_a_p_i_wrapper.html',1,'GitHub::Unity']]]
+  ['networkadaptor_74',['NetworkAdaptor',['../class_client_1_1_network_adaptor_1_1_network_adaptor.html',1,'Client::NetworkAdaptor']]],
+  ['networksampleclass_75',['NetworkSampleClass',['../class_client_1_1_network_adaptor_1_1_network_adaptor_1_1_network_sample_class.html',1,'Client::NetworkAdaptor::NetworkAdaptor']]]
 ];

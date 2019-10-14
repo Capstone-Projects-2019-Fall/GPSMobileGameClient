@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['craftingcanvas_2ecs_96',['CraftingCanvas.cs',['../_crafting_canvas_8cs.html',1,'']]]
+  ['doxygenwindow_2ecs_87',['DoxygenWindow.cs',['../_doxygen_window_8cs.html',1,'']]]
 ];
