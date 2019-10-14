@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['networkadapter_2ecs_92',['NetworkAdapter.cs',['../_network_adapter_8cs.html',1,'']]]
+  ['localstorage_2ecs_101',['LocalStorage.cs',['../_local_storage_8cs.html',1,'']]]
 ];
