@@ -6,115 +6,225 @@ namespace Client.GameEngine
 {
 
     /// <summary>
-    /// Short purpose of class
+    /// This is the Game Mechanics API for Ground War. 
     /// </summary>
     /// <description>
-    /// Long description of class goes here
+    /// These are classes related to game mechanics
     /// </description>
     public class GameMechanics : MonoBehaviour
     {
         /// <summary>
-        /// Short purpose of class
+        /// This is the Battle System class
         /// </summary>
         /// <description>
-        /// Long description of class goes here
+        /// These are functions related to the battle system 
         /// </description>
         public class BattleSystem
         {
-            /// <summary>
-            /// Short purpose of field.
-            /// </summary>
-            /// <returns>
-            /// System.Single
-            /// </returns>
-            public float testfloat;
 
             /// <summary>
-            /// Short purpose of method
+            /// Starts the battle and initializes variables of the battle, like player and enemu health, cards in the player deck, checks the number of players int he battle, etc
             /// </summary>
-            /// <param name="testint">The purpose of this testint is...</param>
+            public void startBattle();
+
+            /// <summary>
+            /// Gets the current round of the battle
+            /// </summary>
+            public int getRound();
+
+            /// <summary>
+            /// Sets the round of the battle
+            /// </summary>
+            public int setRound();
+
+            /// <summary>
+            /// Gets the current round of the battle
+            /// </summary>
+            public int getRound();
+
+
+            /// <summary>
+            /// Gets the enemy health from server
+            /// </summary>
             /// <returns>
-            /// Single.Int32
+            /// Returns a float representing the enemy health
             /// </returns>
-            public int test(int testint);
+            public float getEnemyHealth();
+
+            /// <summary>
+            /// Gets the player health from server
+            /// </summary>
+            /// <returns>
+            /// Returns a float representing the player health
+            /// </returns>
+            public float getPlayerHealth();
+
+            /// <summary>
+            /// Sends the damage taken by the enemy to the server
+            /// </summary>
+            /// <param name="enemyDamageDelta">This is a value of the difference between the enemy's health at the start and end of the round </param>
+            public  setEnemyHealth(float damageDelta, int round);
+
+            /// <summary>
+            /// Sends the damage taken by the player to the server
+            /// </summary>
+            /// <param name="playerDamageDelta">The purpose of this is to send how much damage the player took </param>
+            public setPlayerHealth(float playerDamageDelta);
+
+            /// <summary>
+            /// Sends the type of buff given to the player to the server
+            /// </summary>
+            /// <param name="buff">This will make the player stronger based on the buff passed </param>
+            public void buffPlayer(string buff);
+
+            /// <summary>
+            /// Sends the type of buff given to the player to the server
+            /// </summary>
+            /// <param name="buff">This will make the enemy stronger based on the buff </param>
+            public void buffEnemy(string buff);
+
+            /// <summary>
+            /// Sends the type of buff given to the player to the server
+            /// </summary>
+            /// <param name="debuff">This will make the player weaker based on the debuff passed </param>
+            public void debuffPlayer(string debuff);
+
+            /// <summary>
+            /// Sends the type of buff given to the player to the server
+            /// </summary>
+            /// <param name="debuff">This will make the enemy weaker based on the debuff passed </param>
+            public void debuffEnemy(string debuff);
+
+            /// <summary>
+            /// Draws a card from the user's deck
+            /// </summary>
+            public void drawCard();
+
+            /// <summary>
+            /// Plays a card from the user's hand
+            /// </summary>
+            public void playCard();
+
+
+
         }
 
         /// <summary>
-        /// Short purpose of class
+        /// This is the Crafting class
         /// </summary>
         /// <description>
-        /// Long description of class goes here
+        /// It contains functions related to the crafting system
         /// </description>
         public class Crafting
         {
             /// <summary>
-            /// Short purpose of field.
+            /// Gets the information of a card given the card id
             /// </summary>
+            /// <param name="cardId">This is the identifier of the card </param>
             /// <returns>
-            /// System.Single
+            /// An array of strings from the server of the card information
             /// </returns>
-            public float testfloat;
+            public ArrayList<string> getCardInfo(int cardId);
 
             /// <summary>
-            /// Short purpose of method
+            /// Combines resources to strengthen them
             /// </summary>
-            /// <param name="testint">The purpose of this testint is...</param>
+            /// <param name="resourceId">This is the identifier of the resource to combine</param>
             /// <returns>
-            /// Single.Int32
+            /// A bool value to check if the combination worked
             /// </returns>
-            public int test(int testint);
+            public bool combineResources(List<int> resourceId);
+
+            /// <summary>
+            /// Combines resources to strengthen them
+            /// </summary>
+            /// <param name="playerid">This is the identifier of the player </param>
+            /// <param name="resourceId">This is the identifier of the resource that was removed </param>
+            public void updateInventory(int palyerId, List<int> resourceId);
+
+            /// <summary>
+            /// Creates a new resource once a combination is successful
+            /// </summary>
+            /// <returns>
+            /// An integer value of the new resource id
+            /// </returns>
+            public int createResource();
+
+            /// <summary>
+            /// Upgrades cards to strengthen them
+            /// </summary>
+            /// <param name="cardId">This is the identifier of the card to upgrade</param>
+            /// <returns>
+            /// A bool value to check if the upgrade worked
+            /// </returns>
+            public bool upgradeCard(List<int> cardId);
+
+            /// <summary>
+            /// Updates the card info after upgrading it
+            /// </summary>
+            /// <param name="cardId">This is the identifier of the card to update</param>
+            /// <param name="updatedInfo">This is a list of strings of the card infor to update</param>
+            /// <returns>
+            /// A bool value to check if the update worked
+            /// </returns>
+            public bool updateCard(int cardId, List<string> updatedInfo);
         }
 
         /// <summary>
-        /// Short purpose of class
+        /// This is the Loot System class
         /// </summary>
         /// <description>
-        /// Long description of class goes here
+        /// It contains functions related to the loot system
         /// </description>
         public class Loot
         {
             /// <summary>
-            /// Short purpose of field.
+            /// Creates an item
             /// </summary>
             /// <returns>
-            /// System.Single
+            /// An integer of the item id
             /// </returns>
-            public float testfloat;
+            public int generateItem();
 
             /// <summary>
-            /// Short purpose of method
+            /// Adds the item to the player's inventory
             /// </summary>
-            /// <param name="testint">The purpose of this testint is...</param>
+            /// <param name="playerId">This is the identifier for the player </param>
+            /// /// <param name="itemId">This is the identifier for the item </param>
             /// <returns>
-            /// Single.Int32
+            /// A bool value to check if the update worked
             /// </returns>
-            public int test(int testint);
+            public bool updateInventory(int playerId, int itemId);
         }
 
         /// <summary>
-        /// Short purpose of class
+        /// This is the Mapping class
         /// </summary>
         /// <description>
-        /// Long description of class goes here
+        /// It contains functions related to the mapping system
         /// </description>
         public class Mapping
         {
             /// <summary>
-            /// Short purpose of field.
+            /// Loads the tiles for the ground layer based on the map api data
             /// </summary>
-            /// <returns>
-            /// System.Single
-            /// </returns>
-            public float testfloat;
+            public void loadGround();
 
             /// <summary>
-            /// Short purpose of method
+            /// Loads the tiles for the buildings layer based on the map aipi data
             /// </summary>
-            /// <param name="testint">The purpose of this testint is...</param>
-            /// <returns>
-            /// Single.Int32
-            /// </returns>
-            public int test(int testint);
+            public void loadBuildings();
+
+            /// <summary>
+            /// Loads the tiles for the street layer based on the map api data
+            /// </summary>
+            public void loadStreets();
+
+            /// <summary>
+            /// Loads the markers for points of interes from the map api which will later become nodes
+            /// </summary>
+            public void loadPointsOfInterest();
+
         }
     }
     
