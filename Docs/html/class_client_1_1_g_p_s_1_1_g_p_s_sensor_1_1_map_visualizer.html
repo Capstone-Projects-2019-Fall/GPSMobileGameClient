@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>GPS_Game_v1: GitHub.Unity.ExtensionLoader Class Reference</title>
+<title>GPS_Game_v1: Client.GPS.GPSSensor.MapVisualizer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,7 +66,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('class_git_hub_1_1_unity_1_1_extension_loader.html','');});
+$(document).ready(function(){initNavTree('class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -86,27 +86,28 @@ $(document).ready(function(){initNavTree('class_git_hub_1_1_unity_1_1_extension_
 
 <div class="header">
   <div class="summary">
-<a href="#properties">Properties</a> &#124;
-<a href="class_git_hub_1_1_unity_1_1_extension_loader-members.html">List of all members</a>  </div>
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">GitHub.Unity.ExtensionLoader Class Reference</div>  </div>
+<div class="title">Client.GPS.GPSSensor.MapVisualizer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for GitHub.Unity.ExtensionLoader:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="class_git_hub_1_1_unity_1_1_extension_loader.png" alt=""/>
- </div></div>
+
+<p>Map Visualizer Represents a map.  
+ <a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:a5b719a771ac55414ba57fb2b0f378718"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_git_hub_1_1_unity_1_1_extension_loader.html#a5b719a771ac55414ba57fb2b0f378718">Initialized</a><code> [get, set]</code></td></tr>
-<tr class="separator:a5b719a771ac55414ba57fb2b0f378718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a2a0ac503b8b6fecc4c272236558d7c58"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer.html#a2a0ac503b8b6fecc4c272236558d7c58">PlaceTile</a> (UnwrappedTileId tileId, UnityTile tile, IMapReadable map)</td></tr>
+<tr class="memdesc:a2a0ac503b8b6fecc4c272236558d7c58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Places a tile onto the UI map.  <a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer.html#a2a0ac503b8b6fecc4c272236558d7c58">More...</a><br /></td></tr>
+<tr class="separator:a2a0ac503b8b6fecc4c272236558d7c58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a5b719a771ac55414ba57fb2b0f378718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b719a771ac55414ba57fb2b0f378718">&#9670;&nbsp;</a></span>Initialized</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>Map Visualizer Represents a map. </p>
+<p>It creates requested tiles and relays them to the factories under itself. It has a caching mechanism to reuse tiles and does the tile positioning in unity world. The actual API itself inherits multiple abstract classes as seen here: <a href="https://docs.mapbox.com/mapbox-unity-sdk/api/unity/Mapbox.Unity.Map.MapVisualizer.html">https://docs.mapbox.com/mapbox-unity-sdk/api/unity/Mapbox.Unity.Map.MapVisualizer.html</a>  </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2a0ac503b8b6fecc4c272236558d7c58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2a0ac503b8b6fecc4c272236558d7c58">&#9670;&nbsp;</a></span>PlaceTile()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -115,27 +116,57 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool GitHub.Unity.ExtensionLoader.Initialized</td>
+          <td class="memname">override void Client.GPS.GPSSensor.MapVisualizer.PlaceTile </td>
+          <td>(</td>
+          <td class="paramtype">UnwrappedTileId&#160;</td>
+          <td class="paramname"><em>tileId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">UnityTile&#160;</td>
+          <td class="paramname"><em>tile</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">IMapReadable&#160;</td>
+          <td class="paramname"><em>map</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Places a tile onto the UI map. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">tileId</td><td>A tileID that is retrieved from device API</td></tr>
+    <tr><td class="paramname">UnityTile</td><td>A unity tile that that is generated from Mapbox API to visualize map styling</td></tr>
+    <tr><td class="paramname">map</td><td>The base map itself that is seen by the device</td></tr>
+  </table>
+  </dd>
+</dl>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>C:/Users/eeng2/source/repos/cis-cs-capstone-course/GPSMobileGameClient/Assets/Plugins/GitHub/Editor/<a class="el" href="_extension_loader_8cs.html">ExtensionLoader.cs</a></li>
+<li>C:/Users/eeng2/source/repos/cis-cs-capstone-course/GPSMobileGameClient/Assets/Scripts/Client/GPS/<a class="el" href="_g_p_s_01_sensor_8cs.html">GPS Sensor.cs</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespace_git_hub.html">GitHub</a></li><li class="navelem"><a class="el" href="namespace_git_hub_1_1_unity.html">Unity</a></li><li class="navelem"><a class="el" href="class_git_hub_1_1_unity_1_1_extension_loader.html">ExtensionLoader</a></li>
+    <li class="navelem"><a class="el" href="namespace_client.html">Client</a></li><li class="navelem"><a class="el" href="namespace_client_1_1_g_p_s.html">GPS</a></li><li class="navelem"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor.html">GPSSensor</a></li><li class="navelem"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_map_visualizer.html">MapVisualizer</a></li>
     <li class="footer">Generated on Sun Oct 13 2019 15:11:56 for GPS_Game_v1 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>

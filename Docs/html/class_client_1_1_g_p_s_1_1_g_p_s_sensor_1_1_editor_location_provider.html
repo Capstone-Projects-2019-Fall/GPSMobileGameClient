@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.16"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>GPS_Game_v1: GitHub.Unity.ExtensionLoader Class Reference</title>
+<title>GPS_Game_v1: Client.GPS.GPSSensor.EditorLocationProvider Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -66,7 +66,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('class_git_hub_1_1_unity_1_1_extension_loader.html','');});
+$(document).ready(function(){initNavTree('class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html','');});
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -86,27 +86,28 @@ $(document).ready(function(){initNavTree('class_git_hub_1_1_unity_1_1_extension_
 
 <div class="header">
   <div class="summary">
-<a href="#properties">Properties</a> &#124;
-<a href="class_git_hub_1_1_unity_1_1_extension_loader-members.html">List of all members</a>  </div>
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider-members.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">GitHub.Unity.ExtensionLoader Class Reference</div>  </div>
+<div class="title">Client.GPS.GPSSensor.EditorLocationProvider Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for GitHub.Unity.ExtensionLoader:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="class_git_hub_1_1_unity_1_1_extension_loader.png" alt=""/>
- </div></div>
+
+<p>The <a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html" title="The EditorLocationProvider is responsible for providing mock location and heading data for testing pu...">EditorLocationProvider</a> is responsible for providing mock location and heading data for testing purposes in the Unity editor.  
+ <a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
-Properties</h2></td></tr>
-<tr class="memitem:a5b719a771ac55414ba57fb2b0f378718"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_git_hub_1_1_unity_1_1_extension_loader.html#a5b719a771ac55414ba57fb2b0f378718">Initialized</a><code> [get, set]</code></td></tr>
-<tr class="separator:a5b719a771ac55414ba57fb2b0f378718"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a0cf1a08c86988c0a788bb0da93ca76bb"><td class="memItemLeft" align="right" valign="top">override void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html#a0cf1a08c86988c0a788bb0da93ca76bb">SetLocation</a> ()</td></tr>
+<tr class="memdesc:a0cf1a08c86988c0a788bb0da93ca76bb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the client location with a spoofed location.  <a href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html#a0cf1a08c86988c0a788bb0da93ca76bb">More...</a><br /></td></tr>
+<tr class="separator:a0cf1a08c86988c0a788bb0da93ca76bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Property Documentation</h2>
-<a id="a5b719a771ac55414ba57fb2b0f378718"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5b719a771ac55414ba57fb2b0f378718">&#9670;&nbsp;</a></span>Initialized</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>The <a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html" title="The EditorLocationProvider is responsible for providing mock location and heading data for testing pu...">EditorLocationProvider</a> is responsible for providing mock location and heading data for testing purposes in the Unity editor. </p>
+<p>This will allow us to test locations by not actually physically being at that location within Unity. For more information: <a href="https://docs.mapbox.com/mapbox-unity-sdk/api/unity/Mapbox.Unity.Map.MapVisualizer.html">https://docs.mapbox.com/mapbox-unity-sdk/api/unity/Mapbox.Unity.Map.MapVisualizer.html</a>  </p>
+</div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0cf1a08c86988c0a788bb0da93ca76bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0cf1a08c86988c0a788bb0da93ca76bb">&#9670;&nbsp;</a></span>SetLocation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -115,27 +116,33 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool GitHub.Unity.ExtensionLoader.Initialized</td>
+          <td class="memname">override void Client.GPS.GPSSensor.EditorLocationProvider.SetLocation </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
+<p>Sets the client location with a spoofed location. </p>
+<p>This class does have a location property which needs to not be null and filled in by us for testing and location spoofing.</p>
+
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>C:/Users/eeng2/source/repos/cis-cs-capstone-course/GPSMobileGameClient/Assets/Plugins/GitHub/Editor/<a class="el" href="_extension_loader_8cs.html">ExtensionLoader.cs</a></li>
+<li>C:/Users/eeng2/source/repos/cis-cs-capstone-course/GPSMobileGameClient/Assets/Scripts/Client/GPS/<a class="el" href="_g_p_s_01_sensor_8cs.html">GPS Sensor.cs</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="namespace_git_hub.html">GitHub</a></li><li class="navelem"><a class="el" href="namespace_git_hub_1_1_unity.html">Unity</a></li><li class="navelem"><a class="el" href="class_git_hub_1_1_unity_1_1_extension_loader.html">ExtensionLoader</a></li>
+    <li class="navelem"><a class="el" href="namespace_client.html">Client</a></li><li class="navelem"><a class="el" href="namespace_client_1_1_g_p_s.html">GPS</a></li><li class="navelem"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor.html">GPSSensor</a></li><li class="navelem"><a class="el" href="class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_editor_location_provider.html">EditorLocationProvider</a></li>
     <li class="footer">Generated on Sun Oct 13 2019 15:11:56 for GPS_Game_v1 by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.16 </li>

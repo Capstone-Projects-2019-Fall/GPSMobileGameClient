@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['oncompletecallback_99',['onCompleteCallBack',['../class_doxy_runner.html#ac1401822d6b3dea5626b786a94aa98d5',1,'DoxyRunner']]]
+  ['updatedistance_61',['updateDistance',['../class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_device_location_provider.html#a3cc86c45964acfb4ef5ade229d9259b8',1,'Client::GPS::GPSSensor::DeviceLocationProvider']]]
 ];

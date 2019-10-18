@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['pathtodoxygen_33',['PathtoDoxygen',['../class_doxygen_config.html#ad308ed1d0bdb202587fba232b754929f',1,'DoxygenConfig']]],
-  ['project_34',['Project',['../class_doxygen_config.html#ae69318495ba1db9f3a4d88e01764f9b4',1,'DoxygenConfig']]],
-  ['provider_35',['provider',['../struct_location.html#af2ab5e8fe90bf1c9d185f95d4d33f23c',1,'Location']]],
-  ['providerclass_36',['providerClass',['../struct_location.html#a84ffadcd88bef5769b04783d675d4297',1,'Location']]]
+  ['unityapiwrapper_29',['UnityAPIWrapper',['../class_git_hub_1_1_unity_1_1_unity_a_p_i_wrapper.html',1,'GitHub::Unity']]],
+  ['unityapiwrapper_2ecs_30',['UnityAPIWrapper.cs',['../_unity_a_p_i_wrapper_8cs.html',1,'']]],
+  ['updatedistance_31',['updateDistance',['../class_client_1_1_g_p_s_1_1_g_p_s_sensor_1_1_device_location_provider.html#a3cc86c45964acfb4ef5ade229d9259b8',1,'Client::GPS::GPSSensor::DeviceLocationProvider']]]
 ];
