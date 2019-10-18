@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Client.GameEngine
 {
-
+    /*
     /// <summary>
     /// This is the Game Mechanics API for Ground War. 
     /// </summary>
@@ -227,5 +227,5 @@ namespace Client.GameEngine
 
         }
     }
-    
+    */    
 }
