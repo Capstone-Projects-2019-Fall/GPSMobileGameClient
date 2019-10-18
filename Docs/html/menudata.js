@@ -30,6 +30,10 @@ var menudata={children:[
 {text:"Class Hierarchy",url:"hierarchy.html"},
 {text:"Class Members",url:"functions.html",children:[
 {text:"All",url:"functions.html"},
+<<<<<<< HEAD
+=======
+{text:"Functions",url:"functions_func.html"},
+>>>>>>> a62fda75805007ed0bbbc3407a08d47e4de510d0
 {text:"Variables",url:"functions_vars.html"},
 {text:"Properties",url:"functions_prop.html"}]}]},
 {text:"Files",url:"files.html",children:[
