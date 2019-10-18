@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['oncompletecallback_31',['onCompleteCallBack',['../class_doxy_runner.html#ac1401822d6b3dea5626b786a94aa98d5',1,'DoxyRunner']]],
-  ['ondoxygenfinished_32',['OnDoxygenFinished',['../class_doxygen_window.html#a2809a93b756a6cfc371ee76a9d7168d7',1,'DoxygenWindow']]]
+  ['unityapiwrapper_28',['UnityAPIWrapper',['../class_git_hub_1_1_unity_1_1_unity_a_p_i_wrapper.html',1,'GitHub::Unity']]],
+  ['unityapiwrapper_2ecs_29',['UnityAPIWrapper.cs',['../_unity_a_p_i_wrapper_8cs.html',1,'']]]
 ];

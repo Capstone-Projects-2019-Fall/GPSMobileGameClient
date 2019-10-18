@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['makenewdoxyfile_30',['MakeNewDoxyFile',['../class_doxygen_window.html#abf3c2a3c3a53e6691e58b865da8404de',1,'DoxygenWindow']]]
+  ['timestamp_27',['timeStamp',['../struct_client_1_1_g_p_s_1_1_location.html#a8c7ad60f6cca4a6f13bdc9ecf3a98b3d',1,'Client::GPS::Location']]]
 ];
