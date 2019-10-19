@@ -32,7 +32,10 @@ var NAVTREE =
       [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", null ],
+<<<<<<< HEAD
+=======
         [ "Functions", "functions_func.html", null ],
+>>>>>>> a62fda75805007ed0bbbc3407a08d47e4de510d0
         [ "Variables", "functions_vars.html", null ],
         [ "Properties", "functions_prop.html", null ]
       ] ]
@@ -45,7 +48,7 @@ var NAVTREE =
 
 var NAVTREEINDEX =
 [
-"_doxygen_window_8cs.html"
+"_device_location_provider_8cs.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

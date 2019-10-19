@@ -29,18 +29,11 @@ var menudata={children:[
 {text:"Class Index",url:"classes.html"},
 {text:"Class Hierarchy",url:"hierarchy.html"},
 {text:"Class Members",url:"functions.html",children:[
-{text:"All",url:"functions.html",children:[
-{text:"a",url:"functions.html#index_a"},
-{text:"c",url:"functions.html#index_c"},
-{text:"d",url:"functions.html#index_d"},
-{text:"h",url:"functions.html#index_h"},
-{text:"i",url:"functions.html#index_i"},
-{text:"l",url:"functions.html#index_l"},
-{text:"p",url:"functions.html#index_p"},
-{text:"s",url:"functions.html#index_s"},
-{text:"t",url:"functions.html#index_t"},
-{text:"u",url:"functions.html#index_u"}]},
+{text:"All",url:"functions.html"},
+<<<<<<< HEAD
+=======
 {text:"Functions",url:"functions_func.html"},
+>>>>>>> a62fda75805007ed0bbbc3407a08d47e4de510d0
 {text:"Variables",url:"functions_vars.html"},
 {text:"Properties",url:"functions_prop.html"}]}]},
 {text:"Files",url:"files.html",children:[
