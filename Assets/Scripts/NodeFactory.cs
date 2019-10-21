@@ -2,17 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class NodeFactory : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+/* NodeFactory Description: 
+ * The NodeFactory is a singleton that is responsible for populating the clientside overworld with Nodes.
+ * It retrieves Nodes' locations, as well as the corresponding NodeStructure currently associated with that Node from the web server and populates them on the map.
+ * Maintains a local reference to a list of all concrete NodeStructures.
+ * Is referenced by the NodeUpdateService to update the state of Nodes on the overworld
+ */
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+public class NodeFactory : Singleton<NodeFactory>
+{
+    //fields
+
+    //constructor
+
+    //methods
+
 }
