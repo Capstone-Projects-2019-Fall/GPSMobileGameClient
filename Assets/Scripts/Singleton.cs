@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Singleton : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+// Generic singleton design pattern. Have Singleton objects in the project extend the Singleton class
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
+{
+    private T instance;
+
+    public T Instance {
+        get {
+            if (instance == null) {
+                instance == FindObjectOfType<T>();
+            } else {
+                Destroy(gameObject);
+            }
+            DontDestroyOnLoad(gameObject);
+            return instance;
+        }
     }
 }
