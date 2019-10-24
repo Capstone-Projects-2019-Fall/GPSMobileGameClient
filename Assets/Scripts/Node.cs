@@ -17,7 +17,7 @@ public class Node : MonoBehaviour
     //fields
 
     // Reference to an interface: strategy pattern
-    [SerializeField] private NodeStructure nodeStruct;
+    [SerializeField] private INodeStructure nodeStruct;
 
     // constructor
 
