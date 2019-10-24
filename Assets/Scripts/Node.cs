@@ -17,10 +17,13 @@ public class Node : MonoBehaviour
     //fields
 
     // Reference to an interface: strategy pattern
-    [SerializeField] private INodeStructure nodeStruct;
+    private INodeStructure _nodeStruct;
+    private string locationString;
 
-    // constructor
 
     // methods
-
+    private void Start()
+    {
+        
+    }
 }

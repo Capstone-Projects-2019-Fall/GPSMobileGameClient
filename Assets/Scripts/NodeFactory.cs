@@ -18,8 +18,15 @@ public class NodeFactory : Singleton<NodeFactory>
     //fields
     [ReadOnly] private List<INodeStructure> _nodeStructures;
 
-    //constructor
-
     //methods
+    private void Awake() {
+        
+    }
 
+    public Node CreateNode(string locString, INodeStructure nodeStructure) {
+
+
+
+        
+    }
 }
