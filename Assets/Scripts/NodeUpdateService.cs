@@ -7,7 +7,7 @@ using UnityEngine;
  * It maintains a reference to the NodeFactory, which it makes requests to in the event that it needs to update the state of a Node.
  */
 
-public class NodeUpdateService : MonoBehaviour
+public class NodeUpdateService : Singleton<NodeUpdateService>
 {
     //fields
 
