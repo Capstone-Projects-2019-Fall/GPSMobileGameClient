@@ -7,6 +7,8 @@ using Mapbox.Unity.MeshGeneration.Factories;
 using Mapbox.Unity.Utilities;
 using Unity.Collections;
 using System.Reflection;
+using System.Linq;
+using System;
 
 /* NodeFactory Description: 
  * The NodeFactory is a singleton that is responsible the creation of Node GameObjects to be used on the overworld.
@@ -17,29 +19,47 @@ using System.Reflection;
 public static class NodeFactory
 {
     //fields
-    private static List<INodeStructure> NodeStructures;
-    private static bool IsInitialized => NodeStructures != null;
+    private static Dictionary<string, Type> NodeStructuresByName;
+    private static bool IsInitialized => NodeStructuresByName != null;
 
     //methods
     /* Initialize the NodeFactory
      */
     private static void InitializeFactory()
     {
+        // Ensures only one instance of the NodeFactory can exist
         if (IsInitialized)
             return;
 
-        NodeStructures = Assembly.GetAssembly(typeof())
+        // Get all concrete subclasses of NodeStructure 
+        var nodeStructures = Assembly.GetAssembly(typeof(NodeStructure)).GetTypes()
+            .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(NodeStructure)));
+
+        NodeStructuresByName = new Dictionary<string, Type>();
+
+        foreach (var type in nodeStructures)
+        {
+            var _tstruct = Activator.CreateInstance(type) as NodeStructure;
+            NodeStructuresByName.Add(_tstruct.Type, type);
+        }
     }
 
     /* Main creational methods for Nodes within the NodeFactory
      * Parameters:
      *    -> string locString: longitudinal and latitudinal coordinates of Node
-     *    -> INodeStructure nodeStructure: Node structure interface ('concrete'/implementer is passed), i.e. Strategy pattern
+     *    -> string nodeStructureType: string representation of the NodeStructure to be returned
      */
-    public Node CreateNode(string locString, INodeStructure nodeStructure) {
+    public static Node CreateNode(string locString, string nodeStructureType)
+    {
+        // If the given NodeStructure exists then attach it to a new Node and return it
+        if (NodeStructuresByName.ContainsKey(nodeStructureType))
+        {
+            Type type = NodeStructuresByName[nodeStructureType];
+            var nodeStruct = Activator.CreateInstance(type) as NodeStructure;
 
+            GameObject node = Resources.Load<GameObject>("Prefabs/Node");
+        }
 
-
-        return node;
+        throw new ArgumentException("NodeFactory.CreateNode: Invalid NodeStructure.");
     }
 }

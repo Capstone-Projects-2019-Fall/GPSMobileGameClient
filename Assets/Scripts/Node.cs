@@ -16,14 +16,27 @@ public class Node : MonoBehaviour
 {
     //fields
 
-    // Reference to an interface: strategy pattern
-    private INodeStructure _nodeStruct;
-    private string locationString;
-
+    // References an abstract class, essentially a strategy pattern
+    private NodeStructure _nodeStruct = null;
+    private string _locationString = null;
 
     // methods
+
     private void Start()
     {
         
     }
+
+    // Setter and getter for nodeStruct
+    public NodeStructure NodeStruct {
+        get => _nodeStruct;
+        set => _nodeStruct = value;
+    }
+
+    // Setter and getter locationStrin
+    public string LocationString {
+        get => _locationString;
+        set => _locationString = value;
+    }
+
 }
