@@ -37,6 +37,7 @@ public static class NodeFactory
 
         NodeStructuresByName = new Dictionary<string, Type>();
 
+        // Add each NodeStructure to the dictionary
         foreach (var type in nodeStructures)
         {
             var _tstruct = Activator.CreateInstance(type) as NodeStructure;
@@ -67,6 +68,25 @@ public static class NodeFactory
             nodeCode.LocationString = locString;
 
             return node;
+        }
+
+        throw new ArgumentException("Invalid NodeStructure.");
+    }
+
+
+    /* Returns an instance of a NodeStructure by name from within the private dictionary
+     * Parameters:
+     *    -> nodeStructureType: string representation of the NodeStructure to be returned
+     * Returns:
+     *    -> A NodeStructure: An object that sits within a Node on the map
+     */
+    public static NodeStructure GetNodeStructureByName(string nodeStructureType)
+    {
+        // If the given NodeStructure is in the dictionary, then return it.
+        if (NodeStructuresByName.ContainsKey(nodeStructureType))
+        {
+            Type type = NodeStructuresByName[nodeStructureType];
+            return Activator.CreateInstance(type) as NodeStructure;
         }
 
         throw new ArgumentException("Invalid NodeStructure.");

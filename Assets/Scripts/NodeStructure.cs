@@ -13,7 +13,7 @@ using UnityEngine;
 public abstract class NodeStructure
 {
     // fields (required by each NodeStructure)
-    public abstract string Type { get; }
+    public abstract string Type { get; set; }
 
     // methods (to be implemented by specific NodeStructures)
 }
