@@ -10,7 +10,7 @@ using UnityEngine;
  *      - Enemy
  */
 
-public interface INodeStructure
+public abstract class NodeStructure
 {
     // fields (required by each NodeStructure)
 

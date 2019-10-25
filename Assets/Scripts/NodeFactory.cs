@@ -6,6 +6,7 @@ using Mapbox.Unity.Map;
 using Mapbox.Unity.MeshGeneration.Factories;
 using Mapbox.Unity.Utilities;
 using Unity.Collections;
+using System.Reflection;
 
 /* NodeFactory Description: 
  * The NodeFactory is a singleton that is responsible the creation of Node GameObjects to be used on the overworld.
@@ -13,20 +14,32 @@ using Unity.Collections;
  * Is referenced by the NodeUpdateService to update the state of Nodes on the overworld
  */
 
-public class NodeFactory : Singleton<NodeFactory>
+public static class NodeFactory
 {
     //fields
-    [ReadOnly] private List<INodeStructure> _nodeStructures;
+    private static List<INodeStructure> NodeStructures;
+    private static bool IsInitialized => NodeStructures != null;
 
     //methods
-    private void Awake() {
-        
+    /* Initialize the NodeFactory
+     */
+    private static void InitializeFactory()
+    {
+        if (IsInitialized)
+            return;
+
+        NodeStructures = Assembly.GetAssembly(typeof())
     }
 
+    /* Main creational methods for Nodes within the NodeFactory
+     * Parameters:
+     *    -> string locString: longitudinal and latitudinal coordinates of Node
+     *    -> INodeStructure nodeStructure: Node structure interface ('concrete'/implementer is passed), i.e. Strategy pattern
+     */
     public Node CreateNode(string locString, INodeStructure nodeStructure) {
 
 
 
-        
+        return node;
     }
 }
