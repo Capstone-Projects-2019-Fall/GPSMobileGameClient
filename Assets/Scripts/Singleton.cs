@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /* Generic singleton design pattern. Have Singleton objects in the project extend the Singleton class
- * Example of singleton definition: " public class NodeFactory : Singleton<NodeFactory>
+ * Example of singleton definition: " public class NodeUpdateService : Singleton<NodeUpdateService>
+ * 
  * NOTE: This implementation of Singleton depends on an object being a MonoBehaviour, so concrete Singletons
  * cannot have constructors and must be attached to a GameObject in the Scene they participate in
  */

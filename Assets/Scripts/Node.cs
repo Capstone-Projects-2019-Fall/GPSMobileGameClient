@@ -22,21 +22,21 @@ public class Node : MonoBehaviour
 
     // methods
 
-    private void Start()
-    {
-        
-    }
-
     // Setter and getter for nodeStruct
     public NodeStructure NodeStruct {
         get => _nodeStruct;
         set => _nodeStruct = value;
     }
 
-    // Setter and getter locationStrin
+    // Setter and getter locationString
     public string LocationString {
         get => _locationString;
         set => _locationString = value;
+    }
+
+    private void Start()
+    {
+
     }
 
 }

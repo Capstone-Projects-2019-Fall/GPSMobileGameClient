@@ -48,18 +48,27 @@ public static class NodeFactory
      * Parameters:
      *    -> string locString: longitudinal and latitudinal coordinates of Node
      *    -> string nodeStructureType: string representation of the NodeStructure to be returned
+     * Returns:
+     *    -> A GameObject: the Node prefab to be placed in the Unity scene via Mapbox
      */
-    public static Node CreateNode(string locString, string nodeStructureType)
+    public static GameObject CreateNode(string locString, string nodeStructureType)
     {
         // If the given NodeStructure exists then attach it to a new Node and return it
         if (NodeStructuresByName.ContainsKey(nodeStructureType))
         {
             Type type = NodeStructuresByName[nodeStructureType];
-            var nodeStruct = Activator.CreateInstance(type) as NodeStructure;
+            NodeStructure nodeStruct = Activator.CreateInstance(type) as NodeStructure;
 
+            // Create a new Node prefab and initialize its fields
             GameObject node = Resources.Load<GameObject>("Prefabs/Node");
+            Node nodeCode = node.GetComponent<Node>();
+
+            nodeCode.NodeStruct = nodeStruct;
+            nodeCode.LocationString = locString;
+
+            return node;
         }
 
-        throw new ArgumentException("NodeFactory.CreateNode: Invalid NodeStructure.");
+        throw new ArgumentException("Invalid NodeStructure.");
     }
 }
