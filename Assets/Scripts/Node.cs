@@ -15,11 +15,8 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     //fields
-
-    // References an abstract class, essentially a strategy pattern
-    private NodeStructure _nodeStruct = null;
+    private NodeStructure _nodeStruct = null; // References an abstract class, essentially a strategy pattern
     private string _locationString = null;
-
     // methods
 
     // Setter and getter for nodeStruct
@@ -34,9 +31,19 @@ public class Node : MonoBehaviour
         set => _locationString = value;
     }
 
+    private void Awake()
+    {
+
+    }
+
     private void Start()
     {
 
+    }
+
+    private void Update()
+    {
+       
     }
 
 }

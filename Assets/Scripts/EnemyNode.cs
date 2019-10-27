@@ -11,4 +11,3 @@ public class EnemyNode : NodeStructure
         set => _type = value;
     }
 }
-}
