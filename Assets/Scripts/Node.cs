@@ -18,7 +18,7 @@ public class Node : MonoBehaviour
     //fields
     private NodeStructure _nodeStruct = null; // References an abstract class, essentially a strategy pattern
     private Sprite _nodeSprite = null;
-    [SerializeField] private SpriteRenderer _spriteRenderer; 
+    private SpriteRenderer _spriteRenderer; 
     private string _locationString = null;
     // methods
 

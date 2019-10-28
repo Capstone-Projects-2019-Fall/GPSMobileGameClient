@@ -96,8 +96,13 @@ public static class NodeFactory
 
         // Select a random NodeStructure from the dictionary
         System.Random rand = new System.Random();
-        nodeCode.NodeStruct = NodeStructuresByName.ElementAt(rand.Next(0, NodeStructuresByName.Count)).Value;
+        List<NodeStructure> values = Enumerable.ToList(NodeStructuresByName.Values);
+        int size = values.Count;
+        int roll = rand.Next(size);
+        Debug.LogFormat("Dict size: {0}, Roll: {1}", size, roll);
+        nodeCode.NodeStruct = values[roll];
         nodeCode.LocationString = locString;
+        
 
         return node;
     }

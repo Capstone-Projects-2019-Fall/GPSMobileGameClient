@@ -41,7 +41,7 @@ public class SpawnManager : MonoBehaviour
             var spawnedObject = _spawnedObjects[i];
             var location = _locations[i];
             Vector3 position = _map.GeoToWorldPosition(location, true);
-            position.y = 3;
+            position.y = 5;
             spawnedObject.transform.localPosition = position;
             spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
         }
@@ -75,9 +75,17 @@ public class SpawnManager : MonoBehaviour
     {
         Vector2d latLon = Conversions.StringToLatLon(locationString);
         _locations.Add(latLon);
+        Debug.Log(locationString);
+        
         var instance = Instantiate(_markerPrefab);
         instance.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
         instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+   
+        /* TODO: 
+        GameObject myNode = NodeFactory.CreateNode(locationString);
+        myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
+        myNode.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+        */
         _spawnedObjects.Add(instance);
     }
 }
