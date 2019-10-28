@@ -15,5 +15,6 @@ public abstract class NodeStructure
     // fields (required by each NodeStructure)
     public abstract string Type { get; set; }
 
+    public abstract Sprite Sprite { get; }
     // methods (to be implemented by specific NodeStructures)
 }

@@ -1,11 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Mapbox.Utils;
-using Mapbox.Unity.Map;
-using Mapbox.Unity.MeshGeneration.Factories;
-using Mapbox.Unity.Utilities;
-using Unity.Collections;
 using System.Reflection;
 using System.Linq;
 using System;
@@ -19,7 +13,7 @@ using System;
 public static class NodeFactory
 {
     //fields
-    private static Dictionary<string, Type> NodeStructuresByName;
+    private static Dictionary<string, NodeStructure> NodeStructuresByName;
     private static bool IsInitialized => NodeStructuresByName != null;
 
     //methods
@@ -35,13 +29,13 @@ public static class NodeFactory
         var nodeStructures = Assembly.GetAssembly(typeof(NodeStructure)).GetTypes()
             .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(NodeStructure)));
 
-        NodeStructuresByName = new Dictionary<string, Type>();
+        NodeStructuresByName = new Dictionary<string, NodeStructure>();
 
         // Add each NodeStructure to the dictionary
         foreach (var type in nodeStructures)
         {
             var _tstruct = Activator.CreateInstance(type) as NodeStructure;
-            NodeStructuresByName.Add(_tstruct.Type, type);
+            NodeStructuresByName.Add(_tstruct.Type, _tstruct);
         }
     }
 
@@ -57,8 +51,7 @@ public static class NodeFactory
         // If the given NodeStructure exists then attach it to a new Node and return it
         if (NodeStructuresByName.ContainsKey(nodeStructureType))
         {
-            Type type = NodeStructuresByName[nodeStructureType];
-            NodeStructure nodeStruct = Activator.CreateInstance(type) as NodeStructure;
+            NodeStructure nodeStruct = NodeStructuresByName[nodeStructureType];
 
             // Create a new Node prefab and initialize its fields
             GameObject node = Resources.Load<GameObject>("Prefabs/Node");
@@ -70,7 +63,43 @@ public static class NodeFactory
             return node;
         }
 
-        throw new ArgumentException("Invalid NodeStructure.");
+        throw new ArgumentException("Non-existent NodeStruct passed to CreateNode.");
+    }
+
+    /* 1st Overload ---
+     * New Parameters:
+     *    -> NodeStructure nodeStruct: Create a Node by passing a reference to a NodeStructure
+     */
+    public static GameObject CreateNode(string locString, NodeStructure nodeStruct)
+    {
+        if (NodeStructuresByName.ContainsValue(nodeStruct))
+        {
+            GameObject node = Resources.Load<GameObject>("Prefabs/Node");
+            Node nodeCode = node.GetComponent<Node>();
+
+            nodeCode.NodeStruct = nodeStruct;
+            nodeCode.LocationString = locString;
+
+            return node;
+        }
+
+        throw new ArgumentException("Non-existent NodeStruct passed to CreateNod .");
+    }
+
+    /* 2nd Overload ---
+     * Takes only a location as an argument. Returns a Node with a random NodeStructure.
+     */
+    public static GameObject CreateNode(string locString)
+    {
+        GameObject node = Resources.Load<GameObject>("Prefabs/Node");
+        Node nodeCode = node.GetComponent<Node>();
+
+        // Select a random NodeStructure from the dictionary
+        System.Random rand = new System.Random();
+        nodeCode.NodeStruct = NodeStructuresByName.ElementAt(rand.Next(0, NodeStructuresByName.Count)).Value;
+        nodeCode.LocationString = locString;
+
+        return node;
     }
 
 
@@ -80,13 +109,12 @@ public static class NodeFactory
      * Returns:
      *    -> A NodeStructure: An object that sits within a Node on the map
      */
-    public static NodeStructure GetNodeStructureByName(string nodeStructureType)
+    public static NodeStructure GetNodeStructureByString(string nodeStructureType)
     {
         // If the given NodeStructure is in the dictionary, then return it.
         if (NodeStructuresByName.ContainsKey(nodeStructureType))
         {
-            Type type = NodeStructuresByName[nodeStructureType];
-            return Activator.CreateInstance(type) as NodeStructure;
+            return NodeStructuresByName[nodeStructureType];
         }
 
         throw new ArgumentException("Invalid NodeStructure.");
