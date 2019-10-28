@@ -1,11 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using Mapbox.Utils;
-using Mapbox.Unity.Map;
-using Mapbox.Unity.MeshGeneration.Factories;
-using Mapbox.Unity.Utilities;
-using Unity.Collections;
+using System.Reflection;
+using System.Linq;
+using System;
 
 /* NodeFactory Description: 
  * The NodeFactory is a singleton that is responsible the creation of Node GameObjects to be used on the overworld.
@@ -13,13 +10,113 @@ using Unity.Collections;
  * Is referenced by the NodeUpdateService to update the state of Nodes on the overworld
  */
 
-public class NodeFactory : Singleton<NodeFactory>
+public static class NodeFactory
 {
     //fields
-    [ReadOnly] private List<INodeStructure> _nodeStructures;
-
-    //constructor
+    private static Dictionary<string, NodeStructure> NodeStructuresByName;
+    private static bool IsInitialized => NodeStructuresByName != null;
 
     //methods
+    /* Initialize the NodeFactory
+     */
+    private static void InitializeFactory()
+    {
+        // Ensures only one instance of the NodeFactory can exist
+        if (IsInitialized)
+            return;
 
+        // Get all concrete subclasses of NodeStructure 
+        var nodeStructures = Assembly.GetAssembly(typeof(NodeStructure)).GetTypes()
+            .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(NodeStructure)));
+
+        NodeStructuresByName = new Dictionary<string, NodeStructure>();
+
+        // Add each NodeStructure to the dictionary
+        foreach (var type in nodeStructures)
+        {
+            var _tstruct = Activator.CreateInstance(type) as NodeStructure;
+            NodeStructuresByName.Add(_tstruct.Type, _tstruct);
+        }
+    }
+
+    /* Main creational methods for Nodes within the NodeFactory
+     * Parameters:
+     *    -> string locString: longitudinal and latitudinal coordinates of Node
+     *    -> string nodeStructureType: string representation of the NodeStructure to be returned
+     * Returns:
+     *    -> A GameObject: the Node prefab to be placed in the Unity scene via Mapbox
+     */
+    public static GameObject CreateNode(string locString, string nodeStructureType)
+    {
+        // If the given NodeStructure exists then attach it to a new Node and return it
+        if (NodeStructuresByName.ContainsKey(nodeStructureType))
+        {
+            NodeStructure nodeStruct = NodeStructuresByName[nodeStructureType];
+
+            // Create a new Node prefab and initialize its fields
+            GameObject node = Resources.Load<GameObject>("Prefabs/Node");
+            Node nodeCode = node.GetComponent<Node>();
+
+            nodeCode.NodeStruct = nodeStruct;
+            nodeCode.LocationString = locString;
+
+            return node;
+        }
+
+        throw new ArgumentException("Non-existent NodeStruct passed to CreateNode.");
+    }
+
+    /* 1st Overload ---
+     * New Parameters:
+     *    -> NodeStructure nodeStruct: Create a Node by passing a reference to a NodeStructure
+     */
+    public static GameObject CreateNode(string locString, NodeStructure nodeStruct)
+    {
+        if (NodeStructuresByName.ContainsValue(nodeStruct))
+        {
+            GameObject node = Resources.Load<GameObject>("Prefabs/Node");
+            Node nodeCode = node.GetComponent<Node>();
+
+            nodeCode.NodeStruct = nodeStruct;
+            nodeCode.LocationString = locString;
+
+            return node;
+        }
+
+        throw new ArgumentException("Non-existent NodeStruct passed to CreateNod .");
+    }
+
+    /* 2nd Overload ---
+     * Takes only a location as an argument. Returns a Node with a random NodeStructure.
+     */
+    public static GameObject CreateNode(string locString)
+    {
+        GameObject node = Resources.Load<GameObject>("Prefabs/Node");
+        Node nodeCode = node.GetComponent<Node>();
+
+        // Select a random NodeStructure from the dictionary
+        System.Random rand = new System.Random();
+        nodeCode.NodeStruct = NodeStructuresByName.ElementAt(rand.Next(0, NodeStructuresByName.Count)).Value;
+        nodeCode.LocationString = locString;
+
+        return node;
+    }
+
+
+    /* Returns an instance of a NodeStructure by name from within the private dictionary
+     * Parameters:
+     *    -> nodeStructureType: string representation of the NodeStructure to be returned
+     * Returns:
+     *    -> A NodeStructure: An object that sits within a Node on the map
+     */
+    public static NodeStructure GetNodeStructureByString(string nodeStructureType)
+    {
+        // If the given NodeStructure is in the dictionary, then return it.
+        if (NodeStructuresByName.ContainsKey(nodeStructureType))
+        {
+            return NodeStructuresByName[nodeStructureType];
+        }
+
+        throw new ArgumentException("Invalid NodeStructure.");
+    }
 }
