@@ -19,7 +19,7 @@ public static class NodeFactory
     //methods
     /* Initialize the NodeFactory
      */
-    private static void InitializeFactory()
+    public static void InitializeFactory()
     {
         // Ensures only one instance of the NodeFactory can exist
         if (IsInitialized)
@@ -93,13 +93,13 @@ public static class NodeFactory
     {
         GameObject node = Resources.Load<GameObject>("Prefabs/Node");
         Node nodeCode = node.GetComponent<Node>();
-
+ 
         // Select a random NodeStructure from the dictionary
         System.Random rand = new System.Random();
-        List<NodeStructure> values = Enumerable.ToList(NodeStructuresByName.Values);
+        IList<NodeStructure> values = new List<NodeStructure>(NodeStructuresByName.Values);
         int size = values.Count;
         int roll = rand.Next(size);
-        Debug.LogFormat("Dict size: {0}, Roll: {1}", size, roll);
+
         nodeCode.NodeStruct = values[roll];
         nodeCode.LocationString = locString;
         
