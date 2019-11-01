@@ -56,7 +56,6 @@ public class Node : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        Debug.LogFormat("Value of _sr in Node.Awake: {0}", _spriteRenderer);
     }
 
     private void Start()

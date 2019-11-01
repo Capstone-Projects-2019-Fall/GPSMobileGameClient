@@ -35,7 +35,7 @@ public class APIWrapper
         {
             yield break;
         }
-        Debug.LogFormat("UpdateSurroundingNodes() Latitude: {0}, Longitude: {1}, Max Distance: {2}", longitude, longitude, longitude);
+        // Debug.LogFormat("UpdateSurroundingNodes() Latitude: {0}, Longitude: {1}, Max Distance: {2}", longitude, longitude, longitude);
 
         UnityWebRequest req = UnityWebRequest.Get(baseURL + "/geodata?long=" + longitude + "&lat=" + latitude + "&maxDist=" + maxDistance);
         yield return req.SendWebRequest();
@@ -47,7 +47,7 @@ public class APIWrapper
         else
         {
             string responseText = req.downloadHandler.text;
-            Debug.Log(responseText);
+            // Debug.Log(responseText);
             JSONNode responseJsonNodes = JSON.Parse(responseText);
             spawnManager.SpawnNodes(responseJsonNodes);
         }

@@ -75,7 +75,6 @@ public class SpawnManager : MonoBehaviour
     {
         Vector2d latLon = Conversions.StringToLatLon(locationString);
         _locations.Add(latLon);
-        Debug.Log(locationString);
 
         /*
         var instance = Instantiate(_markerPrefab);
@@ -88,7 +87,7 @@ public class SpawnManager : MonoBehaviour
         var instance = Instantiate(myNode);
         myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
         myNode.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-        
+
         _spawnedObjects.Add(instance);
     }
 }
