@@ -15,10 +15,6 @@ public class RadialArea : MonoBehaviour
 {
     [SerializeField] private AbstractMap _map;
     [SerializeField] private GameObject _player;
-    private Vector2d playerGeoLocation;
-    private Vector2 m2t;
-    private RectD tileBounds;
-    private double sizeLen;
 
     private void Awake()
     {

@@ -12,14 +12,13 @@ using System;
 public static class NodeFactory
 {
     private static Dictionary<string, NodeStructure> NodeStructuresByName;
-    private static bool IsInitialized => NodeStructuresByName != null;
+    private static bool _initialized => NodeStructuresByName != null;
 
-    /* Initialize the NodeFactory
-     */
+    // Initialize the NodeFactory
     public static void InitializeFactory()
     {
-        // Ensures only one instance of the NodeFactory can exist
-        if (IsInitialized)
+        // Ensures only one NodeFactory can exist
+        if (_initialized)
             return;
 
         // Get all concrete subclasses of NodeStructure 

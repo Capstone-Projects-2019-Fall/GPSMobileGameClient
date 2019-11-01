@@ -14,7 +14,8 @@ public abstract class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     private T instance;
 
     public T Instance {
-        get {
+        get 
+        {
             if (instance == null) { // If the Singleton has not yet been created.
                 instance = FindObjectOfType<T>();
             } else {
