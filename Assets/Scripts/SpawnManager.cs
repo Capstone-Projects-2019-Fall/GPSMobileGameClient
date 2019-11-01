@@ -3,38 +3,70 @@ using Mapbox.Unity.Map;
 using Mapbox.Unity.Utilities;
 using Mapbox.Utils;
 using SimpleJSON;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    [SerializeField]
-    AbstractMap _map;
+    [SerializeField] private AbstractMap _map;
+    [SerializeField] private int _nodeQueryInSeconds = 10;
+    [SerializeField] private float _spawnScale = 20f;
+    private Vector3 _spawnScaleVector;
+    [SerializeField] private GameObject _markerPrefab;
 
-    [SerializeField]
-    int NodeQueryInSeconds = 10;
+    private List<Vector2d> _locations;
+    private List<GameObject> _spawnedObjects;
 
-    [SerializeField]
-    float _spawnScale = 20f;
-
-    [SerializeField]
-    GameObject _markerPrefab;
-
-    List<Vector2d> _locations;
-    List<GameObject> _spawnedObjects;
+    private Dictionary<GameObject, Vector2d> nodeLocations;
 
     private APIWrapper api;
 
+    // accessors
+    public AbstractMap Map 
+    {
+        get => _map;
+        set => _map = value;
+    }
+    public int NodeQueryInSeconds 
+    {
+        get => _nodeQueryInSeconds;
+        set => _nodeQueryInSeconds = value;
+    }
+    public float SpawnScale 
+    {
+        get => _spawnScale;
+        set {
+            try
+            {
+                _spawnScale = value;
+                _spawnScaleVector = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+            }
+            catch (Exception e) { Debug.Log(e); }
+        }
+    }
+
     void Start()
     {
-        _locations = new List<Vector2d>();
-        _spawnedObjects = new List<GameObject>();
+        //_locations = new List<Vector2d>();
+        //_spawnedObjects = new List<GameObject>();
         api = new APIWrapper(this);
         InvokeRepeating("QueryNodes", 0, NodeQueryInSeconds);
+        nodeLocations = new Dictionary<GameObject, Vector2d>();
+        _spawnScaleVector = new Vector3(SpawnScale, SpawnScale, SpawnScale);
     }
 
     private void Update()
     {
+        foreach (KeyValuePair<GameObject, Vector2d> node in nodeLocations)
+        {
+            Vector3 position = Map.GeoToWorldPosition(node.Value, true);
+            position.y = 5;
+            node.Key.transform.localPosition = position;
+            node.Key.transform.localScale = _spawnScaleVector;
+            
+        }
+        /*
         int count = _spawnedObjects.Count;
         for (int i = 0; i < count; i++)
         {
@@ -43,8 +75,8 @@ public class SpawnManager : MonoBehaviour
             Vector3 position = _map.GeoToWorldPosition(location, true);
             position.y = 5;
             spawnedObject.transform.localPosition = position;
-            spawnedObject.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-        }
+            spawnedObject.transform.localScale = _spawnScaleVector;
+        }*/
     }
 
     private void QueryNodes()
@@ -56,12 +88,14 @@ public class SpawnManager : MonoBehaviour
     public void SpawnNodes(JSONNode jsonNode)
     {
 
-        foreach (var gameObject in _spawnedObjects)
+        foreach (KeyValuePair<GameObject, Vector2d> node in nodeLocations)
         {
-            Destroy(gameObject);
+            Destroy(node.Key);
         }
-        _spawnedObjects.Clear();
-        _locations.Clear();
+
+        nodeLocations.Clear();
+        //_spawnedObjects.Clear();
+        //_locations.Clear();
 
         for (int i = 0; i < jsonNode.Count; i++)
         {
@@ -74,20 +108,18 @@ public class SpawnManager : MonoBehaviour
     public void SpawnMarker(string locationString)
     {
         Vector2d latLon = Conversions.StringToLatLon(locationString);
-        _locations.Add(latLon);
 
-        /*
-        var instance = Instantiate(_markerPrefab);
-        instance.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
-        instance.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
-        */
-
+        // TODO: Create global controller to call InitializeFactory
         NodeFactory.InitializeFactory();
+
+        // TODO: Get NodeStructure from API (currently calling random Node
         GameObject myNode = NodeFactory.CreateNode(locationString);
         var instance = Instantiate(myNode);
         myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
-        myNode.transform.localScale = new Vector3(_spawnScale, _spawnScale, _spawnScale);
+        myNode.transform.localScale = _spawnScaleVector;
 
-        _spawnedObjects.Add(instance);
+        nodeLocations.Add(instance, latLon);
+        //_locations.Add(latLon);
+        //_spawnedObjects.Add(instance);
     }
 }

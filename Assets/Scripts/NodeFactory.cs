@@ -9,14 +9,11 @@ using System;
  * It retrieves Nodes' locations, as well as the corresponding NodeStructure currently associated with that Node from the web server and assembles corresponding GameObject.
  * Is referenced by the NodeUpdateService to update the state of Nodes on the overworld
  */
-
 public static class NodeFactory
 {
-    //fields
     private static Dictionary<string, NodeStructure> NodeStructuresByName;
     private static bool IsInitialized => NodeStructuresByName != null;
 
-    //methods
     /* Initialize the NodeFactory
      */
     public static void InitializeFactory()
