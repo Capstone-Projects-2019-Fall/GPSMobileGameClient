@@ -10,7 +10,6 @@ public class EnemyNode : NodeStructure
     public override string Type 
     {
         get => _type;
-        set => _type = value;
     }
 
     public override Sprite Sprite 

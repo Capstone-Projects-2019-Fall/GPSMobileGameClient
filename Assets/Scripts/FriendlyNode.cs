@@ -10,7 +10,6 @@ public class FriendlyNode : NodeStructure
     public override string Type 
     {
         get => _type;
-        set => _type = value;
     }
 
     public override Sprite Sprite
