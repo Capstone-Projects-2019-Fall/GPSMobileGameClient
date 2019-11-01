@@ -1,11 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using Mapbox.Unity.Utilities;
 using Mapbox.Unity.Map;
 using Mapbox.Utils;
-using Mapbox.Unity.MeshGeneration.Data;
-using Mapbox.Map;
 
 /* RadialArea Description:
  * RadialAreas are attached to certain types of NodeStructures. They define a circular area around thier corresponding Node.
@@ -32,11 +28,6 @@ public class RadialArea : MonoBehaviour
 
     private void Update()
     {
-        playerGeoLocation = _player.transform.GetGeoPosition(_map.CenterMercator, _map.WorldRelativeScale);
-        m2t = Conversions.MetersToTile(playerGeoLocation, 16);
-        tileBounds = Conversions.TileBounds(m2t, 16);
-        sizeLen = tileBounds.Size.x;
 
-        Debug.LogFormat("Tile Width: {0}", sizeLen);
     }
 }
