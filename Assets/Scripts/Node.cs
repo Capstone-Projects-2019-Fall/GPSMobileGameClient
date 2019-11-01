@@ -47,6 +47,9 @@ public class Node : MonoBehaviour
         set => _nodeSprite = value;
     }
 
+    /* 
+     * 
+     */
     private void Awake()
     {
 
