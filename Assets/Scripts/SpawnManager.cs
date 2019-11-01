@@ -13,7 +13,7 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] private int _nodeQueryInSeconds = 10;
     [SerializeField] private float _spawnScale = 20f;
     private Vector3 _spawnScaleVector;
-    [SerializeField] private GameObject _markerPrefab;
+    //[SerializeField] private GameObject _markerPrefab;
 
     private List<Vector2d> _locations;
     private List<GameObject> _spawnedObjects;
