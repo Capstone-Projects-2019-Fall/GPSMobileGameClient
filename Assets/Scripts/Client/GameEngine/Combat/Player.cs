@@ -10,11 +10,8 @@ public class Player : AbstractPlayer
     {
     }
 
-    public Player(float health, float memory)
+    public Player(float health, float memory): base(health, memory)
     {
-        Health = health;
-        Memory = memory;
-        IsAlive = true;
     }
 
     // Start is called before the first frame update
