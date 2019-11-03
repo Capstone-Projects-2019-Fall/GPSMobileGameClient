@@ -15,9 +15,13 @@ public interface IRadialArea
 
     // The behavior that occurs when a player moves into a RadialArea
     void EnterAction();
+    void SubscribeEnter(); // MyRadialArea.OnEnterArea += MethodName
+    void UnsubscribeEnter(); // MyRadialArea.OnEnterArea -= MethodName
 
     // The behavior that occurs when a player exits a RadialArea
     void ExitAction();
+    void SubscribeExit(); // MyRadialArea.OnExitArea += MethodName
+    void UnsubscribeExit(); // MyRadialArea.OnExitArea -= MethodName
 
     // The behavior that occurs while the player object is within the area.
     void UpdateAction();
