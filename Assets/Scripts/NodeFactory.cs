@@ -99,7 +99,6 @@ public static class NodeFactory
         nodeCode.NodeStruct = values[roll];
         nodeCode.LocationString = locString;
         
-
         return node;
     }
 

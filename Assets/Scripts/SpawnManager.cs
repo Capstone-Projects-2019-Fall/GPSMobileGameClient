@@ -66,17 +66,6 @@ public class SpawnManager : MonoBehaviour
             node.Key.transform.localScale = _spawnScaleVector;
             
         }
-        /*
-        int count = _spawnedObjects.Count;
-        for (int i = 0; i < count; i++)
-        {
-            var spawnedObject = _spawnedObjects[i];
-            var location = _locations[i];
-            Vector3 position = _map.GeoToWorldPosition(location, true);
-            position.y = 5;
-            spawnedObject.transform.localPosition = position;
-            spawnedObject.transform.localScale = _spawnScaleVector;
-        }*/
     }
 
     private void QueryNodes()
@@ -94,8 +83,6 @@ public class SpawnManager : MonoBehaviour
         }
 
         nodeLocations.Clear();
-        //_spawnedObjects.Clear();
-        //_locations.Clear();
 
         for (int i = 0; i < jsonNode.Count; i++)
         {
@@ -112,14 +99,12 @@ public class SpawnManager : MonoBehaviour
         // TODO: Create global controller to call InitializeFactory
         NodeFactory.InitializeFactory();
 
-        // TODO: Get NodeStructure from API (currently calling random Node
+        // TODO: Get NodeStructure from API (currently calling random Node)
         GameObject myNode = NodeFactory.CreateNode(locationString);
         var instance = Instantiate(myNode);
         myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
         myNode.transform.localScale = _spawnScaleVector;
 
         nodeLocations.Add(instance, latLon);
-        //_locations.Add(latLon);
-        //_spawnedObjects.Add(instance);
     }
 }

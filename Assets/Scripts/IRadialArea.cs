@@ -10,6 +10,5 @@ using UnityEngine;
 
 public interface IRadialArea
 {
-    float MinRange { get; set; }
-    float MaxRange { get; set; }
+    float Radius { get; set; }
 }

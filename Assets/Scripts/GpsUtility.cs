@@ -13,7 +13,7 @@ public static class GpsUtility
 {
     private static AbstractMap _map;
     private static bool _initialized => _map != null;
-    private const double uupmMagicNumber = 600.0;
+    private const double uupmMagicNumber = 600.0; // Default radius for handled exception
 
     // Initialize the GpsUtility
     public static void InitialzeUtility(AbstractMap map)
@@ -45,8 +45,8 @@ public static class GpsUtility
 
             // (tiles / meter) * (unityUnitys / tiles) = (unityUnits / meter)
             return (1 / _map.UnityTileSize) * tileLength;
-        } catch (ArgumentException ae) {
-            Debug.Log(ae);
+        } catch (Exception e) {
+            Debug.Log(e);
             return uupmMagicNumber;
         }
     }
