@@ -16,13 +16,34 @@ public class BuffHandler : MonoBehaviour
         buffList.Remove(buff);
     }
 
-    public void handleBuffs()
+    public float calculateAttackModifier()
     {
-        foreach(Buff buff in buffList)
+        float attackModifier = 1;
+        foreach (Buff buff in buffList)
         {
-            if(buff.BuffName == "")
+            attackModifier *= buff.Attack_Modifier;            
+        }
+        return attackModifier;
+    }
+
+    public float calculateDefenseModifier()
+    {
+        float defenseModifier = 1;
+        foreach (Buff buff in buffList)
+        {
+            defenseModifier *= buff.Attack_Modifier;
+        }
+        return defenseModifier;
+    }
+
+    public void decrementBuffUsages()
+    {
+        foreach (Buff buff in buffList)
+        {
+            buff.RoundDuration--;
+            if (buff.RoundDuration == 0)
             {
-                /// execute code
+                buffList.Remove(buff);
             }
         }
     }

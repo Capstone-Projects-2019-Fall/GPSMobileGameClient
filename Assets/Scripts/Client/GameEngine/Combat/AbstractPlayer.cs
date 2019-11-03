@@ -9,13 +9,13 @@ public abstract class AbstractPlayer : MonoBehaviour
     private bool alive = true;
     private bool combat = false;
     private BuffHandler buffHandler = new BuffHandler();
-    
+
     public float Memory { get => memory; set => memory = value; }
     public float Health { get => health; set => health = value; }
     public bool IsAlive { get => alive; set => alive = value; }
     public bool InCombat { get => combat; set => combat = value; }
     public List<Buff> GetBuffList { get => buffHandler.buffList; }
-    
+
     public AbstractPlayer()
     {
 
@@ -28,14 +28,16 @@ public abstract class AbstractPlayer : MonoBehaviour
         IsAlive = true;
     }
 
-    public virtual void executeAttack(AbstractPlayer entity)
+    public virtual void executeAttack(AbstractPlayer entity, float attack_damage)
     {
-        entity.damageReceived(0);
+        float attackModifier = buffHandler.calculateAttackModifier();
+        entity.damageReceived(attack_damage * attackModifier);
     }
 
     public virtual void damageReceived(float damage)
     {
-        Health -= damage;
+        float defenseModifier = buffHandler.calculateDefenseModifier();
+        Health -= damage * defenseModifier;
         if (Health <= 0)
         {
             IsAlive = false;
