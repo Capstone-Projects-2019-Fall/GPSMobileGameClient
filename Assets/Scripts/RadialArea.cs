@@ -43,6 +43,9 @@ public class RadialArea : MonoBehaviour
         get => _lineWidth;
         set => _lineWidth = value;
     }
+    public bool InRange {
+        get => _inRange;
+    }
 
     // methods
     private void Awake()
@@ -54,6 +57,15 @@ public class RadialArea : MonoBehaviour
         _inRange = PollRange(_player); // Test whether the Player is within the range of the radius
     }
 
+    // The RangeHandler is called every 2.0 seconds, instead of during every update frame.
+    public void Start()
+    {
+        InvokeRepeating("RangeHandler", 0, 2.0f);
+    }
+
+    /* Method is run in regular intervals to determine if the player has entered or exited the radial area.
+     * Is able to update the state variable _inRange and interact with the event system.
+     */
     public void RangeHandler()
     {
         if(!_inRange && PollRange(_player)) // _inRange is false, PollRange returns true: player has entererd the area
