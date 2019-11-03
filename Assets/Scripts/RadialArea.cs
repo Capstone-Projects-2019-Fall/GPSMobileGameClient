@@ -12,13 +12,20 @@ using Mapbox.Utils;
 [RequireComponent(typeof(LineRenderer))]
 public class RadialArea : MonoBehaviour
 {
-    // fields
+    // Delegates and events for this Radial Area's OnEnter and OnExit
+    public delegate void EnterAction();
+    public event EnterAction OnEnterArea;
+    public delegate void ExitAction();
+    public event ExitAction OnExitArea;
 
     [SerializeField] private AbstractMap _map;
+    [SerializeField] private GameObject _player;
     private float _radius;
 
+    private bool _inRange; // state variable representing if player is within range of RadialArea
+
     private int _vertexCount = 40; // used to control smoothness of drawn circle, default 40
-    private float _lineWidth = 1.0f;
+    private float _lineWidth = 1.0f; // used to control circle line width, default 1.0
     private LineRenderer _lineRenderer;
 
     // getters and setters
@@ -41,12 +48,23 @@ public class RadialArea : MonoBehaviour
     private void Awake()
     {
         _map = (AbstractMap) FindObjectOfType(typeof(AbstractMap));
+        _player = GameObject.Find("PlayerTarget");
         _lineRenderer = GetComponent<LineRenderer>();
+
+        _inRange = PollRange(_player); // Test whether the Player is within the range of the radius
     }
 
-    private void Update()
+    public void RangeHandler()
     {
-
+        if(!_inRange && PollRange(_player)) // _inRange is false, PollRange returns true: player has entererd the area
+        {
+            OnEnterArea(); // Signal to subscribers
+            _inRange = true;
+        } else if(_inRange && PollRange(_player)) // _inRange is true, PollRange returns false: player has exited the area
+        {
+            OnExitArea(); // Signal to subscribers
+            _inRange = false;
+        }
     }
 
     /* Returns true if another GameObject is within range of the RadialArea
@@ -55,7 +73,7 @@ public class RadialArea : MonoBehaviour
      * Returns:
      *    -> bool: True if the other object is within range
      */ 
-    public bool WithinRange(GameObject other)
+    public bool PollRange(GameObject other)
     {
         // Nullify the y component of true vector distance
         Vector3 vecToTarget = gameObject.transform.position - other.transform.position;

@@ -11,4 +11,14 @@ using UnityEngine;
 public interface IRadialArea
 {
     float Radius { get; set; }
+    RadialArea MyRadialArea { get; }
+
+    // The behavior that occurs when a player moves into a RadialArea
+    void EnterAction();
+
+    // The behavior that occurs when a player exits a RadialArea
+    void ExitAction();
+
+    // The behavior that occurs while the player object is within the area.
+    void UpdateAction();
 }
