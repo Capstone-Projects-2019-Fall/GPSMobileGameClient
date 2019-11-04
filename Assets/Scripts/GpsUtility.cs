@@ -43,7 +43,7 @@ public static class GpsUtility
             Vector2 m2t = Conversions.MetersToTile(objectGeoLoc, zoom);
             double tileLength = Conversions.TileBounds(m2t, zoom).Size.x;
 
-            // (tiles / meter) * (unityUnitys / tiles) = (unityUnits / meter)
+            // (unityUnitys / tiles) * (tiles / meter) = (unityUnits / meter)
             return (1 / _map.UnityTileSize) * tileLength;
         } catch (Exception e) {
             Debug.Log(e);

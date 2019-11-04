@@ -60,6 +60,8 @@ public class RadialArea : MonoBehaviour
     // The RangeHandler is called every 2.0 seconds, instead of during every update frame.
     public void Start()
     {
+        // TODO: Create materials for Friendly and Enemy RadialAreas
+        //DrawAreaOfEffect(myLineMaterial);
         InvokeRepeating("RangeHandler", 0, 2.0f);
     }
 
@@ -94,28 +96,7 @@ public class RadialArea : MonoBehaviour
         // Check if object is within range
         float distToTarget = vecToTarget.magnitude;
         return (distToTarget < Radius);
-    }
-    
-    /* Draw a circle indicating the area of effect of the radial area using a LineRenderer
-     * Parameters:
-     *    -> Material lineMaterial: Control the visual effects of the circle with this material
-     */
-    public void DrawAreaOfEffect(Material lineMaterial)
-    {
-        _lineRenderer.widthMultiplier = LineWidth;
-        float deltaTheta = (2f * Mathf.PI) / VertexCount;
-        float theta = 0f;
-
-        _lineRenderer.positionCount = VertexCount;
-
-        // Each segment of the LineRenderer
-        for (int i = 0; i < _lineRenderer.positionCount; i++)
-        {
-            Vector3 pos = new Vector3(Radius * Mathf.Cos(theta), 0f, Radius * Mathf.Sin(theta));
-            _lineRenderer.SetPosition(i, pos);
-            theta += deltaTheta;
-        }
-    }
+    } 
     
     /* Instantiate a GameObject at a random location within the RadialArea's range. Note that the caller
      * is responsible for validating the GameObject/Prefab is loaded properly.
@@ -137,5 +118,26 @@ public class RadialArea : MonoBehaviour
         instance.transform.localPosition = new Vector3 (xLoc, 0.0f, zLoc);
 
         return instance;
+    }
+
+    /* Draw a circle indicating the area of effect of the radial area using a LineRenderer
+ * Parameters:
+ *    -> Material lineMaterial: Control the visual effects of the circle with this material
+ */
+    private void DrawAreaOfEffect(Material lineMaterial)
+    {
+        _lineRenderer.widthMultiplier = LineWidth;
+        float deltaTheta = (2f * Mathf.PI) / VertexCount;
+        float theta = 0f;
+
+        _lineRenderer.positionCount = VertexCount;
+
+        // Each segment of the LineRenderer
+        for (int i = 0; i < _lineRenderer.positionCount; i++)
+        {
+            Vector3 pos = new Vector3(Radius * Mathf.Cos(theta), 0f, Radius * Mathf.Sin(theta));
+            _lineRenderer.SetPosition(i, pos);
+            theta += deltaTheta;
+        }
     }
 }
