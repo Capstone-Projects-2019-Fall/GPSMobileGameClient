@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class AbstractPlayer : MonoBehaviour
 {
-    private float health = 100f;
-    private float memory = 10f;
+    public float health = 100f;
+    public float memory = 10f;
     private bool alive = true;
     private bool combat = false;
     private BuffHandler buffHandler = new BuffHandler();

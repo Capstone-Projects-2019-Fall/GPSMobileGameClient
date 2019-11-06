@@ -5,9 +5,9 @@ using UnityEngine.SceneManagement;
 
 public class Enemy : AbstractPlayer
 {
-    private float armor = 0f;
-    private float attack = 10f;
-    private float regen_rate = 0f;
+    public float armor = 0f;
+    public float attack = 10f;
+    public float regen_rate = 0f;
     private float attack_modifier = 1f;
 
     public float Armor { get { return armor; } set { armor = value; } }
@@ -31,6 +31,11 @@ public class Enemy : AbstractPlayer
     {
         float damageDealt = Attack * Attack_Modifier;
         entity.damageReceived(damageDealt);
+    }
+
+    public void regenHealth()
+    {
+        Health += Regen_Rate;
     }
 
     // Start is called before the first frame update
