@@ -10,10 +10,11 @@ using UnityEngine;
  *      - Enemy
  */
 
-public interface INodeStructure
+public abstract class NodeStructure
 {
     // fields (required by each NodeStructure)
+    public abstract string Type { get; }
 
+    public abstract Sprite Sprite { get; }
     // methods (to be implemented by specific NodeStructures)
-
 }
