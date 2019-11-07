@@ -7,16 +7,16 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+ * SpawnManager handles populating Nodes on the overworld map. On start it repeats a query to get surrounding nodes and
+ * displays those nodes on the map.
+ */ 
 public class SpawnManager : MonoBehaviour
 {
     [SerializeField] private AbstractMap _map;
     [SerializeField] private int _nodeQueryInSeconds = 10;
     [SerializeField] private float _spawnScale = 20f;
     private Vector3 _spawnScaleVector;
-    //[SerializeField] private GameObject _markerPrefab;
-
-    private List<Vector2d> _locations;
-    private List<GameObject> _spawnedObjects;
 
     private Dictionary<GameObject, Vector2d> nodeLocations;
 
@@ -48,14 +48,18 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        //_locations = new List<Vector2d>();
-        //_spawnedObjects = new List<GameObject>();
-        api = new APIWrapper(this);
-        InvokeRepeating("QueryNodes", 0, NodeQueryInSeconds);
+        api = APIWrapper.getInstance();
+        NodeFactory.InitializeFactory();
+        InvokeRepeating("QueryNodes", 3, NodeQueryInSeconds); // Calls QueryNodes() every "NodeQueryInSeconds" seconds 
+                                                              // starting in 3 seconds. The 3 seconds is to allow the game to load
+                                                              // before making the first call.
         nodeLocations = new Dictionary<GameObject, Vector2d>();
         _spawnScaleVector = new Vector3(SpawnScale, SpawnScale, SpawnScale);
     }
 
+    /*
+     * Every frame the nodes must be updated in order to preserve their correct display on the map.
+     */
     private void Update()
     {
         foreach (KeyValuePair<GameObject, Vector2d> node in nodeLocations)
@@ -64,16 +68,31 @@ public class SpawnManager : MonoBehaviour
             position.y = 5;
             node.Key.transform.localPosition = position;
             node.Key.transform.localScale = _spawnScaleVector;
-            
         }
     }
 
+    /*
+     * Uses the APIWrapper to get the surrounding nodes as a JSONNode object.
+     * This method is called repeatedly throughout the game's runtime.
+     */
     private void QueryNodes()
     {
         Vector2d latLon = LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude;
-        StartCoroutine(api.UpdateSurroundingNodes(latLon.x, latLon.y));
+
+        // The third argument is an anonymous callback function that handles the received nodes.
+        StartCoroutine(api.getSurroundingNodes(latLon.x, latLon.y, (jsonNode) => {
+            if (jsonNode != null)
+            {
+                SpawnNodes(jsonNode);
+            }
+        }));
     }
 
+    /*
+     * Takes a JSONNode object representing a list of surrounding nodes and spawns each one.
+     * Before spawning new nodes, all currently populated nodes are removed from the overworld map
+     * and replaced with the new set of surrounding nodes.
+     */
     public void SpawnNodes(JSONNode jsonNode)
     {
 
@@ -92,12 +111,13 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    /*
+     * Spawns a node at a specified latitude and longitude location.
+     * The locationString's format is "latitude, longitude"
+     */
     public void SpawnMarker(string locationString)
     {
         Vector2d latLon = Conversions.StringToLatLon(locationString);
-
-        // TODO: Create global controller to call InitializeFactory
-        NodeFactory.InitializeFactory();
 
         // TODO: Get NodeStructure from API (currently calling random Node)
         GameObject myNode = NodeFactory.CreateNode(locationString);
