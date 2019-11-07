@@ -8,9 +8,6 @@
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # [Aa]ssets/AssetStoreTools*
 
-# Client script meta files
-[Aa]ssets/Scripts/Client/*.meta
-
 # Doxygen html files
 [Aa]ssets/**/html/
 [Dd]ocs/html/
@@ -46,7 +43,6 @@ ExportedObj/
 *.pidb.meta
 *.pdb.meta
 *.mdb.meta
-*.cs.meta
 *.unity.meta
 
 # Unity3D generated file on crash reports
@@ -58,3 +54,6 @@ sysinfo.txt
 
 # Crashlytics generated file
 crashlytics-build.properties
+
+# Doxygen Scripts
+[Aa]ssets/Scripts/Dox*
