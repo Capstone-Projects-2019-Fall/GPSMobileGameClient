@@ -31,6 +31,7 @@ public class Card : MonoBehaviour
 
     }
 
+    /*
     public bool Card_pp(string CardName, bool isRefresh)
     {
         string json = "\"cardname\": " + CardName + ",\n\"isrefresh\": " + isRefresh.ToString();
@@ -55,5 +56,5 @@ public class Card : MonoBehaviour
         {
             Debug.Log("Received: " + uwr.downloadHandler.text);
         }
-    }
+    }*/
 }
