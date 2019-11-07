@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class EnemyNode : NodeStructure, IRadialArea
 {
@@ -31,6 +32,7 @@ public class EnemyNode : NodeStructure, IRadialArea
     public void UpdateAction()
     {
         // TODO: Behavior that is called while the player is within the RadialArea
+
     }
 
     // Event handling for player entering the RadialArea.
