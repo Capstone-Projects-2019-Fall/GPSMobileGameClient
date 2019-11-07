@@ -57,3 +57,5 @@ crashlytics-build.properties
 
 # Doxygen Scripts
 [Aa]ssets/Scripts/Dox*
+
+GlobalSuppressions.cs
