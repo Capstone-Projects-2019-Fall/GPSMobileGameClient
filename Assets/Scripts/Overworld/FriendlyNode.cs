@@ -32,19 +32,20 @@ public class FriendlyNode : NodeStructure, IRadialArea
     // Constructor (called BEFORE attached to a Node)
     public FriendlyNode()
     {
-        GameObject _raObject = new GameObject("RadialArea");
+        /*GameObject _raObject = new GameObject("RadialArea");
         _raObject.AddComponent<RadialArea>();
-        RadialArea = _raObject.GetComponent<RadialArea>();
+        RadialArea = _raObject.GetComponent<RadialArea>();*/
     }
 
     public override void AttachToNode(GameObject node)
     {
         try
         {
-            node.AddComponent<LineRenderer>();
-            RadialArea.transform.SetParent(node.transform);
+            node.AddComponent<RadialArea>();
+            node.GetComponent<RadialArea>().DrawAreaOfEffect();
+            //RadialArea.transform.SetParent(node.transform);
         }
-        catch (Exception e) { Debug.Log("Failed to bind EnemyNode to Node."); }
+        catch (Exception e) { Debug.Log(e); }
     }
 
     public void UpdateAction()

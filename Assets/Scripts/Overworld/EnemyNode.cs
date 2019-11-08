@@ -33,9 +33,9 @@ public class EnemyNode : NodeStructure, IRadialArea
     // Constructor (called BEFORE attached to a Node)
     public EnemyNode()
     {
-        GameObject _raObject = new GameObject("RadialArea");
+        /*GameObject _raObject = new GameObject("RadialArea");
         _raObject.AddComponent<RadialArea>();
-        RadialArea = _raObject.GetComponent<RadialArea>();
+        RadialArea = _raObject.GetComponent<RadialArea>();*/
     }
 
     // Called by the NodeFactory when binding NodeStruct to Node
@@ -43,9 +43,10 @@ public class EnemyNode : NodeStructure, IRadialArea
     {
         try
         {
-            node.AddComponent<LineRenderer>();
-            RadialArea.transform.SetParent(node.transform);
-        } catch (Exception e) { Debug.LogFormat("Failed to bind EnemyNode to Node.", e); }
+            node.AddComponent<RadialArea>();
+            node.GetComponent<RadialArea>().DrawAreaOfEffect();
+            //RadialArea.transform.SetParent(node.transform);
+        } catch (Exception e) { Debug.Log(e); }
     }
 
     public void UpdateAction()

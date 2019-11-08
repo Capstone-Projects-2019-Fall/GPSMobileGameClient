@@ -12,6 +12,7 @@ using System;
 public static class NodeFactory
 {
     private static Dictionary<string, NodeStructure> NodeStructuresByName;
+    private static Dictionary<string, Type> NodeStructTypesByName;
     private static bool _initialized => NodeStructuresByName != null;
 
     // Initialize the NodeFactory
@@ -26,12 +27,19 @@ public static class NodeFactory
             .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(NodeStructure)));
 
         NodeStructuresByName = new Dictionary<string, NodeStructure>();
+        NodeStructTypesByName = new Dictionary<string, Type>();
 
         // Add each NodeStructure to the dictionary
         foreach (var type in nodeStructures)
         {
             var _tstruct = Activator.CreateInstance(type) as NodeStructure;
             NodeStructuresByName.Add(_tstruct.Type, _tstruct);
+        }
+
+        foreach (var type in nodeStructures)
+        {
+            var _tstruct = Activator.CreateInstance(type) as NodeStructure;
+            NodeStructTypesByName.Add(_tstruct.Type, type);
         }
     }
 
@@ -81,7 +89,7 @@ public static class NodeFactory
             return nodeInstance;
         }
 
-        throw new ArgumentException("Non-existent NodeStruct passed to CreateNod .");
+        throw new ArgumentException("Non-existent NodeStruct passed to CreateNode.");
     }
 
     /* 2nd Overload ---
@@ -95,11 +103,13 @@ public static class NodeFactory
  
         // Select a random NodeStructure from the dictionary
         System.Random rand = new System.Random();
-        IList<NodeStructure> values = new List<NodeStructure>(NodeStructuresByName.Values);
+        IList<Type> values = new List<Type>(NodeStructTypesByName.Values);
         int size = values.Count;
         int roll = rand.Next(size);
 
-        nodeCode.NodeStruct = values[roll];
+        NodeStructure _nodeStruct = Activator.CreateInstance(values[roll]) as NodeStructure;
+
+        nodeCode.NodeStruct = _nodeStruct;
         nodeCode.LocationString = locString;
         
         return nodeInstance;
