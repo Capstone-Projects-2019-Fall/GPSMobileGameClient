@@ -20,6 +20,8 @@ public class Node : MonoBehaviour
     private Sprite _nodeSprite = null;
     private SpriteRenderer _spriteRenderer = null; 
     private string _locationString = null;
+    private LineRenderer _lineRenderer = null;
+
     // methods
 
     // Setter and getter for nodeStruct
@@ -30,6 +32,7 @@ public class Node : MonoBehaviour
         {
             try {
                 _nodeStruct = value;
+                _nodeStruct.AttachToNode(gameObject);
                 _nodeSprite = _nodeStruct.Sprite;
                 _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
                 _spriteRenderer.sprite = _nodeSprite;

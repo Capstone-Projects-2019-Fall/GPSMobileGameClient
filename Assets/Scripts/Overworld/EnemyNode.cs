@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -40,7 +41,11 @@ public class EnemyNode : NodeStructure, IRadialArea
     // Called by the NodeFactory when binding NodeStruct to Node
     public override void AttachToNode(GameObject node)
     {
-        
+        try
+        {
+            node.AddComponent<LineRenderer>();
+            RadialArea.transform.SetParent(node.transform);
+        } catch (Exception e) { Debug.Log("Failed to bind EnemyNode to Node."); }
     }
 
     public void UpdateAction()

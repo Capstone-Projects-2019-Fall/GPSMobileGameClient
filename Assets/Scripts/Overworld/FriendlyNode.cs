@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -38,7 +39,12 @@ public class FriendlyNode : NodeStructure, IRadialArea
 
     public override void AttachToNode(GameObject node)
     {
- 
+        try
+        {
+            node.AddComponent<LineRenderer>();
+            RadialArea.transform.SetParent(node.transform);
+        }
+        catch (Exception e) { Debug.Log("Failed to bind EnemyNode to Node."); }
     }
 
     public void UpdateAction()
