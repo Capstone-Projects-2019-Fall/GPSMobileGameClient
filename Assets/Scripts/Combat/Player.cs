@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : AbstractPlayer
+public class Player : AbstractPlayer, ICardInterface
 {
     private int userId;
     private string username;
@@ -42,15 +42,17 @@ public class Player : AbstractPlayer
         }
     }
 
-    public List<Card> DrawCards(int numberOfCards = 5)
+    // TODO: Add function for UI to execute card
+
+    // TODO: what each card does?
+    public void playCard(Card card, Enemy enemy)
     {
-        List<Card> hand = new List<Card>();
-        for (int i = 0; i < numberOfCards; i++)
+        // This card will do damage to the enemy
+        if (card.Id == 0)
         {
-            int index = rand.Next(0, nonexhaustedCards.Count);
-            hand.Add(nonexhaustedCards[index]);
-            nonexhaustedCards.RemoveAt(index);
+            enemy.damageReceived(card.Attack);
         }
-        return hand;
+
+        Memory -= card.MemoryCost;
     }
 }

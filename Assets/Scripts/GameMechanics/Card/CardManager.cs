@@ -29,4 +29,5 @@ public class CardManager : MonoBehaviour
         flavor.text = c.Flavor;
         art.sprite = c.art;
     }
+    
 }
