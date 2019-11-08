@@ -28,6 +28,7 @@ public class OverworldController : Singleton<OverworldController>
             // TODO: Configure and instantiate a new map
         }
 
+        // Static class initializations
         NodeFactory.InitializeFactory();
         GpsUtility.InitialzeUtility(_map);
 

@@ -8,6 +8,9 @@ public class EnemyNode : NodeStructure, IRadialArea
     private static string _type = "Enemy";
     private static Sprite _sprite = Resources.Load<Sprite>("Sprites/enemy-node-01");
 
+    private float _radius;
+    private RadialArea _radialArea;
+
     public override string Type 
     {
         get => _type;
@@ -17,16 +20,27 @@ public class EnemyNode : NodeStructure, IRadialArea
         get => _sprite;
     }
 
-    private float _radius;
-    private RadialArea _myRadialArea;
-
     public float Radius {
         get => _radius;
         set => _radius = value;
     }
-    public RadialArea MyRadialArea {
-        get => _myRadialArea;
-        set => _myRadialArea = value;
+    public RadialArea RadialArea {
+        get => _radialArea;
+        set => _radialArea = value;
+    }
+
+    // Constructor (called BEFORE attached to a Node)
+    public EnemyNode()
+    {
+        GameObject _raObject = new GameObject("RadialArea");
+        _raObject.AddComponent<RadialArea>();
+        RadialArea = _raObject.GetComponent<RadialArea>();
+    }
+
+    // Called by the NodeFactory when binding NodeStruct to Node
+    public override void AttachToNode(GameObject node)
+    {
+        
     }
 
     public void UpdateAction()
@@ -42,11 +56,11 @@ public class EnemyNode : NodeStructure, IRadialArea
     }
     public void SubscribeEnter()
     {
-        MyRadialArea.OnEnterArea += EnterAction;
+        RadialArea.OnEnterArea += EnterAction;
     }
     public void UnsubscribeEnter()
     {
-        MyRadialArea.OnEnterArea -= EnterAction;
+        RadialArea.OnEnterArea -= EnterAction;
     }
 
     // Event handling for player exiting the RadialArea.
@@ -56,10 +70,10 @@ public class EnemyNode : NodeStructure, IRadialArea
     }
     public void SubscribeExit()
     {
-        MyRadialArea.OnEnterArea += ExitAction;
+        RadialArea.OnEnterArea += ExitAction;
     }
     public void UnsubscribeExit()
     {
-        MyRadialArea.OnExitArea -= ExitAction;
+        RadialArea.OnExitArea -= ExitAction;
     }
 }

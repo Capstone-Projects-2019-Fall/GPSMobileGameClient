@@ -11,7 +11,7 @@ using UnityEngine;
 public interface IRadialArea
 {
     float Radius { get; set; }
-    RadialArea MyRadialArea { get; }
+    RadialArea RadialArea { get; }
 
     // The behavior that occurs when a player moves into a RadialArea
     void EnterAction();

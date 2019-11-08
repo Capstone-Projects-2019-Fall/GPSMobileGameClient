@@ -11,7 +11,7 @@ using UnityEngine;
  * SpawnManager handles populating Nodes on the overworld map. On start it repeats a query to get surrounding nodes and
  * displays those nodes on the map.
  */ 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : Singleton<SpawnManager>
 {
     [SerializeField] private AbstractMap _map;
     [SerializeField] private int _nodeQueryInSeconds = 10;
