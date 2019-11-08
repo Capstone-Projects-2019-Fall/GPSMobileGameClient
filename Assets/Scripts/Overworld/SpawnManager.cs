@@ -20,8 +20,6 @@ public class SpawnManager : MonoBehaviour
 
     private Dictionary<GameObject, Vector2d> nodeLocations;
 
-    private APIWrapper api;
-
     // accessors
     public AbstractMap Map 
     {
@@ -48,7 +46,6 @@ public class SpawnManager : MonoBehaviour
 
     void Start()
     {
-        api = APIWrapper.getInstance();
         NodeFactory.InitializeFactory();
         InvokeRepeating("QueryNodes", 3, NodeQueryInSeconds); // Calls QueryNodes() every "NodeQueryInSeconds" seconds 
                                                               // starting in 3 seconds. The 3 seconds is to allow the game to load
@@ -80,7 +77,7 @@ public class SpawnManager : MonoBehaviour
         Vector2d latLon = LocationProviderFactory.Instance.DefaultLocationProvider.CurrentLocation.LatitudeLongitude;
 
         // The third argument is an anonymous callback function that handles the received nodes.
-        StartCoroutine(api.getSurroundingNodes(latLon.x, latLon.y, (jsonNode) => {
+        StartCoroutine(APIWrapper.getSurroundingNodes(latLon.x, latLon.y, (jsonNode) => {
             if (jsonNode != null)
             {
                 SpawnNodes(jsonNode);
