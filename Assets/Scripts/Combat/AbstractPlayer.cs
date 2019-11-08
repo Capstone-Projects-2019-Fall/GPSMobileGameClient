@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿/*
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -57,3 +58,5 @@ public abstract class AbstractPlayer : MonoBehaviour
     public virtual void startCombat() => InCombat = true;
     public virtual void endCombat() => InCombat = false;
 }
+
+*/

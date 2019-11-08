@@ -50,13 +50,14 @@ public static class NodeFactory
             NodeStructure nodeStruct = NodeStructuresByName[nodeStructureType];
 
             // Create a new Node prefab and initialize its fields
-            GameObject node = Resources.Load<GameObject>("Prefabs/Node");
-            Node nodeCode = node.GetComponent<Node>();
+            GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/Node");
+            GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
+            Node nodeCode = nodeInstance.GetComponent<Node>();
 
             nodeCode.NodeStruct = nodeStruct;
             nodeCode.LocationString = locString;
 
-            return node;
+            return nodeInstance;
         }
 
         throw new ArgumentException("Non-existent NodeStruct passed to CreateNode.");
@@ -70,13 +71,14 @@ public static class NodeFactory
     {
         if (NodeStructuresByName.ContainsValue(nodeStruct))
         {
-            GameObject node = Resources.Load<GameObject>("Prefabs/Node");
-            Node nodeCode = node.GetComponent<Node>();
+            GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/Node");
+            GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
+            Node nodeCode = nodeInstance.GetComponent<Node>();
 
             nodeCode.NodeStruct = nodeStruct;
             nodeCode.LocationString = locString;
 
-            return node;
+            return nodeInstance;
         }
 
         throw new ArgumentException("Non-existent NodeStruct passed to CreateNod .");
@@ -87,8 +89,9 @@ public static class NodeFactory
      */
     public static GameObject CreateNode(string locString)
     {
-        GameObject node = Resources.Load<GameObject>("Prefabs/Node");
-        Node nodeCode = node.GetComponent<Node>();
+        GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/Node");
+        GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
+        Node nodeCode = nodeInstance.GetComponent<Node>();
  
         // Select a random NodeStructure from the dictionary
         System.Random rand = new System.Random();
@@ -99,7 +102,7 @@ public static class NodeFactory
         nodeCode.NodeStruct = values[roll];
         nodeCode.LocationString = locString;
         
-        return node;
+        return nodeInstance;
     }
 
 

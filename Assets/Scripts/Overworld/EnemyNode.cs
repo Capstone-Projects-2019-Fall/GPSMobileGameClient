@@ -45,7 +45,7 @@ public class EnemyNode : NodeStructure, IRadialArea
         {
             node.AddComponent<LineRenderer>();
             RadialArea.transform.SetParent(node.transform);
-        } catch (Exception e) { Debug.Log("Failed to bind EnemyNode to Node."); }
+        } catch (Exception e) { Debug.LogFormat("Failed to bind EnemyNode to Node.", e); }
     }
 
     public void UpdateAction()
