@@ -7,19 +7,18 @@ public class Player : AbstractPlayer
 {
     private int userId;
     private string username;
-    private List<Card> cards;
-    private List<Card> nonexhaustedCards;
+    private DeckManager deckManager;
     private List<Item> inventory;
     private System.Random rand = new System.Random();
 
     public int UserId { get => userId; set => userId = value; }
     public string Username { get => username; set => username = value; }
-    public List<Card> Cards { get => cards; set => cards = value; }
-    public List<Card> NonexhaustedCards { get => nonexhaustedCards; set => nonexhaustedCards = value; }
+    public DeckManager DeckManager { get => deckManager; set => deckManager = value; }
     public List<Item> Inventory { get => inventory; set => inventory = value; }
 
     public Player()
     {
+
     }
 
     public Player(float health, float memory): base(health, memory)

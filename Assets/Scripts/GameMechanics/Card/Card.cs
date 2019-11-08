@@ -3,21 +3,52 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Card : MonoBehaviour
+
+[CreateAssetMenu(menuName ="Card")]
+public class Card : ScriptableObject
 {
-    private string name;
-    private int level;
-    private int memoryCost;
-    private int pp;
-    private float attack;
+    [SerializeField] private int id;
+    [SerializeField] private string cardName;
+    [SerializeField] private string cardDetail;
+    [SerializeField] private string cardFlavor;
+    public Sprite art;
+    [SerializeField] private int level;
+    [SerializeField] private int memoryCost;
+    [SerializeField] private float attack;
     private Buff buff;
 
-    public string Name { get => name; set => name = value; }
+
+    public int Id { get => id; set => id = value; }
+    public string Name { get => cardName; set => cardName = value; }
+    public string Detail { get => cardDetail; set => cardDetail = value; }
+    public string Flavor { get => cardFlavor; set => cardFlavor = value; }
     public int Level { get => level; set => level = value; }
     public int MemoryCost { get => memoryCost; set => memoryCost = value; }
-    public int PP { get => pp; set => pp = value; }
-    private float Attack { get => attack; set => attack = value; }
+    // public int PP { get => pp; set => pp = value; }
+    public float Attack { get => attack; set => attack = value; }
     public Buff CardBuff { get => buff; set => buff = value; }
+
+    // Constructor for empty card
+    public Card()
+    {
+        id = -1;
+        Name = "";
+        Level = 0;
+        MemoryCost = 0;
+        Attack = 0;
+        CardBuff = null;
+    }
+
+    // Constructor for a filled in card
+    public Card(int id, string name, int level, int mem_cost, float attack, Buff buff)
+    {
+        Id = id;
+        Name = name;
+        Level = level;
+        MemoryCost = mem_cost;
+        Attack = attack;
+        CardBuff = buff;
+    }
 
     // Start is called before the first frame update
     void Start()
