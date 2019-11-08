@@ -4,23 +4,26 @@ using UnityEngine;
 
 public class Buff : MonoBehaviour
 {
-    private string buffName = "";
+    private string name = "";
     private int roundDuration = 1;
-    private float attack_modifier = 1f;
-    private float defense_modifier = 1f;
+    private float attackModifier = 1f;
+    private float defenseModifier = 1f;
 
-    public string BuffName { get { return buffName; } set { buffName = value; } }
+    public string Name { get { return name; } set { name = value; } }
     public int RoundDuration { get { return roundDuration; } set { roundDuration = value; } }
-    public float Attack_Modifier { get { return attack_modifier; } set { attack_modifier = value; } }
-    public float Defense_Modifier { get { return defense_modifier; } set { defense_modifier = value; } }
+    public float AttackModifier { get { return attackModifier; } set { attackModifier = value; } }
+    public float DefenseModifier { get { return defenseModifier; } set { defenseModifier = value; } }
 
     public Buff()
     {
     }
 
-    public Buff(string buff)
+    public Buff(string name, int roundDuration = 1, float attackModifier = 1, float defenseModifier = 1)
     {
-        BuffName = buff;
+        this.name = name;
+        this.roundDuration = roundDuration;
+        this.attackModifier = attackModifier;
+        this.defenseModifier = defenseModifier;
     }
 
     // Start is called before the first frame update
