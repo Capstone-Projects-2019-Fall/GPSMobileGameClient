@@ -19,6 +19,11 @@ public class Card : MonoBehaviour
     private float Attack { get => attack; set => attack = value; }
     public Buff CardBuff { get => buff; set => buff = value; }
 
+    public Card(){
+
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +36,7 @@ public class Card : MonoBehaviour
 
     }
 
-    /*
+    
     public bool Card_pp(string CardName, bool isRefresh)
     {
         string json = "\"cardname\": " + CardName + ",\n\"isrefresh\": " + isRefresh.ToString();
@@ -55,6 +60,7 @@ public class Card : MonoBehaviour
         else
         {
             Debug.Log("Received: " + uwr.downloadHandler.text);
+            pp = Int32.Parse(uwr.downloadHandler.text);
         }
-    }*/
+    }
 }
