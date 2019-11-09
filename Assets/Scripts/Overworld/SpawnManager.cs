@@ -11,7 +11,7 @@ using UnityEngine;
  * SpawnManager handles populating Nodes on the overworld map. On start it repeats a query to get surrounding nodes and
  * displays those nodes on the map.
  */ 
-public class SpawnManager : MonoBehaviour
+public class SpawnManager : Singleton<SpawnManager>
 {
     [SerializeField] private AbstractMap _map;
     [SerializeField] private int _nodeQueryInSeconds = 10;
@@ -118,10 +118,10 @@ public class SpawnManager : MonoBehaviour
 
         // TODO: Get NodeStructure from API (currently calling random Node)
         GameObject myNode = NodeFactory.CreateNode(locationString);
-        var instance = Instantiate(myNode);
+        // var instance = Instantiate(myNode);
         myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
         myNode.transform.localScale = _spawnScaleVector;
 
-        nodeLocations.Add(instance, latLon);
+        nodeLocations.Add(myNode, latLon);
     }
 }

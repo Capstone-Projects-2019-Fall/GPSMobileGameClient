@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,9 @@ public class FriendlyNode : NodeStructure, IRadialArea
 {
     private static string _type = "Friendly";
     private static Sprite _sprite = Resources.Load<Sprite>("Sprites/friendly-node-01");
+
+    private float _radius;
+    private RadialArea _radialArea;
 
     public override string Type 
     {
@@ -16,16 +20,32 @@ public class FriendlyNode : NodeStructure, IRadialArea
         get => _sprite;
     }
 
-    private float _radius;
-    private RadialArea _myRadialArea;
-
     public float Radius {
         get => _radius;
         set => _radius = value;
     }
-    public RadialArea MyRadialArea {
-        get => _myRadialArea;
-        set => _myRadialArea = value;
+    public RadialArea RadialArea {
+        get => _radialArea;
+        set => _radialArea = value;
+    }
+
+    // Constructor (called BEFORE attached to a Node)
+    public FriendlyNode()
+    {
+        /*GameObject _raObject = new GameObject("RadialArea");
+        _raObject.AddComponent<RadialArea>();
+        RadialArea = _raObject.GetComponent<RadialArea>();*/
+    }
+
+    public override void AttachToNode(GameObject node)
+    {
+        try
+        {
+            node.AddComponent<RadialArea>();
+            node.GetComponent<RadialArea>().DrawAreaOfEffect();
+            //RadialArea.transform.SetParent(node.transform);
+        }
+        catch (Exception e) { Debug.Log(e); }
     }
 
     public void UpdateAction()
@@ -40,11 +60,11 @@ public class FriendlyNode : NodeStructure, IRadialArea
     }
     public void SubscribeEnter()
     {
-        MyRadialArea.OnEnterArea += EnterAction;
+        RadialArea.OnEnterArea += EnterAction;
     }
     public void UnsubscribeEnter()
     {
-        MyRadialArea.OnEnterArea -= EnterAction;
+        RadialArea.OnEnterArea -= EnterAction;
     }
 
     // Event handling for player exiting the RadialArea.
@@ -54,10 +74,10 @@ public class FriendlyNode : NodeStructure, IRadialArea
     }
     public void SubscribeExit()
     {
-        MyRadialArea.OnEnterArea += ExitAction;
+        RadialArea.OnEnterArea += ExitAction;
     }
     public void UnsubscribeExit()
     {
-        MyRadialArea.OnExitArea -= ExitAction;
+        RadialArea.OnExitArea -= ExitAction;
     }
 }

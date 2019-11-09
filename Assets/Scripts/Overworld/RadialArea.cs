@@ -53,6 +53,7 @@ public class RadialArea : MonoBehaviour
         _map = (AbstractMap) FindObjectOfType(typeof(AbstractMap));
         _player = GameObject.Find("PlayerTarget");
         _lineRenderer = GetComponent<LineRenderer>();
+        _radius = 100.0f * (float) GpsUtility.UnityUnitsPerMeter(_player);
 
         _inRange = PollRange(_player); // Test whether the Player is within the range of the radius
     }
@@ -61,7 +62,7 @@ public class RadialArea : MonoBehaviour
     public void Start()
     {
         // TODO: Create materials for Friendly and Enemy RadialAreas
-        //DrawAreaOfEffect(myLineMaterial);
+        // DrawAreaOfEffect();
         InvokeRepeating("RangeHandler", 0, 2.0f);
     }
 
@@ -124,9 +125,12 @@ public class RadialArea : MonoBehaviour
  * Parameters:
  *    -> Material lineMaterial: Control the visual effects of the circle with this material
  */
-    private void DrawAreaOfEffect(Material lineMaterial)
+    public void DrawAreaOfEffect()
     {
-        _lineRenderer.widthMultiplier = LineWidth;
+        Debug.Log("In DrawAreaOfEffect.");
+        _lineRenderer.widthMultiplier = 3.0f;
+        //Debug.LogFormat("LineWidth: ", LineWidth);
+
         float deltaTheta = (2f * Mathf.PI) / VertexCount;
         float theta = 0f;
 
