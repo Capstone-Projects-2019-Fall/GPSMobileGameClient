@@ -3,23 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : AbstractPlayer
+public class Player : AbstractPlayer, ICardInterface
 {
     private int userId;
     private string username;
-    private List<Card> cards;
-    private List<Card> nonexhaustedCards;
+    private DeckManager deckManager;
     private List<Item> inventory;
     private System.Random rand = new System.Random();
 
     public int UserId { get => userId; set => userId = value; }
     public string Username { get => username; set => username = value; }
-    public List<Card> Cards { get => cards; set => cards = value; }
-    public List<Card> NonexhaustedCards { get => nonexhaustedCards; set => nonexhaustedCards = value; }
+    public DeckManager DeckManager { get => deckManager; set => deckManager = value; }
     public List<Item> Inventory { get => inventory; set => inventory = value; }
 
     public Player()
     {
+
     }
 
     public Player(float health, float memory): base(health, memory)
@@ -43,15 +42,17 @@ public class Player : AbstractPlayer
         }
     }
 
-    public List<Card> DrawCards(int numberOfCards = 5)
+    // TODO: Add function for UI to execute card
+
+    // TODO: what each card does?
+    public void playCard(Card card, Enemy enemy)
     {
-        List<Card> hand = new List<Card>();
-        for (int i = 0; i < numberOfCards; i++)
+        // This card will do damage to the enemy
+        if (card.Id == 0)
         {
-            int index = rand.Next(0, nonexhaustedCards.Count);
-            hand.Add(nonexhaustedCards[index]);
-            nonexhaustedCards.RemoveAt(index);
+            enemy.damageReceived(card.Attack);
         }
-        return hand;
+
+        Memory -= card.MemoryCost;
     }
 }
