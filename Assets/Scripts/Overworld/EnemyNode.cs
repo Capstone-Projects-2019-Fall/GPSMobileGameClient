@@ -44,7 +44,7 @@ public class EnemyNode : NodeStructure, IRadialArea
         try
         {
             GameObject radialArea = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/RadialArea"));
-            radialArea.transform.parent = node.transform;
+            radialArea.transform.SetParent(node.transform, true);
             radialArea.GetComponent<RadialArea>().DrawAreaOfEffect();
         } catch (Exception e) { Debug.Log(e); }
     }

@@ -56,8 +56,6 @@ public class RadialArea : MonoBehaviour
         _lineRenderer.useWorldSpace = false;
         _lineRenderer.loop = true;
 
-        gameObject.transform.localPosition = Vector3.zero;
-
         _radius = 100.0f * (float) GpsUtility.UnityUnitsPerMeter(_player);
 
         _inRange = PollRange(_player); // Test whether the Player is within the range of the radius
@@ -69,6 +67,12 @@ public class RadialArea : MonoBehaviour
         // TODO: Create materials for Friendly and Enemy RadialAreas
         // DrawAreaOfEffect();
         InvokeRepeating("RangeHandler", 0, 2.0f);
+    }
+
+    public void LateUpdate()
+    {
+        transform.localPosition = new Vector3(0.0f, -2.0f, 0.0f);
+        transform.rotation = Quaternion.Euler(0, 0, 0);
     }
 
     /* Method is run in regular intervals to determine if the player has entered or exited the radial area.
@@ -145,7 +149,7 @@ public class RadialArea : MonoBehaviour
  */
     public void DrawAreaOfEffect()
     {
-        _lineRenderer.widthMultiplier = 3.0f;
+        _lineRenderer.widthMultiplier = 1.2f;
 
         float deltaTheta = (2f * Mathf.PI) / VertexCount;
         float theta = 0f;
