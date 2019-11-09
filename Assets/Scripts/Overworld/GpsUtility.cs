@@ -44,7 +44,8 @@ public static class GpsUtility
             double tileLength = Conversions.TileBounds(m2t, zoom).Size.x;
 
             // (unityUnitys / tiles) * (tiles / meter) = (unityUnits / meter)
-            return (1 / _map.UnityTileSize) * tileLength;
+            // Debug.LogFormat("UUPM: {0}", tileLength);
+            return 0.0003 * tileLength;
         } catch (Exception e) {
             Debug.Log(e);
             return uupmMagicNumber;

@@ -118,7 +118,6 @@ public class SpawnManager : Singleton<SpawnManager>
 
         // TODO: Get NodeStructure from API (currently calling random Node)
         GameObject myNode = NodeFactory.CreateNode(locationString);
-        // var instance = Instantiate(myNode);
         myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
         myNode.transform.localScale = _spawnScaleVector;
 

@@ -43,9 +43,9 @@ public class EnemyNode : NodeStructure, IRadialArea
     {
         try
         {
-            node.AddComponent<RadialArea>();
-            node.GetComponent<RadialArea>().DrawAreaOfEffect();
-            //RadialArea.transform.SetParent(node.transform);
+            GameObject radialArea = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/RadialArea"));
+            radialArea.transform.parent = node.transform;
+            radialArea.GetComponent<RadialArea>().DrawAreaOfEffect();
         } catch (Exception e) { Debug.Log(e); }
     }
 
@@ -56,30 +56,32 @@ public class EnemyNode : NodeStructure, IRadialArea
     }
 
     // Event handling for player entering the RadialArea.
-    public void EnterAction()
+    public void OnEnterAction(object sender, EventArgs e)
     {
         // TODO: Behavior when player enters this RadialArea
+        Debug.Log("EnemyNode.OnEnterAction!");
     }
     public void SubscribeEnter()
     {
-        RadialArea.OnEnterArea += EnterAction;
+        RadialArea.EnteredArea += OnEnterAction;
     }
     public void UnsubscribeEnter()
     {
-        RadialArea.OnEnterArea -= EnterAction;
+        RadialArea.EnteredArea -= OnEnterAction;
     }
 
     // Event handling for player exiting the RadialArea.
-    public void ExitAction()
+    public void OnExitAction(object sender, EventArgs e)
     {
         // TODO: Behavior when player exits this RadialArea
+        Debug.Log("EnemyNode.OnExitAction!");
     }
     public void SubscribeExit()
     {
-        RadialArea.OnEnterArea += ExitAction;
+        RadialArea.EnteredArea += OnExitAction;
     }
     public void UnsubscribeExit()
     {
-        RadialArea.OnExitArea -= ExitAction;
+        RadialArea.ExitedArea -= OnExitAction;
     }
 }

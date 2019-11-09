@@ -2,6 +2,7 @@
 using Mapbox.Unity.Utilities;
 using Mapbox.Unity.Map;
 using Mapbox.Utils;
+using System;
 
 /* RadialArea Description:
  * RadialAreas are attached to certain types of NodeStructures. They define a circular area around thier corresponding Node.
@@ -13,10 +14,8 @@ using Mapbox.Utils;
 public class RadialArea : MonoBehaviour
 {
     // Delegates and events for this Radial Area's OnEnter and OnExit
-    public delegate void EnterAction();
-    public event EnterAction OnEnterArea;
-    public delegate void ExitAction();
-    public event ExitAction OnExitArea;
+    public event EventHandler EnteredArea;
+    public event EventHandler ExitedArea;
 
     [SerializeField] private AbstractMap _map;
     [SerializeField] private GameObject _player;
@@ -52,7 +51,13 @@ public class RadialArea : MonoBehaviour
     {
         _map = (AbstractMap) FindObjectOfType(typeof(AbstractMap));
         _player = GameObject.Find("PlayerTarget");
+
         _lineRenderer = GetComponent<LineRenderer>();
+        _lineRenderer.useWorldSpace = false;
+        _lineRenderer.loop = true;
+
+        gameObject.transform.localPosition = Vector3.zero;
+
         _radius = 100.0f * (float) GpsUtility.UnityUnitsPerMeter(_player);
 
         _inRange = PollRange(_player); // Test whether the Player is within the range of the radius
@@ -73,13 +78,26 @@ public class RadialArea : MonoBehaviour
     {
         if(!_inRange && PollRange(_player)) // _inRange is false, PollRange returns true: player has entererd the area
         {
-            OnEnterArea(); // Signal to subscribers
+            OnEnteredArea(EventArgs.Empty); // Signal to subscribers
             _inRange = true;
         } else if(_inRange && PollRange(_player)) // _inRange is true, PollRange returns false: player has exited the area
         {
-            OnExitArea(); // Signal to subscribers
+            OnExitedArea(EventArgs.Empty); // Signal to subscribers
             _inRange = false;
         }
+    }
+
+    // Signal to subscribers that the player has entered the radial area
+    protected virtual void OnEnteredArea(EventArgs e)
+    {
+        EnteredArea?.Invoke(this, e);
+
+    }
+
+    // Signal to subscribers that the player has exited the radial area
+    protected virtual void OnExitedArea(EventArgs e)
+    {
+        ExitedArea?.Invoke(this, e);
     }
 
     /* Returns true if another GameObject is within range of the RadialArea
@@ -112,8 +130,8 @@ public class RadialArea : MonoBehaviour
         obj.transform.SetParent(gameObject.transform); // Set the parent of obj to the RadialArea's gameObject
 
         // Select random locations within the radius
-        float xLoc = Random.Range(-Radius, Radius);
-        float zLoc = Random.Range(-Radius, Radius);
+        float xLoc = UnityEngine.Random.Range(-Radius, Radius);
+        float zLoc = UnityEngine.Random.Range(-Radius, Radius);
 
         GameObject instance = Instantiate(obj);
         instance.transform.localPosition = new Vector3 (xLoc, 0.0f, zLoc);
@@ -127,9 +145,7 @@ public class RadialArea : MonoBehaviour
  */
     public void DrawAreaOfEffect()
     {
-        Debug.Log("In DrawAreaOfEffect.");
         _lineRenderer.widthMultiplier = 3.0f;
-        //Debug.LogFormat("LineWidth: ", LineWidth);
 
         float deltaTheta = (2f * Mathf.PI) / VertexCount;
         float theta = 0f;
