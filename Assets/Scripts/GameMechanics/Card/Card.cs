@@ -14,8 +14,6 @@ public class Card : ScriptableObject
     public Sprite art;
     [SerializeField] private int level;
     [SerializeField] private int memoryCost;
-    [SerializeField] private float attack;
-    private Buff buff;
     
 
 
@@ -26,8 +24,6 @@ public class Card : ScriptableObject
     public int Level { get => level; set => level = value; }
     public int MemoryCost { get => memoryCost; set => memoryCost = value; }
     // public int PP { get => pp; set => pp = value; }
-    public float Attack { get => attack; set => attack = value; }
-    public Buff CardBuff { get => buff; set => buff = value; }
 
     // Constructor for empty card
     public Card()
@@ -36,19 +32,17 @@ public class Card : ScriptableObject
         Name = "";
         Level = 0;
         MemoryCost = 0;
-        Attack = 0;
-        CardBuff = null;
     }
 
     // Constructor for a filled in card
-    public Card(int id, string name, int level, int mem_cost, float attack, Buff buff)
+    public Card(int id, string name, string detail, string cardFlavor, int level, int mem_cost)
     {
         Id = id;
         Name = name;
+        Detail = detail;
+        Flavor = cardFlavor;
         Level = level;
         MemoryCost = mem_cost;
-        Attack = attack;
-        CardBuff = buff;
     }
 
     // Start is called before the first frame update

@@ -31,9 +31,9 @@ public class BuffHandler : MonoBehaviour
         float defenseModifier = 1;
         foreach (Buff buff in buffList)
         {
-            defenseModifier *= buff.Attack_Modifier;
+            defenseModifier *= buff.Defense_Modifier;
         }
-        return defenseModifier;
+        return 1 - defenseModifier + 1;
     }
 
     public void decrementBuffUsages()

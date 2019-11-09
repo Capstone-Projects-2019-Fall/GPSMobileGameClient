@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Player : AbstractPlayer, ICardInterface
+public class Player : AbstractPlayer
 {
     private int userId;
     private string username;
@@ -42,17 +42,10 @@ public class Player : AbstractPlayer, ICardInterface
         }
     }
 
-    // TODO: Add function for UI to execute card
-
-    // TODO: what each card does?
-    public void playCard(Card card, Enemy enemy)
+    public void addHealth(float restoredHealth)
     {
-        // This card will do damage to the enemy
-        if (card.Id == 0)
-        {
-            enemy.damageReceived(card.Attack);
-        }
-
-        Memory -= card.MemoryCost;
+        Health += restoredHealth;
     }
+
+    // TODO: Add function for UI to execute card
 }

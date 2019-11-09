@@ -112,7 +112,6 @@ public class Deck : MonoBehaviour
             s += "Level: " + card.Level;
             s += "Memory Cost: " + card.MemoryCost;
             //s += "Pp Left: " + card.PP;
-            s += "Attack: " + card.Attack;
             s += "\n";
         }
         return s;

@@ -4,7 +4,5 @@ using UnityEngine;
 
 public interface ICardInterface
 {
-    bool InCombat { get; set; }
-
-    void playCard(Card card, Enemy enemy);
+    void playCard(Player player, Enemy enemy);
 }
