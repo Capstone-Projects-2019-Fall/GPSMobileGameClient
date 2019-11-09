@@ -69,11 +69,12 @@ public class RadialArea : MonoBehaviour
         InvokeRepeating("RangeHandler", 0, 2.0f);
     }
 
-    public void LateUpdate()
+
+    /*public void LateUpdate()
     {
         transform.localPosition = new Vector3(0.0f, -2.0f, 0.0f);
         transform.rotation = Quaternion.Euler(0, 0, 0);
-    }
+    }*/
 
     /* Method is run in regular intervals to determine if the player has entered or exited the radial area.
      * Is able to update the state variable _inRange and interact with the event system.
@@ -163,5 +164,7 @@ public class RadialArea : MonoBehaviour
             _lineRenderer.SetPosition(i, pos);
             theta += deltaTheta;
         }
+
+        transform.localPosition = new Vector3(0.0f, -2.0f, 0.0f);
     }
 }

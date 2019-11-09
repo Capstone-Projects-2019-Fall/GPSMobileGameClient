@@ -115,6 +115,25 @@ public static class NodeFactory
         return nodeInstance;
     }
 
+    //Experimental Node creational method
+    public static GameObject nCreateNode(string locString)
+    {
+        GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/nNode");
+        GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
+        Node nodeCode = nodeInstance.GetComponent<Node>();
+
+        System.Random rand = new System.Random();
+        IList<Type> values = new List<Type>(NodeStructTypesByName.Values);
+        int size = values.Count;
+        int roll = rand.Next(size);
+
+        NodeStructure _nodeStruct = Activator.CreateInstance(values[roll]) as NodeStructure;
+
+        nodeCode.NodeStruct = _nodeStruct;
+        nodeCode.LocationString = locString;
+
+        return nodeInstance;
+    }
 
     /* Returns an instance of a NodeStructure by name from within the private dictionary
      * Parameters:

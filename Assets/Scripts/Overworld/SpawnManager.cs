@@ -117,7 +117,8 @@ public class SpawnManager : Singleton<SpawnManager>
         Vector2d latLon = Conversions.StringToLatLon(locationString);
 
         // TODO: Get NodeStructure from API (currently calling random Node)
-        GameObject myNode = NodeFactory.CreateNode(locationString);
+        GameObject myNode = NodeFactory.nCreateNode(locationString);
+        // var instance = Instantiate(myNode);
         myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
         myNode.transform.localScale = _spawnScaleVector;
 

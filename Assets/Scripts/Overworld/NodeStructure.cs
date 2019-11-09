@@ -23,4 +23,5 @@ public abstract class NodeStructure
 
 
     public abstract void AttachToNode(GameObject node); // To be overridden: called when nodestruct is bound to Node
+    public abstract void nAttachToNode(GameObject node); // To be overridden: experimental version of AttachToNode
 }

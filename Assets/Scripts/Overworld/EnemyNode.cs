@@ -49,6 +49,22 @@ public class EnemyNode : NodeStructure, IRadialArea
         } catch (Exception e) { Debug.Log(e); }
     }
 
+    public override void nAttachToNode(GameObject node)
+    {
+        // Obtain reference to the Node's sprite child and set it to the proper sprite
+        GameObject nodeSprite = node.transform.Find("NodeSprite").gameObject;
+        SpriteRenderer nsRenderer = nodeSprite.GetComponent<SpriteRenderer>();
+        nsRenderer.sprite = Sprite;
+        nodeSprite.transform.localPosition = Vector3.zero;
+        nodeSprite.transform.localScale = Vector3.one;
+
+
+        // Attach a RadialArea to the Node
+        GameObject radialArea = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/RadialArea"));
+        radialArea.transform.SetParent(node.transform, true);
+        radialArea.GetComponent<RadialArea>().DrawAreaOfEffect();
+    }
+
     public void UpdateAction()
     {
         // TODO: Behavior that is called while the player is within the RadialArea
