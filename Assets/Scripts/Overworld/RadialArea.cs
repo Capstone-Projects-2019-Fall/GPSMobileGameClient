@@ -17,8 +17,8 @@ public class RadialArea : MonoBehaviour
     public event EventHandler EnteredArea;
     public event EventHandler ExitedArea;
 
-    [SerializeField] private AbstractMap _map;
-    [SerializeField] private GameObject _player;
+    private AbstractMap _map;
+    private GameObject _player;
     private float _radius;
 
     private bool _inRange; // state variable representing if player is within range of RadialArea
@@ -44,6 +44,7 @@ public class RadialArea : MonoBehaviour
     }
     public bool InRange {
         get => _inRange;
+        set => _inRange = value;
     }
 
     // methods
@@ -56,25 +57,22 @@ public class RadialArea : MonoBehaviour
         _lineRenderer.useWorldSpace = false;
         _lineRenderer.loop = true;
 
-        _radius = 100.0f * (float) GpsUtility.UnityUnitsPerMeter(_player);
-
         _inRange = PollRange(_player); // Test whether the Player is within the range of the radius
+        if (_inRange)
+            OnEnteredArea(EventArgs.Empty);
+   
     }
 
     // The RangeHandler is called every 2.0 seconds, instead of during every update frame.
     public void Start()
     {
         // TODO: Create materials for Friendly and Enemy RadialAreas
-        // DrawAreaOfEffect();
-        InvokeRepeating("RangeHandler", 0, 2.0f);
+        InvokeRepeating("RangeHandler", 1.0f, 2.0f);
     }
 
-
-    /*public void LateUpdate()
+    public void Update()
     {
-        transform.localPosition = new Vector3(0.0f, -2.0f, 0.0f);
-        transform.rotation = Quaternion.Euler(0, 0, 0);
-    }*/
+    }
 
     /* Method is run in regular intervals to determine if the player has entered or exited the radial area.
      * Is able to update the state variable _inRange and interact with the event system.
@@ -82,27 +80,26 @@ public class RadialArea : MonoBehaviour
     public void RangeHandler()
     {
         if(!_inRange && PollRange(_player)) // _inRange is false, PollRange returns true: player has entererd the area
-        {
+        {   
             OnEnteredArea(EventArgs.Empty); // Signal to subscribers
-            _inRange = true;
-        } else if(_inRange && PollRange(_player)) // _inRange is true, PollRange returns false: player has exited the area
+        } else if(_inRange && !PollRange(_player)) // _inRange is true, PollRange returns false: player has exited the area
         {
             OnExitedArea(EventArgs.Empty); // Signal to subscribers
-            _inRange = false;
         }
     }
 
     // Signal to subscribers that the player has entered the radial area
-    protected virtual void OnEnteredArea(EventArgs e)
+    public void OnEnteredArea(EventArgs e)
     {
         EnteredArea?.Invoke(this, e);
-
+        _inRange = true;
     }
 
     // Signal to subscribers that the player has exited the radial area
-    protected virtual void OnExitedArea(EventArgs e)
+    public void OnExitedArea(EventArgs e)
     {
         ExitedArea?.Invoke(this, e);
+        _inRange = false;
     }
 
     /* Returns true if another GameObject is within range of the RadialArea
@@ -119,7 +116,14 @@ public class RadialArea : MonoBehaviour
 
         // Check if object is within range
         float distToTarget = vecToTarget.magnitude;
-        return (distToTarget < Radius);
+
+        if (distToTarget < Radius)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
     } 
     
     /* Instantiate a GameObject at a random location within the RadialArea's range. Note that the caller
@@ -145,9 +149,9 @@ public class RadialArea : MonoBehaviour
     }
 
     /* Draw a circle indicating the area of effect of the radial area using a LineRenderer
- * Parameters:
- *    -> Material lineMaterial: Control the visual effects of the circle with this material
- */
+     * Parameters:
+     *    -> Material lineMaterial: Control the visual effects of the circle with this material
+     */
     public void DrawAreaOfEffect()
     {
         _lineRenderer.widthMultiplier = 1.2f;

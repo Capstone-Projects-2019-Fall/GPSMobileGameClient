@@ -21,7 +21,7 @@ public class EnemyNode : NodeStructure, IRadialArea
         get => _sprite;
     }
 
-    public float Radius {
+    public float Radius { // Radius in real world meters (conversion is handled by GpsUtility.UnityUnitsPerMeter(GameObject)
         get => _radius;
         set => _radius = value;
     }
@@ -33,9 +33,7 @@ public class EnemyNode : NodeStructure, IRadialArea
     // Constructor (called BEFORE attached to a Node)
     public EnemyNode()
     {
-        /*GameObject _raObject = new GameObject("RadialArea");
-        _raObject.AddComponent<RadialArea>();
-        RadialArea = _raObject.GetComponent<RadialArea>();*/
+
     }
 
     // Called by the NodeFactory when binding NodeStruct to Node
@@ -58,17 +56,22 @@ public class EnemyNode : NodeStructure, IRadialArea
         nodeSprite.transform.localPosition = Vector3.zero;
         nodeSprite.transform.localScale = Vector3.one;
 
-
         // Attach a RadialArea to the Node
         GameObject radialArea = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/RadialArea"));
+        _radialArea = radialArea.GetComponent<RadialArea>();
+
         radialArea.transform.SetParent(node.transform, true);
-        radialArea.GetComponent<RadialArea>().DrawAreaOfEffect();
+        _radialArea.Radius = 100.0f * (float)GpsUtility.UnityUnitsPerMeter(GpsUtility.Map.gameObject);
+        _radialArea.DrawAreaOfEffect();
+
+        // Subscribe to RadialArea events
+        SubscribeEnter();
+        SubscribeExit();
     }
 
     public void UpdateAction()
     {
         // TODO: Behavior that is called while the player is within the RadialArea
-
     }
 
     // Event handling for player entering the RadialArea.
@@ -76,6 +79,7 @@ public class EnemyNode : NodeStructure, IRadialArea
     {
         // TODO: Behavior when player enters this RadialArea
         Debug.Log("EnemyNode.OnEnterAction!");
+        _radialArea.GetComponent<LineRenderer>().material.SetColor("_Color", Color.red);
     }
     public void SubscribeEnter()
     {
@@ -91,10 +95,11 @@ public class EnemyNode : NodeStructure, IRadialArea
     {
         // TODO: Behavior when player exits this RadialArea
         Debug.Log("EnemyNode.OnExitAction!");
+        _radialArea.GetComponent<LineRenderer>().material.SetColor("_Color", Color.green);
     }
     public void SubscribeExit()
     {
-        RadialArea.EnteredArea += OnExitAction;
+        RadialArea.ExitedArea += OnExitAction;
     }
     public void UnsubscribeExit()
     {

@@ -11,8 +11,8 @@ using System;
 
 public static class GpsUtility
 {
-    private static AbstractMap _map;
-    private static bool _initialized => _map != null;
+    public static AbstractMap Map;
+    private static bool _initialized => Map != null;
     private const double uupmMagicNumber =  0.18; // Default radius for handled exception
 
     // Initialize the GpsUtility
@@ -23,7 +23,7 @@ public static class GpsUtility
             return;
 
         // Obtain refernce to the overworld map
-        _map = map;
+        Map = map;
         
     }
 
@@ -37,9 +37,9 @@ public static class GpsUtility
     {
         try
         {
-            Vector2d objectGeoLoc = go.transform.GetGeoPosition(_map.CenterMercator, _map.WorldRelativeScale);
+            Vector2d objectGeoLoc = go.transform.GetGeoPosition(Map.CenterMercator, Map.WorldRelativeScale);
 
-            int zoom = (int)_map.Zoom;
+            int zoom = (int)Map.Zoom;
             Vector2 m2t = Conversions.MetersToTile(objectGeoLoc, zoom);
             double tileLength = Conversions.TileBounds(m2t, zoom).Size.x;
 

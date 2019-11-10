@@ -32,9 +32,7 @@ public class FriendlyNode : NodeStructure, IRadialArea
     // Constructor (called BEFORE attached to a Node)
     public FriendlyNode()
     {
-        /*GameObject _raObject = new GameObject("RadialArea");
-        _raObject.AddComponent<RadialArea>();
-        RadialArea = _raObject.GetComponent<RadialArea>();*/
+
     }
 
     public override void AttachToNode(GameObject node)
@@ -59,9 +57,15 @@ public class FriendlyNode : NodeStructure, IRadialArea
 
         // Attach a RadialArea to the Node
         GameObject radialArea = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/RadialArea"));
-        radialArea.transform.SetParent(node.transform, true);
-        radialArea.GetComponent<RadialArea>().DrawAreaOfEffect();
+        _radialArea = radialArea.GetComponent<RadialArea>();
 
+        radialArea.transform.SetParent(node.transform, true);
+        _radialArea.Radius = 100.0f * (float)GpsUtility.UnityUnitsPerMeter(GpsUtility.Map.gameObject);
+        _radialArea.DrawAreaOfEffect();
+
+        // Subscribe to RadialArea events
+        SubscribeEnter();
+        SubscribeExit();
     }
 
     public void UpdateAction()
@@ -74,6 +78,7 @@ public class FriendlyNode : NodeStructure, IRadialArea
     {
         // TODO: Behavior when player enters this RadialArea
         Debug.Log("FriendlyNode.OnEnterAction!");
+        _radialArea.GetComponent<LineRenderer>().material.SetColor("_Color", Color.red);
     }
     public void SubscribeEnter()
     {
@@ -89,10 +94,11 @@ public class FriendlyNode : NodeStructure, IRadialArea
     {
         // TODO: Behavior when player exits this RadialArea
         Debug.Log("FriendlyNode.OnExitAction!");
+        _radialArea.GetComponent<LineRenderer>().material.SetColor("_Color", Color.green);
     }
     public void SubscribeExit()
     {
-        RadialArea.EnteredArea += OnExitAction;
+        RadialArea.ExitedArea += OnExitAction;
     }
     public void UnsubscribeExit()
     {

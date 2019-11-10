@@ -33,12 +33,7 @@ public class Node : MonoBehaviour
             try {
                 _nodeStruct = value;
                 _nodeStruct.nAttachToNode(gameObject);
-
-                /*_nodeSprite = _nodeStruct.Sprite;
-                _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-                _spriteRenderer.sprite = _nodeSprite;*/
-            }
-            catch (Exception e) { Debug.Log(e); }
+            } catch (Exception e) { Debug.Log(e); }
         }
     }
 
