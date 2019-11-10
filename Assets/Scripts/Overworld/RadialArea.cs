@@ -67,11 +67,11 @@ public class RadialArea : MonoBehaviour
     public void Start()
     {
         // TODO: Create materials for Friendly and Enemy RadialAreas
-        InvokeRepeating("RangeHandler", 1.0f, 2.0f);
     }
 
     public void Update()
     {
+        RangeHandler();
     }
 
     /* Method is run in regular intervals to determine if the player has entered or exited the radial area.
@@ -117,7 +117,7 @@ public class RadialArea : MonoBehaviour
         // Check if object is within range
         float distToTarget = vecToTarget.magnitude;
 
-        if (distToTarget < Radius)
+        if (distToTarget < Radius * 2)
         {
             return true;
         } else

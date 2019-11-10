@@ -80,6 +80,7 @@ public class EnemyNode : NodeStructure, IRadialArea
         // TODO: Behavior when player enters this RadialArea
         Debug.Log("EnemyNode.OnEnterAction!");
         _radialArea.GetComponent<LineRenderer>().material.SetColor("_Color", Color.red);
+        _radialArea.GetComponent<LineRenderer>().material.SetColor("_EmissionColor", Color.red);
     }
     public void SubscribeEnter()
     {
@@ -96,6 +97,7 @@ public class EnemyNode : NodeStructure, IRadialArea
         // TODO: Behavior when player exits this RadialArea
         Debug.Log("EnemyNode.OnExitAction!");
         _radialArea.GetComponent<LineRenderer>().material.SetColor("_Color", Color.green);
+        _radialArea.GetComponent<LineRenderer>().material.SetColor("_EmissionColor", Color.green);
     }
     public void SubscribeExit()
     {

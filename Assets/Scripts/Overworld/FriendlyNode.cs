@@ -79,6 +79,7 @@ public class FriendlyNode : NodeStructure, IRadialArea
         // TODO: Behavior when player enters this RadialArea
         Debug.Log("FriendlyNode.OnEnterAction!");
         _radialArea.GetComponent<LineRenderer>().material.SetColor("_Color", Color.red);
+        _radialArea.GetComponent<LineRenderer>().material.SetColor("_EmissionColor", Color.red);
     }
     public void SubscribeEnter()
     {
@@ -95,6 +96,7 @@ public class FriendlyNode : NodeStructure, IRadialArea
         // TODO: Behavior when player exits this RadialArea
         Debug.Log("FriendlyNode.OnExitAction!");
         _radialArea.GetComponent<LineRenderer>().material.SetColor("_Color", Color.green);
+        _radialArea.GetComponent<LineRenderer>().material.SetColor("_EmissionColor", Color.green);
     }
     public void SubscribeExit()
     {
