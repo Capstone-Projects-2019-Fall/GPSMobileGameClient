@@ -68,6 +68,11 @@ public class FriendlyNode : NodeStructure, IRadialArea
         SubscribeExit();
     }
 
+    public override void OnClicked()
+    {
+        Debug.Log("Friendly OnClicked!");
+    }
+
     public void UpdateAction()
     {
         // TODO: Behavior that is called while the player is within the RadialArea

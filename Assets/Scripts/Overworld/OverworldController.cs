@@ -44,6 +44,6 @@ public class OverworldController : Singleton<OverworldController>
     // Update is called once per frame
     private void Update()
     {
-        
+
     }
 }

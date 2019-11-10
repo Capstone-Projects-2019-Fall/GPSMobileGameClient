@@ -16,7 +16,7 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     //fields
-    private NodeStructure _nodeStruct = null; // References an abstract class, essentially a strategy pattern
+    [SerializeField] private NodeStructure _nodeStruct = null; // References an abstract class, essentially a strategy pattern
     private Sprite _nodeSprite = null;
     private SpriteRenderer _spriteRenderer = null; 
     private string _locationString = null;
@@ -50,6 +50,11 @@ public class Node : MonoBehaviour
         set => _nodeSprite = value;
     }
 
+    // When the player clicks on the Node: Behavior varies depending on which NodeStructure is attached to the Node
+    private void OnMouseDown()
+    {
+        _nodeStruct.OnClicked();
+    }
     /* 
      * 
      */
