@@ -72,6 +72,7 @@ public class EnemyNode : NodeStructure, IRadialArea
     public override void OnClicked()
     {
         Debug.Log("Enemy OnClicked!");
+        SceneManager.LoadScene("CombatInstance");
     }
 
     public void UpdateAction()

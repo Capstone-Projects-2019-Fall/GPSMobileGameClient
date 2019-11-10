@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class OverworldController : Singleton<OverworldController>
 {
@@ -45,5 +46,20 @@ public class OverworldController : Singleton<OverworldController>
     private void Update()
     {
 
+    }
+
+    /* SwitchScenes Description:
+     * A wrapper method for the default Unity SceneManager.LoadScene(). This method should handle deconstructing
+     * the overworld scene.
+     */
+    public void SwitchScenes(string path)
+    {
+        try
+        {
+            SceneManager.LoadScene(path);
+        } catch (Exception e) {
+            Debug.Log("Unable to load scene properly in OverworldController.SwitchScenes.");
+            Debug.Log(e);
+        }
     }
 }
