@@ -11,8 +11,8 @@ public class Buff : MonoBehaviour
 
     public string Name { get { return name; } set { name = value; } }
     public int RoundDuration { get { return roundDuration; } set { roundDuration = value; } }
-    public float AttackModifier { get { return attackModifier; } set { attackModifier = value; } }
-    public float DefenseModifier { get { return defenseModifier; } set { defenseModifier = value; } }
+    public float Attack_Modifier { get { return attackModifier; } set { attackModifier = value; } }
+    public float Defense_Modifier { get { return defenseModifier; } set { defenseModifier = value; } }
 
     public Buff()
     {

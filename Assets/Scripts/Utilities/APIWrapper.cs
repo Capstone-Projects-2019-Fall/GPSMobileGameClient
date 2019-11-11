@@ -52,4 +52,28 @@ public static class APIWrapper
         }
         callback(responseJsonNodes);
     }
+
+    /*
+     * Retrieves a JSON object representation of a desired player's data.
+     * The callback function returns a JSONNode array and the first element should be 
+     * a JSON object containing the player's data. If the array is empty then no player 
+     * matching the given username was found.
+     */
+    public static IEnumerator getPlayerData(string username, Callback<JSONNode> callback)
+    {
+        //Debug.LogFormat("Requesting {0}'s player data.", username);
+
+        UnityWebRequest unityWebRequest = UnityWebRequest.Get(string.Format("{0}/user?name={1}", baseURL, username));    
+        yield return unityWebRequest.SendWebRequest();
+
+        //Debug.Log(unityWebRequest.downloadHandler.text);
+        JSONNode responseJsonPlayerData = JSON.Parse(unityWebRequest.downloadHandler.text);
+
+        if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+        {
+            Debug.Log(unityWebRequest.error);
+            callback(null);
+        }
+        callback(responseJsonPlayerData[0]);
+    }
 }

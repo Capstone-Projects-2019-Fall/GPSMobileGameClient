@@ -9,19 +9,18 @@ public class Player : AbstractPlayer
 {
     private int userId;
     private string username;
-    private List<Card> cards;
-    private List<Card> nonexhaustedCards;
+    private DeckManager deckManager;
     private List<Item> inventory;
     private System.Random rand = new System.Random();
 
     public int UserId { get => userId; set => userId = value; }
     public string Username { get => username; set => username = value; }
-    public List<Card> Cards { get => cards; set => cards = value; }
-    public List<Card> NonexhaustedCards { get => nonexhaustedCards; set => nonexhaustedCards = value; }
+    public DeckManager DeckManager { get => deckManager; set => deckManager = value; }
     public List<Item> Inventory { get => inventory; set => inventory = value; }
 
     public Player()
     {
+
     }
 
     public Player(float health, float memory): base(health, memory)
@@ -45,17 +44,12 @@ public class Player : AbstractPlayer
         }
     }
 
-    public List<Card> DrawCards(int numberOfCards = 5)
+    public void addHealth(float restoredHealth)
     {
-        List<Card> hand = new List<Card>();
-        for (int i = 0; i < numberOfCards; i++)
-        {
-            int index = rand.Next(0, nonexhaustedCards.Count);
-            hand.Add(nonexhaustedCards[index]);
-            nonexhaustedCards.RemoveAt(index);
-        }
-        return hand;
+        Health += restoredHealth;
     }
+
+    // TODO: Add function for UI to execute card
 }
 
 

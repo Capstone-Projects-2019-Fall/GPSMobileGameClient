@@ -5,11 +5,11 @@ using UnityEngine;
 
 public abstract class AbstractPlayer : MonoBehaviour
 {
-    public float health = 100f;
-    public float memory = 10f;
+    [SerializeField] private float health = 100f;
+    [SerializeField] private float memory = 10f;
     private bool alive = true;
     private bool combat = false;
-    private BuffHandler buffHandler = new BuffHandler();
+    private BuffHandler buffHandler;
 
     public float Memory { get => memory; set => memory = value; }
     public float Health { get => health; set => health = value; }
@@ -57,6 +57,11 @@ public abstract class AbstractPlayer : MonoBehaviour
 
     public virtual void startCombat() => InCombat = true;
     public virtual void endCombat() => InCombat = false;
+
+    private void Start()
+    {
+        buffHandler = new BuffHandler();
+    }
 }
 
 */
