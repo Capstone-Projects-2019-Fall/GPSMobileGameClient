@@ -137,6 +137,37 @@ public static class NodeFactory
         return nodeInstance;
     }
 
+    //Experimental Node creational method
+    public static GameObject nCreateNode(string locString, NodeStructure nodeStruct)
+    {
+        Debug.Log("In nCreateNode");
+
+        GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/nNode");
+        GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
+        Node nodeCode = nodeInstance.GetComponent<Node>();
+
+        nodeCode.NodeStruct = nodeStruct;
+        nodeCode.LocationString = locString;
+
+        return nodeInstance;
+    }
+
+    //Experimental Node creational method
+    public static GameObject nCreateNode(string locString, NodeStructure nodeStruct, string name)
+    {
+        Debug.Log("In nCreateNode");
+
+        GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/nNode");
+        GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
+        Node nodeCode = nodeInstance.GetComponent<Node>();
+
+        nodeCode.NodeStruct = nodeStruct;
+        nodeCode.LocationString = locString;
+        nodeCode.Name = name;
+
+        return nodeInstance;
+    }
+
     /* Returns an instance of a NodeStructure by name from within the private dictionary
      * Parameters:
      *    -> nodeStructureType: string representation of the NodeStructure to be returned
