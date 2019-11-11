@@ -8,7 +8,7 @@ public class Strike : Card, ICardInterface
     {
     }
 
-    public void playCard(Player player, Enemy enemy)
+    public override void playCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
         {

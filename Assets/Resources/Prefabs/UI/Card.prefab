@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6013973360387048285}
   - component: {fileID: -7206983511893948237}
   - component: {fileID: 540598988772448623}
+  - component: {fileID: 2187382116721473925}
   m_Layer: 5
   m_Name: Card
   m_TagString: Untagged
@@ -127,6 +128,19 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &2187382116721473925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 377973282493438519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8599de6a1c75c07488fbb2034d8e00f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  card: {fileID: 0}
 --- !u!1 &8284844171800513087
 GameObject:
   m_ObjectHideFlags: 0
@@ -342,10 +356,10 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 14
+    m_FontSize: 28
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
+    m_MinSize: 2
     m_MaxSize: 40
     m_Alignment: 0
     m_AlignByGeometry: 0

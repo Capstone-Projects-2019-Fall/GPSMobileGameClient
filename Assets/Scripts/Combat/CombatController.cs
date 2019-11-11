@@ -11,7 +11,7 @@ using UnityEngine;
 public class CombatController : Singleton<CombatController>
 {
     // fields
-    private bool activeTurn;
+    private bool canPlayCards; // state variable used to limit user input (can be done better)
 
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
@@ -23,21 +23,41 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Enemy enemy;
     [SerializeField] private Vector3 enemySpawnPos;
 
+    private Transform _handZone;
+
     // methods
     private void Awake()
     {
+        canPlayCards = false;
+
+        // Initialize static classes
+        CardFactory.InitializeFactory();
+
+        // UI references and initializations
+        _handZone = GameObject.Find("Combat UI").transform.Find("HandZone").transform;
+
+        // Instantitate player and enemy
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
         player = _playerPF.GetComponent<Player>();
+        _playerGO = Instantiate(_playerPF, playerSpawnPos, Quaternion.identity);
 
         // TODO: Query enemy type from web API
         _enemyPF = Resources.Load<GameObject>("Prefabs/Enemies/Enemy");
         enemy = _enemyPF.GetComponent<Enemy>();
+        _enemyGO = Instantiate(_enemyPF, enemySpawnPos, Quaternion.identity);
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine("TurnSystem");   
+        //StartCoroutine("TurnSystem");
+        Card cardEX = CardFactory.CreateCard(0);
+        GameObject cardEXgo = CardFactory.CreateCardGameObject(cardEX);
+
+        cardEXgo.transform.SetParent(_handZone);
+        cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
+        cardEXgo.transform.localScale = new Vector3(1, 1, 1);
     }
 
     // Update is called once per frame
@@ -46,14 +66,37 @@ public class CombatController : Singleton<CombatController>
         
     }
     
-    IEnumerator TurnSystem()
+    /*IEnumerator TurnSystem()
     {
+        // Draw cards
 
+        // Start timer
+
+            // Player plays cards (writes to buffer)
+
+        // End Timer
+
+        // Send Delta
+
+        // WAIT for recv delta
+    }*/
+
+    private void InitializeCombat()
+    {
+        // Connect to combat instance
+        
+            // Read combat state
+
+        // Spawn monster and player prefabs with state data
+
+            // Initialize clientside ui/system handlers
+
+        // Start TurnSystem
     }
 
     private void SpawnCharacters()
     {
-        _playerGO = Instantiate(_playerPF, playerSpawnPos, Quaternion.identity);
-        _enemyGO = Instantiate(_enemyPF, enemySpawnPos, Quaternion.identity);
+        
+        
     }
 }
