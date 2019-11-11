@@ -46,7 +46,6 @@ public class SpawnManager : Singleton<SpawnManager>
 
     void Start()
     {
-        NodeFactory.InitializeFactory();
         InvokeRepeating("QueryNodes", 3, NodeQueryInSeconds); // Calls QueryNodes() every "NodeQueryInSeconds" seconds 
                                                               // starting in 3 seconds. The 3 seconds is to allow the game to load
                                                               // before making the first call.
