@@ -23,7 +23,18 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Enemy enemy;
     [SerializeField] private Vector3 enemySpawnPos;
 
+
     private Transform _handZone;
+    public Player Player
+    {
+        get => player;
+        set => player = value;
+    }
+    public Enemy Enemy
+    {
+        get => enemy;
+        set => enemy = value;
+    }
 
     // methods
     private void Awake()
@@ -92,6 +103,7 @@ public class CombatController : Singleton<CombatController>
             // Initialize clientside ui/system handlers
 
         // Start TurnSystem
+        //return null;
     }
 
     private void SpawnCharacters()
@@ -99,4 +111,15 @@ public class CombatController : Singleton<CombatController>
         
         
     }
+
+    /*
+     * An example of a state callback function. It will most likely be more useful to pass in a 
+     * custom stateHandler to JoinOrCreateRoom().
+     */
+    public void OnStateChangeHandler(State state, bool isFirstState)
+    {
+        Debug.Log("State has been updated!");
+        Debug.LogFormat("MonsterHealth: {0}", state.monsterHealth);
+    }
+
 }

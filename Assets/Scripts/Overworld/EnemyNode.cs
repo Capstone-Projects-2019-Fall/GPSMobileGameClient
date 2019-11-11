@@ -69,10 +69,15 @@ public class EnemyNode : NodeStructure, IRadialArea
         SubscribeExit();
     }
 
-    public override void OnClicked()
+    public override void OnClicked(string nodeIdentifier)
     {
         Debug.Log("Enemy OnClicked!");
-        SceneManager.LoadScene("CombatInstance");
+        SceneManager.LoadScene("CombatScene");
+        CombatController combatController = GameObject.Find("CombatController").GetComponent<CombatController>();
+        
+        ColyseusClient colyseusClient = new ColyseusClient();
+        colyseusClient.JoinOrCreateRoom(combatController.Player.Username, nodeIdentifier, combatController.OnStateChangeHandler);
+
     }
 
     public void UpdateAction()

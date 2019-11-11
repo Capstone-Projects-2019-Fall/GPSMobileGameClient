@@ -103,7 +103,10 @@ public class SpawnManager : Singleton<SpawnManager>
         {
             string nodeLongitude = jsonNode[i]["location"]["coordinates"][0];
             string nodeLatitude = jsonNode[i]["location"]["coordinates"][1];
-            SpawnMarker(string.Format("{0}, {1}", nodeLatitude, nodeLongitude));
+            string nodeStruct = jsonNode[i]["structure"];
+            string name = jsonNode[i]["name"];
+            //Debug.LogFormat("Node Structure:{0}",nodeStruct);
+            SpawnMarker(string.Format("{0}, {1}", nodeLatitude, nodeLongitude), nodeStruct, name);
         }
     }
 
@@ -111,12 +114,12 @@ public class SpawnManager : Singleton<SpawnManager>
      * Spawns a node at a specified latitude and longitude location.
      * The locationString's format is "latitude, longitude"
      */
-    public void SpawnMarker(string locationString)
+    public void SpawnMarker(string locationString, string nodeStruct, string name)
     {
         Vector2d latLon = Conversions.StringToLatLon(locationString);
 
         // TODO: Get NodeStructure from API (currently calling random Node)
-        GameObject myNode = NodeFactory.nCreateNode(locationString);
+        GameObject myNode = NodeFactory.nCreateNode(locationString, NodeFactory.GetNodeStructureByString(nodeStruct), name);
         // var instance = Instantiate(myNode);
         myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
         myNode.transform.localScale = _spawnScaleVector;
