@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(DeckManager))]
 public class Player : AbstractPlayer
 {
     private int userId;
@@ -45,6 +46,12 @@ public class Player : AbstractPlayer
     public void addHealth(float restoredHealth)
     {
         Health += restoredHealth;
+    }
+
+    private void InitializePlayer()
+    {
+        deckManager = gameObject.GetComponent<DeckManager>(); 
+
     }
 
     // TODO: Add function for UI to execute card
