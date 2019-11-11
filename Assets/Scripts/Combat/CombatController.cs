@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 /* CombatContoller Description:
  * The CombatController is the main context for all of our clientside combat API. It is primarily responsible for:
@@ -23,7 +24,17 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Enemy enemy;
     [SerializeField] private Vector3 enemySpawnPos;
 
+    public GameObject PlayerGO {
+        get => _playerGO;
+    }
+
+    public GameObject EnemyGO {
+        get => _enemyGO;
+    }
+
     private Transform _handZone;
+
+    private Text _playerList;
 
     // methods
     private void Awake()
@@ -46,24 +57,26 @@ public class CombatController : Singleton<CombatController>
         enemy = _enemyPF.GetComponent<Enemy>();
         _enemyGO = Instantiate(_enemyPF, enemySpawnPos, Quaternion.identity);
 
+        _playerList = GameObject.Find("Combat UI").transform.Find("PlayerList").gameObject.GetComponent<Text>();
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
         //StartCoroutine("TurnSystem");
-        Card cardEX = CardFactory.CreateCard(0);
+        /*Card cardEX = CardFactory.CreateCard(0);
         GameObject cardEXgo = CardFactory.CreateCardGameObject(cardEX);
 
         cardEXgo.transform.SetParent(_handZone);
         cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
-        cardEXgo.transform.localScale = new Vector3(1, 1, 1);
+        cardEXgo.transform.localScale = new Vector3(1, 1, 1);*/
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        _playerList.text = "Test";
     }
     
     /*IEnumerator TurnSystem()

@@ -12,7 +12,10 @@ public class CardManager : MonoBehaviour
 
     public Card card;
 
-    private ICardInterface cardHandler;
+    private void Awake()
+    {
+       
+    }
 
     private void Start()
     {
@@ -31,11 +34,8 @@ public class CardManager : MonoBehaviour
         art.sprite = card.art;*/
     }
 
-    public void OnMouseDown(Player p, Enemy e)
+    public void handleCard(Player p, Enemy e)
     {
-        cardHandler.playCard(p, e);
-        
-        gameObject.Destroy();
+        card.playCard(p, e);
     }
-
 }
