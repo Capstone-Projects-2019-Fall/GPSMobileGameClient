@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Colyseus.Schema;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,8 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private GameObject _enemyGO;
     [SerializeField] private Enemy enemy;
     [SerializeField] private Vector3 enemySpawnPos;
+
+    private MapSchema<Entity> players;
 
     public GameObject PlayerGO {
         get => _playerGO;
@@ -86,7 +89,11 @@ public class CombatController : Singleton<CombatController>
     // Update is called once per frame
     void Update()
     {
-        _playerList.text = "Test";
+        string newString = "";
+        foreach (var player in players.Keys) {
+            newString = newString + player.ToString() + '\n';
+        }
+        _playerList.text = newString;
     }
     
     /*IEnumerator TurnSystem()
@@ -130,6 +137,7 @@ public class CombatController : Singleton<CombatController>
      */
     public void OnStateChangeHandler(State state, bool isFirstState)
     {
+        players = state.players;
         Debug.Log("State has been updated!");
         Debug.LogFormat("MonsterHealth: {0}", state.monsterHealth);
     }
