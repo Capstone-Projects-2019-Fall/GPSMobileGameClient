@@ -25,6 +25,8 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Enemy enemy;
     [SerializeField] private Vector3 enemySpawnPos;
 
+    private Transform _handZone;
+
     private MapSchema<Entity> players;
 
     public GameObject PlayerGO {
@@ -35,7 +37,6 @@ public class CombatController : Singleton<CombatController>
         get => _enemyGO;
     }
 
-    private Transform _handZone;
     public Player Player
     {
         get => player;
@@ -98,18 +99,31 @@ public class CombatController : Singleton<CombatController>
     
     /*IEnumerator TurnSystem()
     {
-        // Draw cards
+        // Start phase
 
-        // Start timer
+        // Action phase
 
-            // Player plays cards (writes to buffer)
-
-        // End Timer
+        // End phase
 
         // Send Delta
 
-        // WAIT for recv delta
+        // Enemy phase
     }*/
+
+    private void StartPhase()
+    {
+
+    }
+
+    private void ActionPhase()
+    {
+
+    }
+
+    private void EndPhase()
+    {
+
+    }
 
     private void InitializeCombat()
     {
@@ -122,7 +136,7 @@ public class CombatController : Singleton<CombatController>
             // Initialize clientside ui/system handlers
 
         // Start TurnSystem
-        //return null;
+        //return null;  
     }
 
     private void SpawnCharacters()
