@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,15 +12,15 @@ using UnityEngine;
 public interface IRadialArea
 {
     float Radius { get; set; }
-    RadialArea MyRadialArea { get; }
+    RadialArea RadialArea { get; }
 
     // The behavior that occurs when a player moves into a RadialArea
-    void EnterAction();
+    void OnEnterAction(object sender, EventArgs e);
     void SubscribeEnter(); // MyRadialArea.OnEnterArea += MethodName
     void UnsubscribeEnter(); // MyRadialArea.OnEnterArea -= MethodName
 
     // The behavior that occurs when a player exits a RadialArea
-    void ExitAction();
+    void OnExitAction(object sender, EventArgs e);
     void SubscribeExit(); // MyRadialArea.OnExitArea += MethodName
     void UnsubscribeExit(); // MyRadialArea.OnExitArea -= MethodName
 

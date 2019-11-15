@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GPSMobileGame.unity
     guid: 8a24f45e7a8c9ea40985b228bf9338cd
+  - enabled: 1
+    path: Assets/Scenes/CombatInstance.unity
+    guid: 72c573ade5372234283c48ca2524ba3f
   m_configObjects: {}

@@ -3,21 +3,49 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 
-public class Card : MonoBehaviour
-{
-    private string name;
-    private int level;
-    private int memoryCost;
-    private int pp;
-    private float attack;
-    private Buff buff;
 
-    public string Name { get => name; set => name = value; }
+[CreateAssetMenu(menuName ="Card")]
+public class Card : ScriptableObject, ICardInterface
+{
+    [SerializeField] private int id;
+    [SerializeField] private string cardName;
+    [SerializeField] private string cardDetail;
+    [SerializeField] private string cardFlavor;
+    public Sprite art;
+    [SerializeField] private int level;
+    [SerializeField] private int memoryCost;
+    
+
+
+    public int Id { get => id; set => id = value; }
+    public string Name { get => cardName; set => cardName = value; }
+    public string Detail { get => cardDetail; set => cardDetail = value; }
+    public string Flavor { get => cardFlavor; set => cardFlavor = value; }
     public int Level { get => level; set => level = value; }
     public int MemoryCost { get => memoryCost; set => memoryCost = value; }
-    public int PP { get => pp; set => pp = value; }
-    private float Attack { get => attack; set => attack = value; }
-    public Buff CardBuff { get => buff; set => buff = value; }
+    // public int PP { get => pp; set => pp = value; }
+
+    // Constructor for empty card
+    public Card()
+    {
+        id = -1;
+        Name = "";
+        Level = 0;
+        MemoryCost = 0;
+    }
+
+    // Constructor for a filled in card
+    public Card(int id, string name, string detail, string cardFlavor, int level, int mem_cost)
+    {
+        Id = id;
+        Name = name;
+        Detail = detail;
+        Flavor = cardFlavor;
+        Level = level;
+        MemoryCost = mem_cost;
+    }
+
+    public virtual void playCard(Player p, Enemy e) { }
 
     public Card(){
 
@@ -27,7 +55,6 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame

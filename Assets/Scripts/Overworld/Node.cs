@@ -16,10 +16,13 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     //fields
-    private NodeStructure _nodeStruct = null; // References an abstract class, essentially a strategy pattern
+    [SerializeField] private NodeStructure _nodeStruct = null; // References an abstract class, essentially a strategy pattern
     private Sprite _nodeSprite = null;
     private SpriteRenderer _spriteRenderer = null; 
     private string _locationString = null;
+    private LineRenderer _lineRenderer = null;
+    private string _name;
+
     // methods
 
     // Setter and getter for nodeStruct
@@ -30,9 +33,7 @@ public class Node : MonoBehaviour
         {
             try {
                 _nodeStruct = value;
-                _nodeSprite = _nodeStruct.Sprite;
-                _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-                _spriteRenderer.sprite = _nodeSprite;
+                _nodeStruct.nAttachToNode(gameObject);
             } catch (Exception e) { Debug.Log(e); }
         }
     }
@@ -50,6 +51,19 @@ public class Node : MonoBehaviour
         set => _nodeSprite = value;
     }
 
+    // Setter and getter name
+    public string Name
+    {
+        get => _name;
+        set => _name = value;
+    }
+
+    // When the player clicks on the Node: Behavior varies depending on which NodeStructure is attached to the Node
+    private void OnMouseDown()
+    {
+        Debug.LogFormat("Node Clicked: {0}", _name);
+        _nodeStruct.OnClicked(_name);
+    }
     /* 
      * 
      */

@@ -2,6 +2,7 @@
 using Mapbox.Unity.Utilities;
 using Mapbox.Unity.Map;
 using Mapbox.Utils;
+using System;
 
 /* RadialArea Description:
  * RadialAreas are attached to certain types of NodeStructures. They define a circular area around thier corresponding Node.
@@ -13,13 +14,11 @@ using Mapbox.Utils;
 public class RadialArea : MonoBehaviour
 {
     // Delegates and events for this Radial Area's OnEnter and OnExit
-    public delegate void EnterAction();
-    public event EnterAction OnEnterArea;
-    public delegate void ExitAction();
-    public event ExitAction OnExitArea;
+    public event EventHandler EnteredArea;
+    public event EventHandler ExitedArea;
 
-    [SerializeField] private AbstractMap _map;
-    [SerializeField] private GameObject _player;
+    private AbstractMap _map;
+    private GameObject _player;
     private float _radius;
 
     private bool _inRange; // state variable representing if player is within range of RadialArea
@@ -45,6 +44,7 @@ public class RadialArea : MonoBehaviour
     }
     public bool InRange {
         get => _inRange;
+        set => _inRange = value;
     }
 
     // methods
@@ -52,17 +52,26 @@ public class RadialArea : MonoBehaviour
     {
         _map = (AbstractMap) FindObjectOfType(typeof(AbstractMap));
         _player = GameObject.Find("PlayerTarget");
+
         _lineRenderer = GetComponent<LineRenderer>();
+        _lineRenderer.useWorldSpace = false;
+        _lineRenderer.loop = true;
 
         _inRange = PollRange(_player); // Test whether the Player is within the range of the radius
+        if (_inRange)
+            OnEnteredArea(EventArgs.Empty);
+   
     }
 
     // The RangeHandler is called every 2.0 seconds, instead of during every update frame.
     public void Start()
     {
         // TODO: Create materials for Friendly and Enemy RadialAreas
-        //DrawAreaOfEffect(myLineMaterial);
-        InvokeRepeating("RangeHandler", 0, 2.0f);
+    }
+
+    public void Update()
+    {
+        RangeHandler();
     }
 
     /* Method is run in regular intervals to determine if the player has entered or exited the radial area.
@@ -71,14 +80,26 @@ public class RadialArea : MonoBehaviour
     public void RangeHandler()
     {
         if(!_inRange && PollRange(_player)) // _inRange is false, PollRange returns true: player has entererd the area
+        {   
+            OnEnteredArea(EventArgs.Empty); // Signal to subscribers
+        } else if(_inRange && !PollRange(_player)) // _inRange is true, PollRange returns false: player has exited the area
         {
-            OnEnterArea(); // Signal to subscribers
-            _inRange = true;
-        } else if(_inRange && PollRange(_player)) // _inRange is true, PollRange returns false: player has exited the area
-        {
-            OnExitArea(); // Signal to subscribers
-            _inRange = false;
+            OnExitedArea(EventArgs.Empty); // Signal to subscribers
         }
+    }
+
+    // Signal to subscribers that the player has entered the radial area
+    public void OnEnteredArea(EventArgs e)
+    {
+        EnteredArea?.Invoke(this, e);
+        _inRange = true;
+    }
+
+    // Signal to subscribers that the player has exited the radial area
+    public void OnExitedArea(EventArgs e)
+    {
+        ExitedArea?.Invoke(this, e);
+        _inRange = false;
     }
 
     /* Returns true if another GameObject is within range of the RadialArea
@@ -95,7 +116,14 @@ public class RadialArea : MonoBehaviour
 
         // Check if object is within range
         float distToTarget = vecToTarget.magnitude;
-        return (distToTarget < Radius);
+
+        if (distToTarget < Radius * 2)
+        {
+            return true;
+        } else
+        {
+            return false;
+        }
     } 
     
     /* Instantiate a GameObject at a random location within the RadialArea's range. Note that the caller
@@ -111,8 +139,8 @@ public class RadialArea : MonoBehaviour
         obj.transform.SetParent(gameObject.transform); // Set the parent of obj to the RadialArea's gameObject
 
         // Select random locations within the radius
-        float xLoc = Random.Range(-Radius, Radius);
-        float zLoc = Random.Range(-Radius, Radius);
+        float xLoc = UnityEngine.Random.Range(-Radius, Radius);
+        float zLoc = UnityEngine.Random.Range(-Radius, Radius);
 
         GameObject instance = Instantiate(obj);
         instance.transform.localPosition = new Vector3 (xLoc, 0.0f, zLoc);
@@ -121,12 +149,13 @@ public class RadialArea : MonoBehaviour
     }
 
     /* Draw a circle indicating the area of effect of the radial area using a LineRenderer
- * Parameters:
- *    -> Material lineMaterial: Control the visual effects of the circle with this material
- */
-    private void DrawAreaOfEffect(Material lineMaterial)
+     * Parameters:
+     *    -> Material lineMaterial: Control the visual effects of the circle with this material
+     */
+    public void DrawAreaOfEffect()
     {
-        _lineRenderer.widthMultiplier = LineWidth;
+        _lineRenderer.widthMultiplier = 0.6f;
+
         float deltaTheta = (2f * Mathf.PI) / VertexCount;
         float theta = 0f;
 
@@ -139,5 +168,7 @@ public class RadialArea : MonoBehaviour
             _lineRenderer.SetPosition(i, pos);
             theta += deltaTheta;
         }
+
+        transform.localPosition = new Vector3(0.0f, -2.0f, 0.0f);
     }
 }
