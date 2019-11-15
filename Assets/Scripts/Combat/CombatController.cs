@@ -13,7 +13,7 @@ using UnityEngine.UI;
 public class CombatController : Singleton<CombatController>
 {
     // fields
-    private bool canPlayCards; // state variable used to limit user input (can be done better)
+    private bool _canPlayCards; // state variable used to limit user input (can be done better)
 
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
@@ -28,6 +28,11 @@ public class CombatController : Singleton<CombatController>
     private Transform _handZone;
 
     private MapSchema<Entity> players;
+
+    public bool CanPlayCards {
+        get => _canPlayCards;
+        set => _canPlayCards = value;
+    }
 
     public GameObject PlayerGO {
         get => _playerGO;
@@ -53,7 +58,7 @@ public class CombatController : Singleton<CombatController>
     // methods
     private void Awake()
     {
-        canPlayCards = false;
+        _canPlayCards = false;
 
         // Initialize static classes
         CardFactory.InitializeFactory();
@@ -117,7 +122,9 @@ public class CombatController : Singleton<CombatController>
 
     private void ActionPhase()
     {
+        _canPlayCards = true;
 
+        _canPlayCards = false;
     }
 
     private void EndPhase()
