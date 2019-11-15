@@ -118,8 +118,6 @@ public static class NodeFactory
     //Experimental Node creational method
     public static GameObject nCreateNode(string locString)
     {
-        Debug.Log("In nCreateNode");
-
         GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/nNode");
         GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
         Node nodeCode = nodeInstance.GetComponent<Node>();
@@ -179,7 +177,7 @@ public static class NodeFactory
         // If the given NodeStructure is in the dictionary, then return it.
         if (NodeStructuresByName.ContainsKey(nodeStructureType))
         {
-            return NodeStructuresByName[nodeStructureType];
+            return Activator.CreateInstance(NodeStructTypesByName[nodeStructureType]) as NodeStructure;
         }
 
         throw new ArgumentException("Invalid NodeStructure.");

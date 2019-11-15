@@ -154,7 +154,7 @@ public class RadialArea : MonoBehaviour
      */
     public void DrawAreaOfEffect()
     {
-        _lineRenderer.widthMultiplier = 1.2f;
+        _lineRenderer.widthMultiplier = 0.6f;
 
         float deltaTheta = (2f * Mathf.PI) / VertexCount;
         float theta = 0f;
