@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Enemy : AbstractPlayer
+public class Enemy : AbstractEntity
 {
     [SerializeField] private float attack = 10f;
     [SerializeField] private float armor = 0f;
@@ -27,7 +27,7 @@ public class Enemy : AbstractPlayer
         Att_Modifier = att_modifier;
     }
 
-    public void executeAttack(AbstractPlayer entity)
+    public void executeAttack(AbstractEntity entity)
     {
         base.executeAttack(entity, attack);
     }

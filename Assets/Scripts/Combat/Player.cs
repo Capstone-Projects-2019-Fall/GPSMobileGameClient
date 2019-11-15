@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(DeckManager))]
-public class Player : AbstractPlayer
+public class Player : AbstractEntity
 {
     private int userId;
     private string username;

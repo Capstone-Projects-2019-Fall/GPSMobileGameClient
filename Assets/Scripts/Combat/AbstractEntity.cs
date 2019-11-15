@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AbstractPlayer : MonoBehaviour
+public abstract class AbstractEntity : MonoBehaviour
 {
     [SerializeField] private float health = 100f;
     [SerializeField] private float memory = 10f;
@@ -16,12 +16,12 @@ public abstract class AbstractPlayer : MonoBehaviour
     public bool InCombat { get => combat; set => combat = value; }
     public List<Buff> GetBuffList { get => buffHandler.buffList; }
 
-    public AbstractPlayer()
+    public AbstractEntity()
     {
 
     }
 
-    public AbstractPlayer(float health, float memory)
+    public AbstractEntity(float health, float memory)
     {
         Health = health;
         Memory = memory;
@@ -33,7 +33,7 @@ public abstract class AbstractPlayer : MonoBehaviour
         buffHandler = gameObject.AddComponent<BuffHandler>();
     }
 
-    public virtual void executeAttack(AbstractPlayer entity, float attack_damage)
+    public virtual void executeAttack(AbstractEntity entity, float attack_damage)
     {
         float attackModifier = buffHandler.calculateAttackModifier();
         entity.damageReceived(attack_damage * attackModifier);
