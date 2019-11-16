@@ -18,9 +18,9 @@ public class Strike : Card, ICardInterface
     // Initializes this card
     protected override void Awake()
     {
-        Id = 3;
-        Name = "Increase Attack 1";
-        Detail = "Deal 50% more damage per attack for 1 round.";
+        Id = 0;
+        Name = "Strike 1";
+        Detail = "Deal 20 damage.";
         Flavor = "";
         Level = 1;
         MemoryCost = 2;
