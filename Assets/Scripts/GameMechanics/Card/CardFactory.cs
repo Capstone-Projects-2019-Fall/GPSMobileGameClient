@@ -13,7 +13,7 @@ public static class CardFactory
     // Initialize the CardFactory
     public static void InitializeFactory()
     {
-        // Ensures only one NodeFactory can exist
+        // Ensures only one CardFactory can exist
         if (_initialized)
             return;
 

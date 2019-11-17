@@ -1,4 +1,5 @@
 ﻿using Colyseus.Schema;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,8 +14,6 @@ using UnityEngine.UI;
 public class CombatController : Singleton<CombatController>
 {
     // fields
-    private bool _canPlayCards; // state variable used to limit user input (can be done better)
-
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
     [SerializeField] private Player player;
@@ -26,22 +25,15 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Vector3 enemySpawnPos;
 
     private Transform _handZone;
-
     private MapSchema<Entity> players;
-
-    public bool CanPlayCards {
-        get => _canPlayCards;
-        set => _canPlayCards = value;
-    }
+    private TurnTimer _timer;
 
     public GameObject PlayerGO {
         get => _playerGO;
     }
-
     public GameObject EnemyGO {
         get => _enemyGO;
     }
-
     public Player Player
     {
         get => player;
@@ -53,18 +45,24 @@ public class CombatController : Singleton<CombatController>
         set => enemy = value;
     }
 
-    private Text _playerList;
+    public cState clientState;
+    public enum cState
+    {
+        CanTakeActions, Busy
+    }
 
     // methods
     private void Awake()
     {
-        _canPlayCards = false;
+        clientState = cState.Busy;
 
         // Initialize static classes
         CardFactory.InitializeFactory();
 
         // UI references and initializations
         _handZone = GameObject.Find("Combat UI").transform.Find("HandZone").transform;
+        _timer = gameObject.GetComponent<TurnTimer>(); // get reference to timer
+        _timer.TimeExpired += OnTimeExpired; // subscribe to its TimeExpired event
 
         // Instantitate player and enemy
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
@@ -76,30 +74,24 @@ public class CombatController : Singleton<CombatController>
         enemy = _enemyPF.GetComponent<Enemy>();
         _enemyGO = Instantiate(_enemyPF, enemySpawnPos, Quaternion.identity);
 
-        _playerList = GameObject.Find("Combat UI").transform.Find("PlayerList").gameObject.GetComponent<Text>();
-
     }
 
     // Start is called before the first frame update
     void Start()
     {
         //StartCoroutine("TurnSystem");
-        /*Card cardEX = CardFactory.CreateCard(0);
+        Card cardEX = CardFactory.CreateCard(0);
         GameObject cardEXgo = CardFactory.CreateCardGameObject(cardEX);
 
         cardEXgo.transform.SetParent(_handZone);
         cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
-        cardEXgo.transform.localScale = new Vector3(1, 1, 1);*/
+        cardEXgo.transform.localScale = new Vector3(1, 1, 1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        string newString = "";
-        foreach (var player in players.Keys) {
-            newString = newString + player.ToString() + '\n';
-        }
-        _playerList.text = newString;
+
     }
     
     /*IEnumerator TurnSystem()
@@ -122,9 +114,7 @@ public class CombatController : Singleton<CombatController>
 
     private void ActionPhase()
     {
-        _canPlayCards = true;
-
-        _canPlayCards = false;
+        clientState = cState.CanTakeActions;
     }
 
     private void EndPhase()
@@ -150,6 +140,11 @@ public class CombatController : Singleton<CombatController>
     {
         
         
+    }
+
+    public void OnTimeExpired(object sender, EventArgs e)
+    {
+
     }
 
     /*
