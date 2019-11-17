@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class Strike : Card, ICardInterface
 {
-    public Strike() : base(id:0, name:"Strike 1", detail:"Does 20 damage.", cardFlavor:"", level:1, mem_cost:2)
-    {
-    }
-
     public override void playCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
@@ -17,5 +13,16 @@ public class Strike : Card, ICardInterface
             player.Memory -= MemoryCost;
             Debug.LogFormat("End of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
         }        
+    }
+
+    // Initializes this card
+    protected override void Awake()
+    {
+        Id = 0;
+        Name = "Strike 1";
+        Detail = "Deal 20 damage.";
+        Flavor = "";
+        Level = 1;
+        MemoryCost = 2;
     }
 }

@@ -10,7 +10,7 @@ public static class CardFactory
     private static Dictionary<int, Type> CardsById;
     private static bool _initialized => CardsById != null;
 
-    // Initialize the NodeFactory
+    // Initialize the CardFactory
     public static void InitializeFactory()
     {
         // Ensures only one NodeFactory can exist
@@ -40,7 +40,8 @@ public static class CardFactory
         // Obtain template and instantiate
         GameObject cardPF = Resources.Load<GameObject>("Prefabs/UI/Card");
         GameObject cardGO = MonoBehaviour.Instantiate(cardPF);
-        cardGO.GetComponent<CardManager>().LoadCard(card);
+        Card cardComp = cardGO.GetComponent<Card>();
+        cardComp = card;
         Transform trans = cardGO.transform; // Used to look up child objects more easily
 
         // Populate elements
