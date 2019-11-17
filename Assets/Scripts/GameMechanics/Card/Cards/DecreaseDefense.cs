@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class DecreaseDefense : Card, ICardInterface
 {
-    // plays this specific card
+    public override int Id => 4;
+
+    public override string Name => "Decrease Defense";
+
+    public override string Detail => "Makes the enemy more vulnerable to damage";
+
+    public override string Flavor => "Even the strongest barriers have weaknesses.";
+
+    public override int Level => 1;
+
+    public override int MemoryCost => 4;
+
     public override void playCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
@@ -17,11 +28,6 @@ public class DecreaseDefense : Card, ICardInterface
     // Initializes this card
     protected override void Awake()
     {
-        Id = 4;
-        Name = "Decrease Defense 1";
-        Detail = "The Enemy's defenses are decreased by 25%";
-        Flavor = "";
-        Level = 1;
-        MemoryCost = 4;
+
     }
 }

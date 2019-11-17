@@ -34,7 +34,7 @@ public class DeckManager : MonoBehaviour
         }
         // TODO: Get/generate cards somehow from cardFactory
         
-        deck = new Deck(40, generateDeck());
+        deck = new Deck(40, generateDeck(40));
         nonexhaustedDeck = new Deck(deck);
     }
 
@@ -91,7 +91,7 @@ public class DeckManager : MonoBehaviour
     }
 
     // This randomly generates a deck
-    public List<Card> generateDeck(int size = 40)        
+    public List<Card> generateDeck(int size)        
     {
         List<Card> cards = new List<Card>();
         List<Card> prefabCards = Enumerable.ToList(CardsById.Values);
