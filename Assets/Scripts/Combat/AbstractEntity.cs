@@ -14,31 +14,26 @@ public abstract class AbstractEntity : MonoBehaviour
     public float Health { get => health; set => health = value; }
     public bool IsAlive { get => alive; set => alive = value; }
     public bool InCombat { get => combat; set => combat = value; }
-    public List<Buff> GetBuffList { get => buffHandler.buffList; }
+    public List<Buff> GetBuffList { get => buffHandler.buffList; set => buffHandler.buffList = value; }
+    public BuffHandler GetBuffHandler { get => buffHandler; set => buffHandler = value; }
 
-    public AbstractEntity()
-    {
-
-    }
-
-    public AbstractEntity(float health, float memory)
+    // Initializes an abstract player.
+    protected virtual void Awake()
     {
         Health = health;
         Memory = memory;
         IsAlive = true;
-    }
-
-    private void Awake()
-    {
         buffHandler = gameObject.AddComponent<BuffHandler>();
     }
 
+    // Executes an attack against another entity.
     public virtual void executeAttack(AbstractEntity entity, float attack_damage)
     {
         float attackModifier = buffHandler.calculateAttackModifier();
         entity.damageReceived(attack_damage * attackModifier);
     }
     
+    // Receives damage.
     public virtual void damageReceived(float damage)
     {
         float defenseModifier = buffHandler.calculateDefenseModifier();
@@ -49,18 +44,22 @@ public abstract class AbstractEntity : MonoBehaviour
         }
     }
 
+    // Adds a buff to the entity
     public virtual void buffReceived(Buff buff)
     {
         buffHandler.addBuff(buff);
     }
 
+    // Removes a buff from the entity.
     public virtual void buffRemoved(Buff buff)
     {
         buffHandler.removeBuff(buff);
     }
 
+    // These handle the start and end of combat
     public virtual void startCombat() => InCombat = true;
     public virtual void endCombat() => InCombat = false;
+
 
     private void Start()
     {
