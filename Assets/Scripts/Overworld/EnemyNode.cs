@@ -73,11 +73,6 @@ public class EnemyNode : NodeStructure, IRadialArea
     {
         Debug.Log("Enemy OnClicked!");
         SceneManager.LoadScene("CombatScene");
-        CombatController combatController = GameObject.Find("CombatController").GetComponent<CombatController>();
-        
-        ColyseusClient colyseusClient = new ColyseusClient();
-        colyseusClient.JoinOrCreateRoom(combatController.Player.Username, nodeIdentifier, combatController.OnStateChangeHandler);
-
     }
 
     public void UpdateAction()

@@ -24,7 +24,7 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
     private void Start()
     {
-        co = GameObject.Find("CombatController").GetComponent<CombatController>();
+        co = GameObject.Find("CombatUtils").GetComponent<CombatController>();
 
         myCard = gameObject.GetComponent<CardManager>();
 

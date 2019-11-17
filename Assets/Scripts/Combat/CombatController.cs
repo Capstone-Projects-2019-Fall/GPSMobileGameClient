@@ -26,8 +26,8 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Vector3 enemySpawnPos;
 
     private Transform _handZone;
-
-    private MapSchema<Entity> players;
+    private State state;
+    private ColyseusClient colyseusClient;
 
     public bool CanPlayCards {
         get => _canPlayCards;
@@ -51,6 +51,11 @@ public class CombatController : Singleton<CombatController>
     {
         get => enemy;
         set => enemy = value;
+    }
+
+    public MapSchema<ColyseusPlayer> ColyseusPlayers
+    {
+        get => state.players;
     }
 
     private Text _playerList;
@@ -78,28 +83,24 @@ public class CombatController : Singleton<CombatController>
 
         _playerList = GameObject.Find("Combat UI").transform.Find("PlayerList").gameObject.GetComponent<Text>();
 
+        InitializeCombat();
     }
 
     // Start is called before the first frame update
     void Start()
     {
         //StartCoroutine("TurnSystem");
-        /*Card cardEX = CardFactory.CreateCard(0);
+        Card cardEX = CardFactory.CreateCard(0);
         GameObject cardEXgo = CardFactory.CreateCardGameObject(cardEX);
 
         cardEXgo.transform.SetParent(_handZone);
         cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
-        cardEXgo.transform.localScale = new Vector3(1, 1, 1);*/
+        cardEXgo.transform.localScale = new Vector3(1, 1, 1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        string newString = "";
-        foreach (var player in players.Keys) {
-            newString = newString + player.ToString() + '\n';
-        }
-        _playerList.text = newString;
     }
     
     /*IEnumerator TurnSystem()
@@ -134,8 +135,9 @@ public class CombatController : Singleton<CombatController>
 
     private void InitializeCombat()
     {
-        // Connect to combat instance
-        
+        // Connect to combat instance        
+        colyseusClient = new ColyseusClient();
+        colyseusClient.JoinOrCreateRoom("Bob", "Node_1", OnStateChangeHandler);
             // Read combat state
 
         // Spawn monster and player prefabs with state data
@@ -144,6 +146,16 @@ public class CombatController : Singleton<CombatController>
 
         // Start TurnSystem
         //return null;  
+    }
+
+    private void TerminateCombat()
+    {
+        if(colyseusClient != null)
+        {
+            colyseusClient.LeaveRoom();
+            // Sync player state
+            // Return to overworld
+        }
     }
 
     private void SpawnCharacters()
@@ -158,9 +170,20 @@ public class CombatController : Singleton<CombatController>
      */
     public void OnStateChangeHandler(State state, bool isFirstState)
     {
-        players = state.players;
+        this.state = state;
         Debug.Log("State has been updated!");
+        updateCurrentPlayersTextField();
         Debug.LogFormat("MonsterHealth: {0}", state.monsterHealth);
+    }
+
+    private void updateCurrentPlayersTextField()
+    {
+        MapSchema<ColyseusPlayer> players = state.players;
+        string newString = "";
+        foreach (var key in players.Keys) {
+            newString += ((ColyseusPlayer)players[key]).name + '\n';
+        }
+        _playerList.text = newString;
     }
 
 }

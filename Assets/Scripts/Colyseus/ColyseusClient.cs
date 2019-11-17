@@ -57,21 +57,28 @@ public class ColyseusClient : MonoBehaviour
       */
     public async void LeaveRoom()
     {
-        await room.Leave(false);
+        if(room != null)
+        {
+            await room.Leave(false);
+        }
+        else
+        {
+            Debug.Log("Cannot leave room, currently not connected to one!");
+        }        
     }
 
     /*
      * Sends the damage dealt to the enemy to the Colyseus server.
      */
-    public void SendMessage(float damage)
+    public void SendMessage(string delta)
     {
         if (room != null)
         {
-            room.Send(damage);
+            room.Send(delta);
         }
         else
         {
-            Debug.Log("Room is not connected!");
+            Debug.Log("Cannot send delta, room is not connected!");
         }
     }
 
@@ -82,6 +89,5 @@ public class ColyseusClient : MonoBehaviour
     public void OnStateChangeHandler(State state, bool isFirstState)
     {
         Debug.Log("State has been updated!");
-        Debug.LogFormat("MonsterHealth: {0}", state.monsterHealth);
     }
 }
