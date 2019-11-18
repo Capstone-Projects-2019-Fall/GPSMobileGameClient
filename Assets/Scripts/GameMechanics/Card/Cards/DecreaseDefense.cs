@@ -4,10 +4,7 @@ using UnityEngine;
 
 public class DecreaseDefense : Card, ICardInterface
 {
-    public DecreaseDefense() : base(id: 4, name: "Decrease Defense 1", detail: "The Enemy's defenses are decreased by 25%", cardFlavor: "", level: 1, mem_cost: 4)
-    {
-    }
-
+    // plays this specific card
     public override void playCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
@@ -15,5 +12,16 @@ public class DecreaseDefense : Card, ICardInterface
             enemy.buffReceived(new Buff(name: "0.75x Defense", defenseModifier: 0.75f));
             player.Memory -= MemoryCost;
         }
+    }
+
+    // Initializes this card
+    protected override void Awake()
+    {
+        Id = 4;
+        Name = "Decrease Defense 1";
+        Detail = "The Enemy's defenses are decreased by 25%";
+        Flavor = "";
+        Level = 1;
+        MemoryCost = 4;
     }
 }
