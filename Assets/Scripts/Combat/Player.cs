@@ -47,12 +47,7 @@ public class Player : AbstractEntity
     // Update is called once per frame
     void Update()
     {
-        if(!IsAlive && InCombat)
-        {
-            // Loads back to map scene after death
-            SceneManager.LoadScene(0);
-            endCombat();
-        }
+        
     }
 
     // Adds health to the player
