@@ -20,7 +20,7 @@ public class DrawCards : Card, ICardInterface
     {
         if (player.Memory >= MemoryCost)
         {
-            player.DeckManager.DrawCard(1);
+            _cc.DrawCards(1);
             player.Memory -= MemoryCost;
         }
     }

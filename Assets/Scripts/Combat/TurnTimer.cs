@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 /* TurnTimer Description:
  * The TurnTimer is a simple utility object used within the context of the TurnSystem to signal when a player's turn ends
  * TurnTimer has a simple event system associated with it that can notify subscribers when its timer expires.
  */
- [RequireComponent(typeof(CombatController))]
+[RequireComponent(typeof(CombatController))]
 public class TurnTimer : Singleton<TurnTimer>
 {
     public const float TURN_DURATION = 20.0f; // Maximum number of seconds per turn
@@ -16,7 +15,7 @@ public class TurnTimer : Singleton<TurnTimer>
     private float _timeRemaining; // Amount of time remaining on a given turn
     private bool _pauseTimer;
 
-    private CombatController ccont;
+    private CombatController _cc;
 
     public float TimeRemaining {
         get => _timeRemaining;
@@ -32,7 +31,8 @@ public class TurnTimer : Singleton<TurnTimer>
 
     private void Awake()
     {
-        ccont = gameObject.GetComponent<CombatController>();
+        _cc = gameObject.GetComponent<CombatController>();
+        Assert.IsNotNull(_cc);
     }
 
     // Called by via InvokeRepeating as a coroutine to reduce the time remaining on a given turn

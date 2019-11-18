@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Networking;
 
 
 [CreateAssetMenu(menuName ="Card")]
 public abstract class Card : MonoBehaviour, ICardInterface
 {
+    // abstract fields; to be overriden by individual card types
     abstract public int Id { get; }
     abstract public string Name { get; }
     abstract public string Detail { get; }
@@ -15,25 +14,17 @@ public abstract class Card : MonoBehaviour, ICardInterface
     abstract public int Level { get; }
     abstract public int MemoryCost { get; }
     //abstract public Sprite CardSprite { get; }
+
+    // shared fields; common among all cards
+    static public CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
     
     public virtual void playCard(Player p, Enemy e) { }
-    
+
     // Initializes this card
 
-    public Card(){
-
-    }
-
-
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        Assert.IsNotNull(_cc);
     }
 
     /*

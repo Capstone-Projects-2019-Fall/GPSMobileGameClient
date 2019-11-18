@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Linq;
 using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 /* DeckManager Description:
  * The DeckManager is a unity singleton that exposes the data and functionality of every Deck object to the Unity scene. This is important
@@ -11,9 +12,11 @@ using UnityEngine;
  * The DeckManager is referenced by the CombatController, and provides a useful interface for managing drawing, insertion, or deletion of cards
  * any given deck
  */
- [RequireComponent(typeof(CombatController))]
+[RequireComponent(typeof(CombatController))]
 public class DeckManager : Singleton<DeckManager>
 {
+    private CombatController _cc;
+
     private Deck _deck;  // The deck currently being used in combat
     private Deck _nonexhaustedDeck; // An 'image' of the deck that players left their home base with
     private Deck _hand; // All the cards currently in the player's hand
@@ -37,6 +40,14 @@ public class DeckManager : Singleton<DeckManager>
 
     #endregion ------------------------------------------------------------------------------------------
 
+    private void Awake()
+    {
+        // Grab reference to the CombatController and subscribe to related events
+        _cc = gameObject.GetComponent<CombatController>();
+        Assert.IsNotNull(_cc);
+        _cc.CardsDrawn += OnCardDrawnAction;
+    }
+
     // Start is called before the first frame update
     // Currently generating a random deck for testing purposes
     void Start()
@@ -47,16 +58,6 @@ public class DeckManager : Singleton<DeckManager>
         _nonexhaustedDeck = new Deck(_deck);
         _deck.ShuffleDeck();
 
-    }
-
-    // Draws the starter hand
-    // TODO: Refactor to merely call DrawCard()
-    public void DrawStarterHand()
-    {
-        for(int i=0; i < _startAmount; i++)
-        {
-            DrawCard();
-        }
     }
 
     // Draws a card and adds it to the deck
@@ -70,6 +71,15 @@ public class DeckManager : Singleton<DeckManager>
         {
             _hand.AddCard(_deck.DrawCard());
             return true;
+        }
+    }
+
+    // Event handler for the DrawnCards event
+    public void OnCardDrawnAction(object sender, DrawEventArgs e)
+    {
+        for(int i = 0; i < e.NumCards; i++)
+        {
+            DrawCard();
         }
     }
 

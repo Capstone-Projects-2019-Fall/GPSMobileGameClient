@@ -1,7 +1,6 @@
 ﻿using Colyseus.Schema;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,10 +14,13 @@ using UnityEngine.UI;
 public class CombatController : Singleton<CombatController>
 {
     // fields
+    private UIController _uiCont;
+
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
     [SerializeField] private Player _player;
     [SerializeField] private Vector3 playerSpawnPos;
+    [SerializeField] private int _startingHandSize;
     private DeckManager _deckManager;
 
     [SerializeField] private GameObject _enemyPF;
@@ -32,6 +34,31 @@ public class CombatController : Singleton<CombatController>
     private MapSchema<Entity> players;
     private TurnTimer _timer;
 
+    #region Accessors --------------------------------------------------------------------------------------------
+
+    public GameObject PlayerGO {
+        get => _playerGO;
+    }
+    public GameObject EnemyGO {
+        get => _enemyGO;
+    }
+    public Player Player
+    {
+        get => _player;
+        set => _player = value;
+    }
+    public Enemy Enemy
+    {
+        get => _enemy;
+        set => _enemy = value;
+    }
+    public int StartingHandSize {
+        get => _startingHandSize;
+        set => _startingHandSize = value;
+    }
+
+    #endregion ---------------------------------------------------------------------------------------------------
+        
     #region Combat Event System --------------------------------------------------------------------------------
     /* Brief Guide to the Combat Event System:
      * The goal behind the Combat Event System is to streamline and centralize all of the high level gameplay actions in one place,
@@ -88,39 +115,33 @@ public class CombatController : Singleton<CombatController>
      *                    can unsubscribe from events using the '-=' operator.
      */
 
-    public event EventHandler CardDrawn;
+    // delegates
+    public event EventHandler<DrawEventArgs> CardsDrawn;
     public event EventHandler HealthChanged;
 
-    public void OnCardDrawn(EventArgs e)
+    // signallers
+    public void OnCardsDrawn(DrawEventArgs e)
     {
-        CardDrawn?.Invoke(this, e);
+        CardsDrawn?.Invoke(this, e);
     }
 
     public void OnHealthChanged(EventArgs e)
     {
-        CardDrawn?.Invoke(this, e);
+        HealthChanged?.Invoke(this, e);
     }
-    #endregion
 
-    #region Accessors --------------------------------------------------------------------------------------------
+    // updaters & state checkers
 
-    public GameObject PlayerGO {
-        get => _playerGO;
-    }
-    public GameObject EnemyGO {
-        get => _enemyGO;
-    }
-    public Player Player
+    /* DrawCard Description:
+     * Simple wrapper method for the OnCardsDrawn event that can be called externally by other scripts (such as cards or items)
+     * Parameters:
+     *    -> int numCards: The number of cards each subscriber will be notified it must draw
+     */
+    public void DrawCards(int numCards)
     {
-        get => _player;
-        set => _player = value;
+        DrawEventArgs args = new DrawEventArgs { NumCards = numCards };
+        OnCardsDrawn(args);
     }
-    public Enemy Enemy
-    {
-        get => _enemy;
-        set => _enemy = value;
-    }
-
     #endregion ---------------------------------------------------------------------------------------------------
 
     public cState clientState;
@@ -134,14 +155,16 @@ public class CombatController : Singleton<CombatController>
     {
         clientState = cState.Busy;
 
-        // Initialize static classes
+        // Initialize/obtain references to static classes and unity singletons
         CardFactory.InitializeFactory();
+        _uiCont = gameObject.GetComponent<UIController>(); // reference to UIController
+        _timer = gameObject.GetComponent<TurnTimer>(); // reference to timer
 
-        // UI references and initializations
-        _handZone = GameObject.Find("Combat UI").transform.Find("HandZone").transform;
-        _playerList = GameObject.Find("Combat UI").transform.Find("PlayerList").GetComponent<Text>();
-        _timer = gameObject.GetComponent<TurnTimer>(); // get reference to timer
-        _timer.TimeExpired += OnTimeExpired; // subscribe to its TimeExpired event
+        // Event subscriptions
+        _timer.TimeExpired += OnTimeExpired; // subscribe to the timer's TimeExpired event
+
+        // Set local private variables
+        _startingHandSize = 5;
 
         // Instantitate player and enemy
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
@@ -162,7 +185,7 @@ public class CombatController : Singleton<CombatController>
         Card cardEX = CardFactory.CreateCard(0);
         GameObject cardEXgo = CardFactory.CreateCardGameObject(cardEX);
 
-        cardEXgo.transform.SetParent(_handZone);
+        cardEXgo.transform.SetParent(_uiCont.HandZone);
         cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
         cardEXgo.transform.localScale = new Vector3(1, 1, 1);
 
@@ -172,12 +195,6 @@ public class CombatController : Singleton<CombatController>
     // Update is called once per frame
     void Update()
     {
-        string newString = "";
-        foreach (var player in players.Keys) {
-            newString = newString + player.ToString() + '\n';
-        }
-        _playerList.text = newString;
-
         // Check player and enemy condition. 
         //Separating player and enemy because we might need to perform different requests to server.
         if(!_player.IsAlive)
@@ -194,7 +211,7 @@ public class CombatController : Singleton<CombatController>
         // Start phase
 
         // Action phase
-        _deckManager.DrawStarterHand();
+        DrawCards(_startingHandSize);
         Debug.Log(_deckManager.Hand.DisplayDeck());
         // End phase
 
@@ -205,7 +222,7 @@ public class CombatController : Singleton<CombatController>
 
     private void StartPhase()
     {
-
+        DrawCards(_startingHandSize);
     }
 
     private void ActionPhase()
@@ -263,4 +280,13 @@ public class CombatController : Singleton<CombatController>
         Debug.LogFormat("MonsterHealth: {0}", state.monsterHealth);
     }
 
+    public void UpdatePlayerList()
+    {
+        string newString = "";
+        foreach (var player in players.Keys)
+        {
+            newString = newString + player.ToString() + '\n';
+        }
+        _playerList.text = newString;
+    }
 }

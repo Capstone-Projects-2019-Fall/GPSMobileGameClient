@@ -7,7 +7,7 @@ public class Deck
     private int _maxSize = 40;
     private List<Card> _cards;
 
-    public int Max_Size { get => _maxSize; set => _maxSize = value; }
+    public int MaxSize { get => _maxSize; set => _maxSize = value; }
     public List<Card> Cards { get => _cards; }
 
     #region Deck constructors ---------------------------------------------------------------------------
@@ -21,15 +21,15 @@ public class Deck
     // Constructor to set max size of deck
     public Deck(int max_size)
     {
-        Max_Size = max_size;
+        MaxSize = max_size;
         _cards = new List<Card>();
     }
 
     // Constructor to set max size and a given set of cards.
     public Deck(int max_size, List<Card> cards)
     {
-        Max_Size = max_size;
-        cards = new List<Card>(cards);
+        MaxSize = max_size;
+        _cards = new List<Card>(cards);
     }
 
     // Constructor to set a given set of cards.
@@ -41,7 +41,7 @@ public class Deck
     // Constructor to copy decks
     public Deck(Deck deck)
     {
-        Max_Size = deck.Max_Size;
+        MaxSize = deck.MaxSize;
         _cards = deck.Cards.ConvertAll(card => CardFactory.CreateCard(card.Id));
     }
 
