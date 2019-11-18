@@ -11,6 +11,8 @@ public class Deck
     public int Max_Size { get => max_size; set => max_size = value; }
     public List<Card> Cards { get => _cards; }
 
+    #region Deck constructors ---------------------------------------------------------------------------
+
     // Constructor to reset a deck
     public Deck()
     {
@@ -43,6 +45,8 @@ public class Deck
         Max_Size = deck.Max_Size;
         _cards = deck.Cards.ConvertAll(card => CardFactory.CreateCard(card.Id));
     }
+
+    #endregion ------------------------------------------------------------------------------------------
 
     // Adds card to list
     public void AddCard(Card card)

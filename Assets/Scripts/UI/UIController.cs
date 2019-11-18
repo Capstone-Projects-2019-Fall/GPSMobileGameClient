@@ -23,7 +23,6 @@ public class UIController : MonoBehaviour
         Assert.IsNotNull(items);
         Assert.IsNotNull(memory);
         Assert.IsNotNull(deck);
-        
     }
 
     public void updateCardsInDeck(int current, int total)

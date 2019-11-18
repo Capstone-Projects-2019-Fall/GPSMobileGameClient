@@ -3,26 +3,40 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/* DeckUpdate Description:
+ * A simple utility script attached to the deck displayed on the Combat scene's user interface. It is referenced by the UIController, and
+ * features a few simple methods to update the graphical/textual representation of the deck.
+ * NOTE: This script should be attached to the same GameObject as the main deck in the combat scene
+ */
+ [RequireComponent(typeof(Deck))]
 public class DeckUpdate : MonoBehaviour
 {
-	private Button deck;
-	private Text deckText;
+	private Transform _deck;
+	private Text _deckText;
+
 	public int max;
 	public int current;
 
     private void Awake()
 	{
-		deck = transform.Find("deck").GetComponent<Button>();
-		deckText = deck.Find("cards").GetComponent<deckText>();
+		_deck = transform.Find("deck");
+		_deckText = _deck.Find("cards").GetComponent<Text>();
 	}
 
-    public void getNumCards(Deck deckObj)
+    public void GetNumCards(Deck deck)
 	{
-		max = deckObj.length();
+		max = deck.Max_Size;
 	}
 
-	public void setText(string text)
+	public void SetText(string text)
 	{
-		deckText.text = text;
+		_deckText.text = text;
 	}
+
+    public void UpdateDeckText()
+    {
+        string newString = "";
+        newString += current + "/" + max;
+        SetText(newString);
+    }
 }

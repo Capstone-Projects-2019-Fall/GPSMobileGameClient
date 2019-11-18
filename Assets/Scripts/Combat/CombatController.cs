@@ -31,7 +31,23 @@ public class CombatController : Singleton<CombatController>
     private Transform _handZone;
     private MapSchema<Entity> players;
     private TurnTimer _timer;
-    
+
+    #region Combat Event System --------------------------------------------------------------------------------
+    public event EventHandler CardDrawn;
+    public event EventHandler HealthChanged;
+
+    public void OnCardDrawn(EventArgs e)
+    {
+        CardDrawn?.Invoke(this, e);
+    }
+
+    public void OnHealthChanged(EventArgs e)
+    {
+        CardDrawn?.Invoke(this, e);
+    }
+    #endregion
+
+    #region Accessors --------------------------------------------------------------------------------------------
 
     public GameObject PlayerGO {
         get => _playerGO;
@@ -49,6 +65,8 @@ public class CombatController : Singleton<CombatController>
         get => _enemy;
         set => _enemy = value;
     }
+
+    #endregion ---------------------------------------------------------------------------------------------------
 
     public cState clientState;
     public enum cState
@@ -107,10 +125,10 @@ public class CombatController : Singleton<CombatController>
 
         // Check player and enemy condition. 
         //Separating player and enemy because we might need to perform different requests to server.
-        if(!_player.IsAlive && InCombat)
+        if(!_player.IsAlive)
         {
             ExitCombat();
-        } else if (!_enemy.IsAlive && InCombat){
+        } else if (!_enemy.IsAlive){
             ExitCombat();
         }
     }

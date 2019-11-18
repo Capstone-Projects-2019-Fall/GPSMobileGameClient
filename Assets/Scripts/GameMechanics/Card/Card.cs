@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -35,7 +36,7 @@ public abstract class Card : MonoBehaviour, ICardInterface
 
     }
 
-    
+    /*
     public bool Card_pp(string CardName, bool isRefresh)
     {
         string json = "\"cardname\": " + CardName + ",\n\"isrefresh\": " + isRefresh.ToString();
@@ -62,5 +63,5 @@ public abstract class Card : MonoBehaviour, ICardInterface
             Debug.Log("Received: " + uwr.downloadHandler.text);
             pp = Int32.Parse(uwr.downloadHandler.text);
         }
-    }
+    }*/
 }

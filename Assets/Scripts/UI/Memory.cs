@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class Memory : MonoBehaviour
 {
-	private float memoryBarFill;
+	private Image memoryBarFill;
 
     private void Awake()
 	{
