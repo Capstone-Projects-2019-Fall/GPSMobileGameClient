@@ -39,10 +39,10 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
     {
         this.transform.SetParent(returnParent);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
+
         if(returnParent.name == "PlayZone")
         {
             _ch.PlayCard(_cc.Player, _cc.Enemy);
         }
-    }
-    
+    }    
 }
