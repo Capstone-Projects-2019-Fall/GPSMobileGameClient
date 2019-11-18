@@ -8,6 +8,7 @@ using System;
 public static class CardFactory
 {
     private static Dictionary<int, Type> CardsById;
+    private static List<Type> CardTypesList;
     private static bool _initialized => CardsById != null;
 
     // Initialize the CardFactory
@@ -21,17 +22,31 @@ public static class CardFactory
             .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Card)));
 
         CardsById = new Dictionary<int, Type>();
+        CardTypesList = new List<Type>();
 
         foreach (var card in cards)
         {
             var instantiatedCard = Activator.CreateInstance(card) as Card;
             CardsById.Add(instantiatedCard.Id, card);
         }
+
+        CardTypesList = CardsById.Values.ToList();
     }
 
     public static Card CreateCard(int cardId)
     {
         return Activator.CreateInstance(CardsById[cardId]) as Card;
+    }
+
+    // Creates a random Card from the master list of cards
+    public static Card CreateRandomCard()
+    {
+        System.Random rand = new System.Random();
+        int size = CardTypesList.Count;
+        int roll = UnityEngine.Random.Range(0, size);
+        Card randCard = Activator.CreateInstance(CardTypesList[roll]) as Card;
+
+        return randCard;
     }
 
     /* Will return an instantiated Card GameObject with fields dynamically populated based on a Card object */

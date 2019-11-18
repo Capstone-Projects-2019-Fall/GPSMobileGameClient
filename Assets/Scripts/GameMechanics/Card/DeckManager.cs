@@ -21,21 +21,15 @@ public class DeckManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var cards = Assembly.GetAssembly(typeof(Card)).GetTypes()
-           .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Card)));
 
-
-        CardsById = new Dictionary<int, Card>();
-
-        foreach (var card in cards)
-        {
-            Card instantiatedCard = Activator.CreateInstance(card) as Card;
-            CardsById.Add(instantiatedCard.Id, instantiatedCard);
-        }
-        // TODO: Get/generate cards somehow from cardFactory
-        
-        deck = new Deck(40, generateDeck(40));
+        List<Card> randCards = GenerateCardList(40);
+        deck = new Deck(randCards);
         nonexhaustedDeck = new Deck(deck);
+
+        foreach(Card c in nonexhaustedDeck.Cards)
+        {
+            Debug.Log(c.Name);
+        }
     }
 
     // Update is called once per frame
@@ -90,16 +84,15 @@ public class DeckManager : MonoBehaviour
         hand = new Deck();
     }
 
-    // This randomly generates a deck
-    public List<Card> generateDeck(int size)        
+    // This generates a list of random cards of the given size
+    public List<Card> GenerateCardList(int size)        
     {
-        List<Card> cards = new List<Card>();
-        List<Card> prefabCards = Enumerable.ToList(CardsById.Values);
+        List<Card> randomCards = new List<Card>();
         for(int i = 0; i < size; i++)
         {
-            cards.Add(prefabCards[rand.Next(5)]);
+            randomCards.Add(CardFactory.CreateRandomCard());
         }
 
-        return cards;
+        return randomCards;
     }
 }

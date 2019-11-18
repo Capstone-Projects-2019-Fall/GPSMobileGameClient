@@ -122,10 +122,9 @@ public static class NodeFactory
         GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
         Node nodeCode = nodeInstance.GetComponent<Node>();
 
-        System.Random rand = new System.Random();
         IList<Type> values = new List<Type>(NodeStructTypesByName.Values);
         int size = values.Count;
-        int roll = rand.Next(size);
+        int roll = UnityEngine.Random.Range(0, size);
 
         NodeStructure _nodeStruct = Activator.CreateInstance(values[roll]) as NodeStructure;
 
