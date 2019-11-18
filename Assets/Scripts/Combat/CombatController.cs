@@ -98,10 +98,10 @@ public class CombatController : Singleton<CombatController>
 
         // Check player and enemy condition. 
         //Separating player and enemy because we might need to perform different requests to server.
-        if(!player.IsAlive && InCombat)
+        if(!player.IsAlive && player.InCombat && enemy.InCombat)
         {
             ExitCombat();
-        } else if (!enemy.IsAlive && InCombat){
+        } else if (!enemy.IsAlive && player.InCombat && enemy.InCombat){
             ExitCombat();
         }
     }
