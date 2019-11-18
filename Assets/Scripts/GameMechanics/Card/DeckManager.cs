@@ -11,6 +11,7 @@ using UnityEngine;
  * The DeckManager is referenced by the CombatController, and provides a useful interface for managing drawing, insertion, or deletion of cards
  * any given deck
  */
+ [RequireComponent(typeof(CombatController))]
 public class DeckManager : Singleton<DeckManager>
 {
     private static Dictionary<int, Card> CardsById;
@@ -50,6 +51,7 @@ public class DeckManager : Singleton<DeckManager>
     }
 
     // Draws the starter hand
+    // TODO: Refactor to merely call DrawCard()
     public bool DrawStarterHand()
     {
         _deck.ShuffleDeck();
@@ -70,6 +72,7 @@ public class DeckManager : Singleton<DeckManager>
     }
 
     // Draws a card and adds it to the deck
+    // TODO: Add implementation for discard pile and reshuffling
     public bool DrawCard(int num = 1)
     {
         Debug.Log(_hand == null);

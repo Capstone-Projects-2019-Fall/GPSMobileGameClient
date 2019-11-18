@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class Deck
 {
-    [SerializeField] private int max_size = 40;
+    private int max_size = 40;
     private List<Card> _cards;
-    private static System.Random rng = new System.Random();
 
     public int Max_Size { get => max_size; set => max_size = value; }
     public List<Card> Cards { get => _cards; }
@@ -81,7 +80,7 @@ public class Deck
         while (n > 1)
         {
             n--;
-            int k = rng.Next(n + 1);
+            int k = Random.Range(0, n + 1);
             Card value = _cards[k];
             _cards[k] = _cards[n];
             _cards[n] = value;
