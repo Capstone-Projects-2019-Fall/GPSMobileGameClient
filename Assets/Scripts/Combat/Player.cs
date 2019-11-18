@@ -35,12 +35,7 @@ public class Player : AbstractPlayer
     // Update is called once per frame
     void Update()
     {
-        if(!IsAlive && InCombat)
-        {
-            // Loads back to map scene after death
-            SceneManager.LoadScene(0);
-            endCombat();
-        }
+        
     }
 
     public void addHealth(float restoredHealth)

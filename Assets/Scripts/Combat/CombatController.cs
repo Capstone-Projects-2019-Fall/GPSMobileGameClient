@@ -24,6 +24,7 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private GameObject _enemyGO;
     [SerializeField] private Enemy enemy;
     [SerializeField] private Vector3 enemySpawnPos;
+    [SerializeField] private ColyseusClient client;
 
     private MapSchema<Entity> players;
 
@@ -94,6 +95,15 @@ public class CombatController : Singleton<CombatController>
             newString = newString + player.ToString() + '\n';
         }
         _playerList.text = newString;
+
+        // Check player and enemy condition. 
+        //Separating player and enemy because we might need to perform different requests to server.
+        if(!player.IsAlive && InCombat)
+        {
+            ExitCombat();
+        } else if (!enemy.IsAlive && InCombat){
+            ExitCombat();
+        }
     }
     
     /*IEnumerator TurnSystem()
@@ -123,6 +133,15 @@ public class CombatController : Singleton<CombatController>
 
         // Start TurnSystem
         //return null;
+    }
+
+    private void ExitCombat()
+    {
+            // Loads back to map scene after death
+            SceneManager.LoadScene(0);
+            enemy.endCombat();
+            player.endCombat();
+            client.LeaveRoom();
     }
 
     private void SpawnCharacters()
