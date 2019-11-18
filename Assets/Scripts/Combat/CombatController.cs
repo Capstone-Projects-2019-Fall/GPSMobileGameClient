@@ -18,6 +18,7 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private GameObject _playerGO;
     [SerializeField] private Player _player;
     [SerializeField] private Vector3 playerSpawnPos;
+    private DeckManager _deckManager;
 
     [SerializeField] private GameObject _enemyPF;
     [SerializeField] private GameObject _enemyGO;
@@ -68,6 +69,7 @@ public class CombatController : Singleton<CombatController>
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
         _playerGO = Instantiate(_playerPF, playerSpawnPos, Quaternion.identity);
         _player = _playerGO.GetComponent<Player>();
+        _deckManager = _playerGO.GetComponent<DeckManager>();
 
         // TODO: Query enemy type from web API
         _enemyPF = Resources.Load<GameObject>("Prefabs/Enemies/HeavyVirus");
@@ -85,6 +87,8 @@ public class CombatController : Singleton<CombatController>
         cardEXgo.transform.SetParent(_handZone);
         cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
         cardEXgo.transform.localScale = new Vector3(1, 1, 1);
+
+        StartCoroutine(TurnSystem());
     }
 
     // Update is called once per frame
@@ -93,18 +97,20 @@ public class CombatController : Singleton<CombatController>
 
     }
     
-    /*IEnumerator TurnSystem()
+    IEnumerator TurnSystem()
     {
+        yield return new WaitForSeconds(0.5f);
         // Start phase
 
         // Action phase
-
+        _deckManager.DrawStarterHand();
+        Debug.Log(_deckManager.Hand.DisplayDeck());
         // End phase
 
         // Send Delta
 
         // Enemy phase
-    }*/
+    }
 
     private void StartPhase()
     {

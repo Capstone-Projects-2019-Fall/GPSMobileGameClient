@@ -35,7 +35,6 @@ public class Player : AbstractEntity
         CurrentExp = 0;
         Gold = 0;
         _buffHandler = gameObject.GetComponent<BuffHandler>();
-        Debug.Log(_buffHandler == null);
         // TODO: Call server to get player values?
     }
 
@@ -67,7 +66,6 @@ public class Player : AbstractEntity
      */
     public override void executeAttack(AbstractEntity entity, float attack_damage)
     {
-        Debug.Log(_buffHandler == null);
         float attackModifier = _buffHandler.calculateAttackModifier();
         entity.damageReceived(attack_damage * attackModifier);
     }

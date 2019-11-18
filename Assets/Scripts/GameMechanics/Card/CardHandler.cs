@@ -26,6 +26,9 @@ public class CardHandler : MonoBehaviour
         {
             _myCard.playCard(p, e);
             gameObject.Destroy();
+        } else
+        {
+            Debug.Log("Not enough Memory to play that card!");
         }
     }
 }
