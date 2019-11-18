@@ -26,10 +26,6 @@ public class DeckManager : MonoBehaviour
         deck = new Deck(randCards);
         nonexhaustedDeck = new Deck(deck);
 
-        foreach(Card c in nonexhaustedDeck.Cards)
-        {
-            Debug.Log(c.Name);
-        }
     }
 
     // Update is called once per frame

@@ -34,10 +34,4 @@ public class Strike : Card, ICardInterface
             Debug.LogFormat("End of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
         }        
     }
-
-    // Initializes this card
-    protected override void Awake()
-    {
-
-    }
 }

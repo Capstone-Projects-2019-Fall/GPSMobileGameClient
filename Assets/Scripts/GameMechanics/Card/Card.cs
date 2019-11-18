@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 
 [CreateAssetMenu(menuName ="Card")]
-public abstract class Card : MonoBehaviour, ICardInterface
+public abstract class Card : ICardInterface
 {
     abstract public int Id { get; }
     abstract public string Name { get; }
@@ -18,5 +18,4 @@ public abstract class Card : MonoBehaviour, ICardInterface
     public virtual void playCard(Player p, Enemy e) { }
     
     // Initializes this card
-    protected virtual void Awake() { }
 }

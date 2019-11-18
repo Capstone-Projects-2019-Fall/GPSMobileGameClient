@@ -16,12 +16,12 @@ public class CombatController : Singleton<CombatController>
     // fields
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
-    [SerializeField] private Player player;
+    [SerializeField] private Player _player;
     [SerializeField] private Vector3 playerSpawnPos;
 
     [SerializeField] private GameObject _enemyPF;
     [SerializeField] private GameObject _enemyGO;
-    [SerializeField] private Enemy enemy;
+    [SerializeField] private Enemy _enemy;
     [SerializeField] private Vector3 enemySpawnPos;
 
     private Transform _handZone;
@@ -36,13 +36,13 @@ public class CombatController : Singleton<CombatController>
     }
     public Player Player
     {
-        get => player;
-        set => player = value;
+        get => _player;
+        set => _player = value;
     }
     public Enemy Enemy
     {
-        get => enemy;
-        set => enemy = value;
+        get => _enemy;
+        set => _enemy = value;
     }
 
     public cState clientState;
@@ -66,14 +66,13 @@ public class CombatController : Singleton<CombatController>
 
         // Instantitate player and enemy
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
-        player = _playerPF.GetComponent<Player>();
         _playerGO = Instantiate(_playerPF, playerSpawnPos, Quaternion.identity);
+        _player = _playerGO.GetComponent<Player>();
 
         // TODO: Query enemy type from web API
-        _enemyPF = Resources.Load<GameObject>("Prefabs/Enemies/Enemy");
-        enemy = _enemyPF.GetComponent<Enemy>();
+        _enemyPF = Resources.Load<GameObject>("Prefabs/Enemies/HeavyVirus");
         _enemyGO = Instantiate(_enemyPF, enemySpawnPos, Quaternion.identity);
-
+        _enemy = _enemyGO.GetComponent<VirusHeavy>();
     }
 
     // Start is called before the first frame update

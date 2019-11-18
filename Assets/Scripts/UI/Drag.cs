@@ -7,32 +7,18 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 {
     public Transform returnParent = null;
 
-    private CombatController co;
-
-    private Card myCard;
-
-    private GameObject player;
-    private Player p;
-
-    private GameObject enemy;
-    private Enemy e;
+    private CombatController _cc;
+    private CardHandler _ch;
 
     private void Awake()
     {
-
+        _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+        _ch = gameObject.GetComponent<CardHandler>();
     }
 
     private void Start()
     {
-        co = GameObject.Find("CombatUtils").GetComponent<CombatController>();
 
-        myCard = gameObject.GetComponent<Card>();
-
-        player = co.PlayerGO;
-        enemy = co.EnemyGO;
-
-        p = player.GetComponent<Player>();
-        e = enemy.GetComponent<Enemy>();
     }
 
     public void OnBeginDrag(PointerEventData data)
@@ -55,8 +41,7 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         GetComponent<CanvasGroup>().blocksRaycasts = true;
         if(returnParent.name == "PlayZone")
         {
-            myCard.playCard(p, e);
-            gameObject.Destroy();
+            _ch.PlayCard(_cc.Player, _cc.Enemy);
         }
     }
     

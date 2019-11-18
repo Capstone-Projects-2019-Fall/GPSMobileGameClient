@@ -55,8 +55,8 @@ public static class CardFactory
         // Obtain template and instantiate
         GameObject cardPF = Resources.Load<GameObject>("Prefabs/UI/Card");
         GameObject cardGO = MonoBehaviour.Instantiate(cardPF);
-        Card cardComp = cardGO.GetComponent<Card>();
-        cardComp = card;
+
+        cardGO.GetComponent<CardHandler>().MyCard = card; // update the CardHandler component of the Card prefab
         Transform trans = cardGO.transform; // Used to look up child objects more easily
 
         // Populate elements

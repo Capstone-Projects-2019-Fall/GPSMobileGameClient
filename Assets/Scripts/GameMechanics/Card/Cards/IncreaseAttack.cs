@@ -24,10 +24,4 @@ public class IncreaseAttack : Card, ICardInterface
             player.Memory -= MemoryCost;
         }
     }
-
-    // Initializes this card
-    protected override void Awake()
-    {
-
-    }
 }
