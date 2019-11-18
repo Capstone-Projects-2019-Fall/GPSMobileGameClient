@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 
 // This class is the Player component of the gameObject.
-[RequireComponent(typeof(DeckManager))]
 public class Player : AbstractEntity
 {
     private int userId;
@@ -18,6 +17,8 @@ public class Player : AbstractEntity
     private System.Random rand = new System.Random();
     private BuffHandler _buffHandler;
 
+    #region Accessors -----------------------------------------------------------------------------------
+
     public int UserId { get => userId; set => userId = value; }
     public string Username { get => username; set => username = value; }
     public int Level { get => level; set => level = value; }
@@ -26,6 +27,8 @@ public class Player : AbstractEntity
     public DeckManager DeckManager { get => deckManager; set => deckManager = value; }
     public List<Item> Inventory { get => inventory; set => inventory = value; }
     public BuffHandler BuffHandler { get => _buffHandler; set => _buffHandler = value; }
+
+    #endregion ------------------------------------------------------------------------------------------
 
     // Initializes the player with the default stats of AbstractEntity.
     protected override void Awake()
@@ -68,7 +71,7 @@ public class Player : AbstractEntity
     // Initializes the player
     private void InitializePlayer()
     {
-        deckManager = gameObject.GetComponent<DeckManager>(); 
+
     }
     
 }

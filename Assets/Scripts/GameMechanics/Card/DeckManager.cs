@@ -14,12 +14,10 @@ using UnityEngine;
  [RequireComponent(typeof(CombatController))]
 public class DeckManager : Singleton<DeckManager>
 {
-    private static Dictionary<int, Card> CardsById;
-    private Deck _deck;
-    private Deck _nonexhaustedDeck;
-    private Deck _hand;
-    // Dictates how many cards the starting hand should have.
-    [SerializeField] private int start_amount = 5;
+    private Deck _deck;  // The deck currently being used in combat
+    private Deck _nonexhaustedDeck; // An 'image' of the deck that players left their home base with
+    private Deck _hand; // All the cards currently in the player's hand
+    [SerializeField] private int _startAmount = 5; // Dictates how many cards the starting hand should have.
 
     #region Accessors ----------------------------------------------------------------------------------
 
@@ -33,61 +31,44 @@ public class DeckManager : Singleton<DeckManager>
         get => _hand;
     }
     public int Start_Amount {
-        get => start_amount;
-        set => start_amount = value;
+        get => _startAmount;
+        set => _startAmount = value;
     }
 
     #endregion ------------------------------------------------------------------------------------------
 
-    System.Random rand = new System.Random();
-
     // Start is called before the first frame update
+    // Currently generating a random deck for testing purposes
     void Start()
     {
         List<Card> randCards = GenerateRandomCardList(40);
         _hand = new Deck();
         _deck = new Deck(randCards);
         _nonexhaustedDeck = new Deck(_deck);
+        _deck.ShuffleDeck();
+
     }
 
     // Draws the starter hand
     // TODO: Refactor to merely call DrawCard()
-    public bool DrawStarterHand()
+    public void DrawStarterHand()
     {
-        _deck.ShuffleDeck();
-
-        if(_deck.Cards.Count == 0)
+        for(int i=0; i < _startAmount; i++)
         {
-            return false;
-        } else
-        {
-            int i = 0;
-            while(i<start_amount)
-            {
-                _hand.AddCard(_deck.DrawCard());
-                i++;
-            }
-            return true;
+            DrawCard();
         }
     }
 
     // Draws a card and adds it to the deck
     // TODO: Add implementation for discard pile and reshuffling
-    public bool DrawCard(int num = 1)
+    public bool DrawCard()
     {
-        Debug.Log(_hand == null);
         if (_deck.Cards.Count == 0)
         {
             return false;
-        }
-        else
+        } else
         {
-            int i = 0;
-            while(i < num && _deck.Cards.Count != 0)
-            {
-                _hand.AddCard(_deck.DrawCard());
-                i++;
-            }
+            _hand.AddCard(_deck.DrawCard());
             return true;
         }
     }

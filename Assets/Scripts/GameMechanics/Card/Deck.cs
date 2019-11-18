@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Deck
 {
-    private int max_size = 40;
+    private int _maxSize = 40;
     private List<Card> _cards;
 
-    public int Max_Size { get => max_size; set => max_size = value; }
+    public int Max_Size { get => _maxSize; set => _maxSize = value; }
     public List<Card> Cards { get => _cards; }
 
     #region Deck constructors ---------------------------------------------------------------------------
@@ -50,7 +50,7 @@ public class Deck
     // Adds card to list
     public void AddCard(Card card)
     {
-        if(_cards.Count > max_size)
+        if(_cards.Count > _maxSize)
         {
             return;
         } else

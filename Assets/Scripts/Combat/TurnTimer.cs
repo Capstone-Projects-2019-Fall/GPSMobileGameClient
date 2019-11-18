@@ -7,6 +7,7 @@ using UnityEngine;
  * The TurnTimer is a simple utility object used within the context of the TurnSystem to signal when a player's turn ends
  * TurnTimer has a simple event system associated with it that can notify subscribers when its timer expires.
  */
+ [RequireComponent(typeof(CombatController))]
 public class TurnTimer : Singleton<TurnTimer>
 {
     public const float TURN_DURATION = 20.0f; // Maximum number of seconds per turn

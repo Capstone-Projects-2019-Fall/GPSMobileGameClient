@@ -4,7 +4,8 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-public class UIController : MonoBehaviour
+[RequireComponent(typeof(CombatController))]
+public class UIController : Singleton<UIController>
 {
     [SerializeField] private Text cardsInDeck;
     [SerializeField] private Image enemyHealth;
