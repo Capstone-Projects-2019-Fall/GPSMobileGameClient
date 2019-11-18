@@ -5,16 +5,20 @@ using UnityEngine.UI;
 
 public class CardManager : MonoBehaviour
 {
-    public Text title;
+    /*public Text title;
     public Text detail;
     public Text flavor;
-    public Image art;
+    public Image art;*/
 
     public Card card;
 
+    private void Awake()
+    {
+       
+    }
+
     private void Start()
     {
-        LoadCard(card);
     }
 
     public void LoadCard(Card c)
@@ -24,10 +28,14 @@ public class CardManager : MonoBehaviour
             return;
         }
         card = c;
-        title.text = c.Name;
-        detail.text = c.Detail;
-        flavor.text = c.Flavor;
-        art.sprite = c.art;
+        /*title.text = card.Name;
+        detail.text = card.Detail;
+        flavor.text = card.Flavor;
+        art.sprite = card.art;*/
     }
-    
+
+    public void handleCard(Player p, Enemy e)
+    {
+        card.playCard(p, e);
+    }
 }

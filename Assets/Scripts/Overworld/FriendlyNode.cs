@@ -68,7 +68,7 @@ public class FriendlyNode : NodeStructure, IRadialArea
         SubscribeExit();
     }
 
-    public override void OnClicked()
+    public override void OnClicked(string nodeIdentifier)
     {
         Debug.Log("Friendly OnClicked!");
     }

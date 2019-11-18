@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 
 [CreateAssetMenu(menuName ="Card")]
-public class Card : ScriptableObject
+public class Card : ScriptableObject, ICardInterface
 {
     [SerializeField] private int id;
     [SerializeField] private string cardName;
@@ -44,6 +44,8 @@ public class Card : ScriptableObject
         Level = level;
         MemoryCost = mem_cost;
     }
+
+    public virtual void playCard(Player p, Enemy e) { }
 
     // Start is called before the first frame update
     void Start()
