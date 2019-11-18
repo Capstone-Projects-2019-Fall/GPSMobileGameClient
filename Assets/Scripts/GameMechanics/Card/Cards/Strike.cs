@@ -8,12 +8,14 @@ public class Strike : Card, ICardInterface
     {
     }
 
-    public void playCard(Player player, Enemy enemy)
+    public override void playCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
         {
+            Debug.LogFormat("Start of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
             player.executeAttack(enemy, 20);
             player.Memory -= MemoryCost;
+            Debug.LogFormat("End of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
         }        
     }
 }

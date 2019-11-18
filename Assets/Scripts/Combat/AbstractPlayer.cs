@@ -28,12 +28,17 @@ public abstract class AbstractPlayer : MonoBehaviour
         IsAlive = true;
     }
 
+    private void Awake()
+    {
+        buffHandler = gameObject.AddComponent<BuffHandler>();
+    }
+
     public virtual void executeAttack(AbstractPlayer entity, float attack_damage)
     {
         float attackModifier = buffHandler.calculateAttackModifier();
         entity.damageReceived(attack_damage * attackModifier);
     }
-
+    
     public virtual void damageReceived(float damage)
     {
         float defenseModifier = buffHandler.calculateDefenseModifier();
