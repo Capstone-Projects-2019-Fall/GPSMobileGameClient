@@ -358,13 +358,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d90b16564554bd439e9780fe21c289b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _uiCanvas: {fileID: 0}
+  _handZone: {fileID: 0}
+  _playZone: {fileID: 0}
   _deck: {fileID: 0}
   _cardsInDeck: {fileID: 0}
-  _enemyHealth: {fileID: 0}
-  _playerHealth: {fileID: 0}
-  _memory: {fileID: 0}
+  _eHealth: {fileID: 0}
+  _eHealthFill: {fileID: 0}
+  _pHealth: {fileID: 0}
+  _pHealthFill: {fileID: 0}
+  _memBar: {fileID: 0}
+  _memBarFill: {fileID: 0}
   _runAway: {fileID: 0}
-  _items: {fileID: 0}
 --- !u!1 &665993265
 GameObject:
   m_ObjectHideFlags: 0
