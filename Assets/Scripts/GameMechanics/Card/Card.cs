@@ -5,7 +5,7 @@ using UnityEngine.Networking;
 
 
 [CreateAssetMenu(menuName ="Card")]
-public abstract class Card : ICardInterface
+public abstract class Card : MonoBehaviour, ICardInterface
 {
     abstract public int Id { get; }
     abstract public string Name { get; }
@@ -41,6 +41,7 @@ public abstract class Card : ICardInterface
         string json = "\"cardname\": " + CardName + ",\n\"isrefresh\": " + isRefresh.ToString();
         StartCoroutine(PostRequest("https://gps-mobile-game-server.herokuapp.com/user/deck", json));
     }
+
     IEnumerator PostRequest(string uri, string json)
     {
         var uwr = new UnityWebRequest(uri, "POST");

@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 /* CombatContoller Description:
@@ -26,9 +27,11 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Vector3 enemySpawnPos;
     [SerializeField] private ColyseusClient client;
 
+    [SerializeField] private Text _playerList;
     private Transform _handZone;
     private MapSchema<Entity> players;
     private TurnTimer _timer;
+    
 
     public GameObject PlayerGO {
         get => _playerGO;
@@ -63,6 +66,7 @@ public class CombatController : Singleton<CombatController>
 
         // UI references and initializations
         _handZone = GameObject.Find("Combat UI").transform.Find("HandZone").transform;
+        _playerList = GameObject.Find("Combat UI").transform.Find("PlayerList").GetComponent<Text>();
         _timer = gameObject.GetComponent<TurnTimer>(); // get reference to timer
         _timer.TimeExpired += OnTimeExpired; // subscribe to its TimeExpired event
 
@@ -103,10 +107,10 @@ public class CombatController : Singleton<CombatController>
 
         // Check player and enemy condition. 
         //Separating player and enemy because we might need to perform different requests to server.
-        if(!player.IsAlive && InCombat)
+        if(!_player.IsAlive && InCombat)
         {
             ExitCombat();
-        } else if (!enemy.IsAlive && InCombat){
+        } else if (!_enemy.IsAlive && InCombat){
             ExitCombat();
         }
     }
@@ -159,8 +163,8 @@ public class CombatController : Singleton<CombatController>
     {
             // Loads back to map scene after death
             SceneManager.LoadScene(0);
-            enemy.endCombat();
-            player.endCombat();
+            _enemy.endCombat();
+            _player.endCombat();
             client.LeaveRoom();
     }
 
