@@ -138,8 +138,6 @@ public static class NodeFactory
     //Experimental Node creational method
     public static GameObject nCreateNode(string locString, NodeStructure nodeStruct)
     {
-        Debug.Log("In nCreateNode");
-
         GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/nNode");
         GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
         Node nodeCode = nodeInstance.GetComponent<Node>();
@@ -153,8 +151,6 @@ public static class NodeFactory
     //Experimental Node creational method
     public static GameObject nCreateNode(string locString, NodeStructure nodeStruct, string name)
     {
-        Debug.Log("In nCreateNode");
-
         GameObject nodePrefab = Resources.Load<GameObject>("Prefabs/nNode");
         GameObject nodeInstance = MonoBehaviour.Instantiate(nodePrefab);
         Node nodeCode = nodeInstance.GetComponent<Node>();
