@@ -7,7 +7,7 @@
 
 using Colyseus.Schema;
 
-public class Entity : Schema {
+public class ColyseusPlayer : Schema {
 	[Type(0, "string")]
 	public string name = "";
 

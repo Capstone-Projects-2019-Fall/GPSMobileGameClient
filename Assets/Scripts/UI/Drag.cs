@@ -9,7 +9,7 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
     private CombatController co;
 
-    private CardManager myCard;
+    private Card myCard;
 
     private GameObject player;
     private Player p;
@@ -24,9 +24,9 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 
     private void Start()
     {
-        co = GameObject.Find("CombatController").GetComponent<CombatController>();
+        co = GameObject.Find("CombatUtils").GetComponent<CombatController>();
 
-        myCard = gameObject.GetComponent<CardManager>();
+        myCard = gameObject.GetComponent<Card>();
 
         player = co.PlayerGO;
         enemy = co.EnemyGO;
@@ -55,7 +55,7 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         GetComponent<CanvasGroup>().blocksRaycasts = true;
         if(returnParent.name == "PlayZone")
         {
-            myCard.handleCard(p, e);
+            myCard.playCard(p, e);
             gameObject.Destroy();
         }
     }

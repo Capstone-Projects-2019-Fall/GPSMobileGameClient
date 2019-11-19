@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class Heal : Card, ICardInterface
 {
-    public Heal() : base(id: 1, name: "Heal 1", detail: "Restores 30 HP.", cardFlavor: "", level: 1, mem_cost: 3)
-    {
-    }
 
     public override void playCard(Player player, Enemy enemy)
     {
@@ -15,5 +12,16 @@ public class Heal : Card, ICardInterface
             player.addHealth(30.0f);
             player.Memory -= MemoryCost;
         }
+    }
+
+    // Initializes this card
+    protected override void Awake()
+    {
+        Id = 1;
+        Name = "Heal 1";
+        Detail = "Restores 30 HP.";
+        Flavor = "";
+        Level = 1;
+        MemoryCost = 3;
     }
 }
