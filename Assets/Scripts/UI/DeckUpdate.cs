@@ -25,7 +25,7 @@ public class DeckUpdate : MonoBehaviour
 
     public void GetNumCards(Deck deck)
 	{
-		max = deck.MaxSize;
+		max = deck.MaxLength;
 	}
 
 	public void SetText(string text)

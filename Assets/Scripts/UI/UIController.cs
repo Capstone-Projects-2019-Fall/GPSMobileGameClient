@@ -7,6 +7,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(CombatController))]
 public class UIController : Singleton<UIController>
 {
+    private CombatController _cc;                   // The CombatController
     [SerializeField] private GameObject _uiCanvas;  // The UI canvas; highest level UI object in the hierarchy
 
     [SerializeField] private Transform _handZone;   // the screen region that drawn cards will populate
@@ -25,6 +26,11 @@ public class UIController : Singleton<UIController>
     [SerializeField] private GameObject _runAway;   // run away button
     // [SerializeField] private GameObject _items;     // button that accesses inventory (TODO)
 
+    // Useful local variables
+    private int _currentNumCards;
+    private int _totalNumCards;
+    
+
     #region Accessors --------------------------------------------------------------------------------------------------
     public Transform HandZone {
         get => _handZone;
@@ -32,14 +38,23 @@ public class UIController : Singleton<UIController>
     public Transform PlayZone {
         get => _playZone;
     }
+    public int CurrentNumCards {
+        get => _currentNumCards;
+    }
+    public int TotalNumCards {
+        get => _totalNumCards;
+        set => _totalNumCards = value;
+    }
 
     #endregion ---------------------------------------------------------------------------------------------------------
 
+    #region UIController Responsibilities ------------------------------------------------------------------------------
 
     private void Awake()
     {
         // Get references to UI elements
         _uiCanvas = GameObject.Find("CombatUI");
+        _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
 
         _handZone = _uiCanvas.transform.Find("HandZone");
         _playZone = _uiCanvas.transform.Find("PlayZone");
@@ -55,6 +70,10 @@ public class UIController : Singleton<UIController>
         _memBarFill = _eHealth.transform.Find("antifill").GetComponent<Image>();
 
         _runAway = _uiCanvas.transform.Find("Run").gameObject;
+
+
+        // Subscribe to CombatController event system
+        _cc.CardsDrawn += OnCardsDrawnAction;
 
 
         // Validate all UI resources are loaded properly
@@ -74,10 +93,12 @@ public class UIController : Singleton<UIController>
         Assert.IsNotNull(_memBarFill);
 
         Assert.IsNotNull(_runAway);
-    }
 
+    }
+    
     public void UpdateCardsInDeck(int current, int total)
     {
+        _currentNumCards = current;
         _cardsInDeck.text = current.ToString() + " / " + total.ToString();
     }
 
@@ -103,5 +124,17 @@ public class UIController : Singleton<UIController>
         //updatePlayerHealth(.5f);
         //updateMemory(.6f);
     }
+
+    #endregion ----------------------------------------------------------------------------------------------------------
+
+    #region Event Handlers/Subscribers ----------------------------------------------------------------------------------
+
+    private void OnCardsDrawnAction(object sender, DrawEventArgs e)
+    {
+        UpdateCardsInDeck((_currentNumCards - e.NumCards), _totalNumCards);
+    }
+
+
+    #endregion ----------------------------------------------------------------------------------------------------------
 
 }
