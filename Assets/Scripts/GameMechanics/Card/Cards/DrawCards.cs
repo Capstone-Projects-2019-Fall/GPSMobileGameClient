@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class DrawCards : Card, ICardInterface
 {
+    public override int Id => 2;
+
+    public override string Name => "DrawCards";
+
+    public override string Detail => "Draw 1 card from your deck";
+
+    public override string Flavor => "Recursion!";
+
+    public override int Level => 1;
+
+    public override int MemoryCost => 1;
 
     public override void playCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
         {
-            player.DeckManager.DrawCard(1);
+            _cc.DrawCards(1);
             player.Memory -= MemoryCost;
         }
-    }
-
-    // Initializes this card
-    protected override void Awake()
-    {
-        Id = 2;
-        Name = "Draw Cards 1";
-        Detail = "Draw 1 additional Card.";
-        Flavor = "";
-        Level = 1;
-        MemoryCost = 1;
     }
 }

@@ -13,4 +13,9 @@ public class Healthbar : MonoBehaviour
         healthBarFill = transform.Find("fill").GetComponent<Image>();
 
     }
+
+    public void updateHealthbar(float fill)
+    {
+        healthBarFill.transform.Find("fill").GetComponent<Image>().fillAmount = fill;
+    }
 }

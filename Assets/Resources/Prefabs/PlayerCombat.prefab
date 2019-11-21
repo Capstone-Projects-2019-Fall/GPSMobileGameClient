@@ -10,8 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5530716241906068383}
   - component: {fileID: 2239972480681135700}
-  - component: {fileID: 3876214459689043510}
-  - component: {fileID: 2738877799284956322}
   - component: {fileID: 582973844230494877}
   m_Layer: 0
   m_Name: PlayerCombat
@@ -47,32 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buffList: []
---- !u!114 &3876214459689043510
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291738551950197591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2706fb64d6d286f409f931c09897c21d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  max_size: 40
---- !u!114 &2738877799284956322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 291738551950197591}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d2c5c3a36816c6749be54c18f5129f00, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  start_amount: 5
 --- !u!114 &582973844230494877
 MonoBehaviour:
   m_ObjectHideFlags: 0

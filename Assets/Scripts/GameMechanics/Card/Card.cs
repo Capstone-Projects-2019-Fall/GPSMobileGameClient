@@ -1,37 +1,58 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Assertions;
 using UnityEngine.Networking;
 
 
 [CreateAssetMenu(menuName ="Card")]
 public abstract class Card : MonoBehaviour, ICardInterface
 {
-    [SerializeField] private int id;
-    [SerializeField] private string cardName;
-    [SerializeField] private string cardDetail;
-    [SerializeField] private string cardFlavor;
-    public Sprite art;
-    [SerializeField] private int level;
-    [SerializeField] private int memoryCost;
+    // abstract fields; to be overriden by individual card types
+    abstract public int Id { get; }
+    abstract public string Name { get; }
+    abstract public string Detail { get; }
+    abstract public string Flavor { get; }
+    abstract public int Level { get; }
+    abstract public int MemoryCost { get; }
+    //abstract public Sprite CardSprite { get; }
 
-    public int Id { get => id; set => id = value; }
-    public string Name { get => cardName; set => cardName = value; }
-    public string Detail { get => cardDetail; set => cardDetail = value; }
-    public string Flavor { get => cardFlavor; set => cardFlavor = value; }
-    public int Level { get => level; set => level = value; }
-    public int MemoryCost { get => memoryCost; set => memoryCost = value; }
+    // shared fields; common among all cards
+    static public CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
     
     public virtual void playCard(Player p, Enemy e) { }
-    
+
     // Initializes this card
-    protected virtual void Awake()
+
+    private void Awake()
     {
-        Id = -1;
-        Name = "Null Card";
-        Detail = "Null card.";
-        Flavor = "How the heck did this card get generated??";
-        Level = 1;
-        MemoryCost = 1;
+        Assert.IsNotNull(_cc);
     }
+
+    /*
+    public bool Card_pp(string CardName, bool isRefresh)
+    {
+        string json = "\"cardname\": " + CardName + ",\n\"isrefresh\": " + isRefresh.ToString();
+        StartCoroutine(PostRequest("https://gps-mobile-game-server.herokuapp.com/user/deck", json));
+    }
+
+    IEnumerator PostRequest(string uri, string json)
+    {
+        var uwr = new UnityWebRequest(uri, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(json);
+        uwr.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+        uwr.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        uwr.SetRequestHeader("Content-Type", "application/json");
+
+        //Send the request then wait here until it returns
+        yield return uwr.SendWebRequest();
+
+        if (uwr.isNetworkError)
+        {
+            Debug.Log("Error While Sending: " + uwr.error);
+        }
+        else
+        {
+            Debug.Log("Received: " + uwr.downloadHandler.text);
+            pp = Int32.Parse(uwr.downloadHandler.text);
+        }
+    }*/
 }

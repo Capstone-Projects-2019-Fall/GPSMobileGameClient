@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 
 // This class is the Player component of the gameObject.
-[RequireComponent(typeof(DeckManager))]
 public class Player : AbstractEntity
 {
     private int userId;
@@ -16,6 +15,9 @@ public class Player : AbstractEntity
     private DeckManager deckManager;
     private List<Item> inventory;
     private System.Random rand = new System.Random();
+    private BuffHandler _buffHandler;
+
+    #region Accessors -----------------------------------------------------------------------------------
 
     public int UserId { get => userId; set => userId = value; }
     public string Username { get => username; set => username = value; }
@@ -24,6 +26,9 @@ public class Player : AbstractEntity
     public int Gold { get => gold; set => gold = value; }
     public DeckManager DeckManager { get => deckManager; set => deckManager = value; }
     public List<Item> Inventory { get => inventory; set => inventory = value; }
+    public BuffHandler BuffHandler { get => _buffHandler; set => _buffHandler = value; }
+
+    #endregion ------------------------------------------------------------------------------------------
 
     // Initializes the player with the default stats of AbstractEntity.
     protected override void Awake()
@@ -32,6 +37,7 @@ public class Player : AbstractEntity
         Level = 1;
         CurrentExp = 0;
         Gold = 0;
+        _buffHandler = gameObject.GetComponent<BuffHandler>();
         // TODO: Call server to get player values?
     }
 
@@ -44,12 +50,7 @@ public class Player : AbstractEntity
     // Update is called once per frame
     void Update()
     {
-        if(!IsAlive && InCombat)
-        {
-            // Loads back to map scene after death
-            SceneManager.LoadScene(0);
-            endCombat();
-        }
+        
     }
 
     // Adds health to the player
@@ -58,10 +59,18 @@ public class Player : AbstractEntity
         Health += restoredHealth;
     }
 
+    /* Executes an attack against another entity.
+     * Need to override because the reference defined in AbstractEntity will throw a NullRef
+     */
+    public override void executeAttack(AbstractEntity entity, float attack_damage)
+    {
+        float attackModifier = _buffHandler.calculateAttackModifier();
+        entity.damageReceived(attack_damage * attackModifier);
+    }
+
     // Initializes the player
     private void InitializePlayer()
     {
-        deckManager = gameObject.GetComponent<DeckManager>(); 
 
     }
     
