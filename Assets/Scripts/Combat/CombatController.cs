@@ -140,14 +140,16 @@ public class CombatController : Singleton<CombatController>
     public void DrawCards(int numCards)
     {
         DrawEventArgs args = new DrawEventArgs { NumCards = numCards };
+        _uiCont.UpdateCardsInDeck(_deckManager.Deck.CurrentLength - numCards, _deckManager.Deck.MaxLength);
         OnCardsDrawn(args);
     }
     #endregion ---------------------------------------------------------------------------------------------------
 
+    // Enum representing all of the important states that the client can occupy during the runtime of the TurnSystem.
     public cState clientState;
     public enum cState
     {
-        CanTakeActions, Busy
+        Active, Busy, WaitingForServer
     }
 
     // methods
@@ -159,6 +161,10 @@ public class CombatController : Singleton<CombatController>
         CardFactory.InitializeFactory();
         _uiCont = gameObject.GetComponent<UIController>(); // reference to UIController
         _timer = gameObject.GetComponent<TurnTimer>(); // reference to timer
+        _deckManager = gameObject.GetComponent<DeckManager>(); // reference to deck manager
+
+        // Send data to static classes and singletons
+        _uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
 
         // Event subscriptions
         _timer.TimeExpired += OnTimeExpired; // subscribe to the timer's TimeExpired event
@@ -170,7 +176,6 @@ public class CombatController : Singleton<CombatController>
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
         _playerGO = Instantiate(_playerPF, playerSpawnPos, Quaternion.identity);
         _player = _playerGO.GetComponent<Player>();
-        _deckManager = _playerGO.GetComponent<DeckManager>();
 
         // TODO: Query enemy type from web API
         _enemyPF = Resources.Load<GameObject>("Prefabs/Enemies/HeavyVirus");
@@ -188,6 +193,13 @@ public class CombatController : Singleton<CombatController>
         cardEXgo.transform.SetParent(_uiCont.HandZone);
         cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
         cardEXgo.transform.localScale = new Vector3(1, 1, 1);
+
+        Card cardEX1 = CardFactory.CreateCard(2);
+        GameObject cardEX1go = CardFactory.CreateCardGameObject(cardEX1);
+
+        cardEX1go.transform.SetParent(_uiCont.HandZone);
+        cardEX1go.transform.localPosition = new Vector3(0, 0, 0);
+        cardEX1go.transform.localScale = new Vector3(1, 1, 1);
 
         StartCoroutine(TurnSystem());
     }
@@ -207,11 +219,10 @@ public class CombatController : Singleton<CombatController>
     
     IEnumerator TurnSystem()
     {
-        yield return new WaitForSeconds(0.5f);
-        // Start phase
-
+        yield return new WaitForSeconds(0.2f);
+        StartPhase(); 
+        
         // Action phase
-        DrawCards(_startingHandSize);
         Debug.Log(_deckManager.Hand.DisplayDeck());
         // End phase
 
@@ -223,11 +234,12 @@ public class CombatController : Singleton<CombatController>
     private void StartPhase()
     {
         DrawCards(_startingHandSize);
+        _timer.StartTimer();
     }
 
     private void ActionPhase()
     {
-        clientState = cState.CanTakeActions;
+        clientState = cState.Active;
     }
 
     private void EndPhase()
@@ -266,7 +278,7 @@ public class CombatController : Singleton<CombatController>
 
     public void OnTimeExpired(object sender, EventArgs e)
     {
-
+        clientState = cState.Active;
     }
 
     /*
