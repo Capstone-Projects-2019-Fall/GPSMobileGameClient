@@ -169,14 +169,14 @@ public class CombatController : Singleton<CombatController>
         _deckManager = gameObject.GetComponent<DeckManager>(); // reference to deck manager
 
         // Send data to static classes and singletons
-        _uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
+        //_uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
 
         // Event subscriptions
         _timer.TimeExpired += OnTimeExpired; // subscribe to the timer's TimeExpired event
 
         // Set local private variables
         _startingHandSize = 5;
-        _playerList = GameObject.Find("Combat UI").transform.Find("PlayerList").gameObject.GetComponent<Text>();
+        _playerList = GameObject.Find("CombatUI").transform.Find("PlayerList").gameObject.GetComponent<Text>();
 
         // Instantitate player and enemy
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
@@ -241,6 +241,7 @@ public class CombatController : Singleton<CombatController>
 
     private void StartPhase()
     {
+        Delta.Reset();
         DrawCards(_startingHandSize);
         _timer.StartTimer();
     }
@@ -257,9 +258,10 @@ public class CombatController : Singleton<CombatController>
 
     private void InitializeCombat()
     {
+        Debug.LogFormat("Player: {0}\nRoom:{1}", _player.Username, Node.getLastClickedNodename());
         // Connect to combat instance        
         //client = new ColyseusClient();
-        //client.JoinOrCreateRoom("Bob", "Node_1", OnStateChangeHandler);
+        //client.JoinOrCreateRoom(_player.Username, Node.getLastClickedNodename(), OnStateChangeHandler);
             // Read combat state
 
         // Spawn monster and player prefabs with state data

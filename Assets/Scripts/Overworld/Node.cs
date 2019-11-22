@@ -23,6 +23,7 @@ public class Node : MonoBehaviour
     private LineRenderer _lineRenderer = null;
     private string _name;
 
+    private static string lastClickedNodename;
     // methods
 
     // Setter and getter for nodeStruct
@@ -61,6 +62,7 @@ public class Node : MonoBehaviour
     // When the player clicks on the Node: Behavior varies depending on which NodeStructure is attached to the Node
     private void OnMouseDown()
     {
+        lastClickedNodename = _name;
         Debug.LogFormat("Node Clicked: {0}", _name);
         _nodeStruct.OnClicked(_name);
     }
@@ -80,6 +82,11 @@ public class Node : MonoBehaviour
     private void Update()
     {
        
+    }
+
+    public static string getLastClickedNodename()
+    {
+        return lastClickedNodename;
     }
 
 }
