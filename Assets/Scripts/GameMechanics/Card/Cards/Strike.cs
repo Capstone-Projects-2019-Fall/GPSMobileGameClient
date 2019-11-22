@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Strike : Card, ICardInterface
+public class Strike : Card
 {
     public override int Id {
         get => 0;
@@ -24,13 +24,13 @@ public class Strike : Card, ICardInterface
     }
 
 
-    public override void playCard(Player player, Enemy enemy)
+    public override void PlayCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
         {
             Debug.LogFormat("Start of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
             player.ExecuteAttack(enemy, 20);
-            player.Memory -= MemoryCost;
+            _cc.ChangeMemory(-MemoryCost);
             Debug.LogFormat("End of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
         }        
     }

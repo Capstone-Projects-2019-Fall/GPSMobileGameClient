@@ -12,7 +12,7 @@ public class Player : AbstractEntity
     private string _username;
     private int _level;
     private int _currentExp;
-    private int gold;
+    private int _gold;
     private DeckManager _deckManager;
     private List<Item> _inventory;
     private BuffHandler _buffHandler;
@@ -24,7 +24,7 @@ public class Player : AbstractEntity
     public string Username { get => _username; set => _username = value; }
     public int Level { get => _level; set => _level = value; }
     public int CurrentExp { get => _currentExp; set => _currentExp = value; }
-    public int Gold { get => gold; set => gold = value; }
+    public int Gold { get => _gold; set => _gold = value; }
     public DeckManager DeckManager { get => _deckManager; set => _deckManager = value; }
     public List<Item> Inventory { get => _inventory; set => _inventory = value; }
     public BuffHandler BuffHandler { get => _buffHandler; set => _buffHandler = value; }
@@ -35,10 +35,13 @@ public class Player : AbstractEntity
     protected override void Awake()
     {
         base.Awake();
-        Level = 1;
-        CurrentExp = 0;
-        Gold = 0;
+        _memory = 10;
+        _level = 1;
+        _currentExp = 0;
+        _gold = 0;
         _buffHandler = gameObject.GetComponent<BuffHandler>();
+
+
         // TODO: Call server to get player values?
     }
 
@@ -66,7 +69,7 @@ public class Player : AbstractEntity
     public override void ExecuteAttack(AbstractEntity entity, float attack_damage)
     {
         float attackModifier = _buffHandler.calculateAttackModifier();
-        entity.DamageReceived(attack_damage * attackModifier);
+        entity.DamageReceived   (attack_damage * attackModifier);
     }
 
     // Initializes the player

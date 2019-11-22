@@ -4,7 +4,7 @@ using UnityEngine.Networking;
 
 
 [CreateAssetMenu(menuName ="Card")]
-public abstract class Card : MonoBehaviour, ICardInterface
+public abstract class Card : MonoBehaviour
 {
     // abstract fields; to be overriden by individual card types
     abstract public int Id { get; }
@@ -18,7 +18,7 @@ public abstract class Card : MonoBehaviour, ICardInterface
     // shared fields; common among all cards
     static public CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
     
-    public virtual void playCard(Player p, Enemy e) { }
+    public virtual void PlayCard (Player p, Enemy e) { }
 
     // Initializes this card
 

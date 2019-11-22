@@ -146,7 +146,6 @@ public class CombatController : Singleton<CombatController>
     public void DrawCards(int numCards)
     {
         DrawEventArgs args = new DrawEventArgs { NumCards = numCards };
-        // _uiCont.UpdateCardsInDeck(_deckManager.Deck.CurrentLength - numCards, _deckManager.Deck.MaxLength);
         OnCardsDrawn(args);
     }
 
@@ -158,7 +157,8 @@ public class CombatController : Singleton<CombatController>
     public void ChangeMemory(int memDiff)
     {
         MemEventArgs args = new MemEventArgs { MemDiff = memDiff };
-        OnMemoryChanged(args);
+        _player.Memory += memDiff; // Change the player object's memory : Seems excessive to add event in Player class
+        OnMemoryChanged(args); 
     }
 
     #endregion ---------------------------------------------------------------------------------------------------

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IncreaseAttack : Card, ICardInterface
+public class IncreaseAttack : Card
 {
     public override int Id => 3;
 
@@ -16,12 +16,12 @@ public class IncreaseAttack : Card, ICardInterface
 
     public override int MemoryCost => 2;
 
-    public override void playCard(Player player, Enemy enemy)
+    public override void PlayCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
         {
             player.BuffReceived(new Buff(name:"1.5x Damage",attackModifier:1.5f));
-            player.Memory -= MemoryCost;
+            _cc.ChangeMemory(-MemoryCost);
         }
     }
 }

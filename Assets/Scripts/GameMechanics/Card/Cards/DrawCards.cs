@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DrawCards : Card, ICardInterface
+public class DrawCards : Card
 {
     public override int Id => 2;
 
@@ -16,12 +16,12 @@ public class DrawCards : Card, ICardInterface
 
     public override int MemoryCost => 1;
 
-    public override void playCard(Player player, Enemy enemy)
+    public override void PlayCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
         {
             _cc.DrawCards(1);
-            player.Memory -= MemoryCost;
+            _cc.ChangeMemory(-MemoryCost);
         }
     }
 }

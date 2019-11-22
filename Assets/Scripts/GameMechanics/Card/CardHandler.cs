@@ -24,7 +24,7 @@ public class CardHandler : MonoBehaviour
     {
         if(p.Memory >= _myCard.MemoryCost)
         {
-            _myCard.playCard(p, e);
+            _myCard.PlayCard(p, e);
             gameObject.Destroy();
         } else
         {

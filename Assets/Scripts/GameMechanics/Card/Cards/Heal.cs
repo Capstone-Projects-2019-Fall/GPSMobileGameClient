@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Heal : Card, ICardInterface
+public class Heal : Card
 {
     public override int Id => 1;
 
@@ -16,12 +16,12 @@ public class Heal : Card, ICardInterface
 
     public override int MemoryCost => 3;
 
-    public override void playCard(Player player, Enemy enemy)
+    public override void PlayCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
         {
             player.addHealth(30.0f);
-            player.Memory -= MemoryCost;
+            _cc.ChangeMemory(-MemoryCost);
         }
     }
 }
