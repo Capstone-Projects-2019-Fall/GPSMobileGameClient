@@ -40,6 +40,7 @@ public class UIController : Singleton<UIController>
     }
     public int CurrentNumCards {
         get => _currentNumCards;
+        set => _currentNumCards = value;
     }
     public int TotalNumCards {
         get => _totalNumCards;
@@ -74,6 +75,7 @@ public class UIController : Singleton<UIController>
 
         // Subscribe to CombatController event system
         _cc.CardsDrawn += OnCardsDrawnAction;
+        _cc.MemoryChanged += OnMemoryChangedAction;
 
 
         // Validate all UI resources are loaded properly
@@ -96,6 +98,9 @@ public class UIController : Singleton<UIController>
 
     }
     
+    /*
+     * 
+     */
     public void UpdateCardsInDeck(int current, int total)
     {
         _currentNumCards = current;
@@ -132,6 +137,11 @@ public class UIController : Singleton<UIController>
     private void OnCardsDrawnAction(object sender, DrawEventArgs e)
     {
         UpdateCardsInDeck((_currentNumCards - e.NumCards), _totalNumCards);
+    }
+
+    private void OnMemoryChangedAction(object sender, MemEventArgs e)
+    {
+        UpdateMemory(e.MemDiff);
     }
 
 

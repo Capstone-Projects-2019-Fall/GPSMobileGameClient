@@ -15,7 +15,6 @@ public class VirusMedium : Enemy
         Regen_Rate = 0;
         Att_Modifier = 1;
         Health = 75;
-        Memory = 0;
         Exp = 5;
         Loot = 6;
     }

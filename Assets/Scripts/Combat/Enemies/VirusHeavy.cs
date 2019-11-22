@@ -15,7 +15,6 @@ public class VirusHeavy : Enemy
         Regen_Rate = 0;
         Att_Modifier = 1;
         Health = 200;
-        Memory = 0;
         Exp = 10;
         Loot = 10;
     }

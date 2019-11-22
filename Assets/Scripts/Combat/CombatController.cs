@@ -118,6 +118,7 @@ public class CombatController : Singleton<CombatController>
     // delegates
     public event EventHandler<DrawEventArgs> CardsDrawn;
     public event EventHandler HealthChanged;
+    public event EventHandler<MemEventArgs> MemoryChanged;
 
     // signallers
     public void OnCardsDrawn(DrawEventArgs e)
@@ -130,6 +131,11 @@ public class CombatController : Singleton<CombatController>
         HealthChanged?.Invoke(this, e);
     }
 
+    public void OnMemoryChanged(MemEventArgs e)
+    {
+        MemoryChanged?.Invoke(this, e);
+    }
+
     // updaters & state checkers
 
     /* DrawCard Description:
@@ -140,9 +146,21 @@ public class CombatController : Singleton<CombatController>
     public void DrawCards(int numCards)
     {
         DrawEventArgs args = new DrawEventArgs { NumCards = numCards };
-        _uiCont.UpdateCardsInDeck(_deckManager.Deck.CurrentLength - numCards, _deckManager.Deck.MaxLength);
+        // _uiCont.UpdateCardsInDeck(_deckManager.Deck.CurrentLength - numCards, _deckManager.Deck.MaxLength);
         OnCardsDrawn(args);
     }
+
+    /* ChangeMemory Description:
+     * Simple wrapper method for the OnMemoryChanged event that can be called externally by other scripts (such as cards or items)
+     * Parameters:
+     *    -> int memDiff: An integer (positive or negative) that represents the change in memory
+     */
+    public void ChangeMemory(int memDiff)
+    {
+        MemEventArgs args = new MemEventArgs { MemDiff = memDiff };
+        OnMemoryChanged(args);
+    }
+
     #endregion ---------------------------------------------------------------------------------------------------
 
     // Enum representing all of the important states that the client can occupy during the runtime of the TurnSystem.
@@ -162,9 +180,6 @@ public class CombatController : Singleton<CombatController>
         _uiCont = gameObject.GetComponent<UIController>(); // reference to UIController
         _timer = gameObject.GetComponent<TurnTimer>(); // reference to timer
         _deckManager = gameObject.GetComponent<DeckManager>(); // reference to deck manager
-
-        // Send data to static classes and singletons
-        _uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
 
         // Event subscriptions
         _timer.TimeExpired += OnTimeExpired; // subscribe to the timer's TimeExpired event
@@ -186,20 +201,39 @@ public class CombatController : Singleton<CombatController>
     // Start is called before the first frame update
     void Start()
     {
-        //StartCoroutine("TurnSystem");
+        // Send data to static classes and singletons
+        _uiCont.CurrentNumCards = _deckManager.Deck.MaxLength;
+        _uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
+
         Card cardEX = CardFactory.CreateCard(0);
         GameObject cardEXgo = CardFactory.CreateCardGameObject(cardEX);
-
         cardEXgo.transform.SetParent(_uiCont.HandZone);
         cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
         cardEXgo.transform.localScale = new Vector3(1, 1, 1);
 
-        Card cardEX1 = CardFactory.CreateCard(2);
+        Card cardEX1 = CardFactory.CreateCard(1);
         GameObject cardEX1go = CardFactory.CreateCardGameObject(cardEX1);
-
         cardEX1go.transform.SetParent(_uiCont.HandZone);
         cardEX1go.transform.localPosition = new Vector3(0, 0, 0);
         cardEX1go.transform.localScale = new Vector3(1, 1, 1);
+
+        Card cardEX2 = CardFactory.CreateCard(2);
+        GameObject cardEX2go = CardFactory.CreateCardGameObject(cardEX2);
+        cardEX2go.transform.SetParent(_uiCont.HandZone);
+        cardEX2go.transform.localPosition = new Vector3(0, 0, 0);
+        cardEX2go.transform.localScale = new Vector3(1, 1, 1);
+
+        Card cardEX3 = CardFactory.CreateCard(3);
+        GameObject cardEX3go = CardFactory.CreateCardGameObject(cardEX3);
+        cardEX3go.transform.SetParent(_uiCont.HandZone);
+        cardEX3go.transform.localPosition = new Vector3(0, 0, 0);
+        cardEX3go.transform.localScale = new Vector3(1, 1, 1);
+
+        Card cardEX4 = CardFactory.CreateCard(4);
+        GameObject cardEX4go = CardFactory.CreateCardGameObject(cardEX4);
+        cardEX4go.transform.SetParent(_uiCont.HandZone);
+        cardEX4go.transform.localPosition = new Vector3(0, 0, 0);
+        cardEX4go.transform.localScale = new Vector3(1, 1, 1);
 
         StartCoroutine(TurnSystem());
     }

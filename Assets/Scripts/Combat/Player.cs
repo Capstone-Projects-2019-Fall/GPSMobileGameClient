@@ -7,25 +7,26 @@ using UnityEngine.SceneManagement;
 // This class is the Player component of the gameObject.
 public class Player : AbstractEntity
 {
-    private int userId;
-    private string username;
-    private int level;
-    private int currentExp;
+    private int _memory; 
+    private int _userId;
+    private string _username;
+    private int _level;
+    private int _currentExp;
     private int gold;
-    private DeckManager deckManager;
-    private List<Item> inventory;
-    private System.Random rand = new System.Random();
+    private DeckManager _deckManager;
+    private List<Item> _inventory;
     private BuffHandler _buffHandler;
 
     #region Accessors -----------------------------------------------------------------------------------
 
-    public int UserId { get => userId; set => userId = value; }
-    public string Username { get => username; set => username = value; }
-    public int Level { get => level; set => level = value; }
-    public int CurrentExp { get => currentExp; set => currentExp = value; }
+    public int Memory { get => _memory; set => _memory = value; }
+    public int UserId { get => _userId; set => _userId = value; }
+    public string Username { get => _username; set => _username = value; }
+    public int Level { get => _level; set => _level = value; }
+    public int CurrentExp { get => _currentExp; set => _currentExp = value; }
     public int Gold { get => gold; set => gold = value; }
-    public DeckManager DeckManager { get => deckManager; set => deckManager = value; }
-    public List<Item> Inventory { get => inventory; set => inventory = value; }
+    public DeckManager DeckManager { get => _deckManager; set => _deckManager = value; }
+    public List<Item> Inventory { get => _inventory; set => _inventory = value; }
     public BuffHandler BuffHandler { get => _buffHandler; set => _buffHandler = value; }
 
     #endregion ------------------------------------------------------------------------------------------

@@ -46,17 +46,20 @@ public class DeckManager : Singleton<DeckManager>
         _cc = gameObject.GetComponent<CombatController>();
         Assert.IsNotNull(_cc);
         _cc.CardsDrawn += OnCardDrawnAction;
+
+        // Generate random deck for testing
+        List<Card> randCards = GenerateRandomCardList(40);
+        _hand = new Deck();
+        _deck = new Deck(randCards);
+        _nonexhaustedDeck = new Deck(_deck);
+        _deck.ShuffleDeck();
+
     }
 
     // Start is called before the first frame update
     // Currently generating a random deck for testing purposes
     void Start()
     {
-        List<Card> randCards = GenerateRandomCardList(40);
-        _hand = new Deck();
-        _deck = new Deck(randCards);
-        _nonexhaustedDeck = new Deck(_deck);
-        _deck.ShuffleDeck();
 
     }
 

@@ -10,7 +10,6 @@ public abstract class AbstractEntity : MonoBehaviour
     private bool combat = false;
     private BuffHandler buffHandler;
 
-    public float Memory { get => memory; set => memory = value; }
     public float Health { get => health; set => health = value; }
     public bool IsAlive { get => alive; set => alive = value; }
     public bool InCombat { get => combat; set => combat = value; }
@@ -21,7 +20,6 @@ public abstract class AbstractEntity : MonoBehaviour
     protected virtual void Awake()
     {
         Health = health;
-        Memory = memory;
         IsAlive = true;
         buffHandler = gameObject.AddComponent<BuffHandler>();
     }
