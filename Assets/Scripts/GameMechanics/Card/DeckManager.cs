@@ -13,9 +13,11 @@ using UnityEngine.Assertions;
  * any given deck
  */
 [RequireComponent(typeof(CombatController))]
+[RequireComponent(typeof(UIController))]
 public class DeckManager : Singleton<DeckManager>
 {
     private CombatController _cc;
+    private UIController _uic;
 
     private Deck _deck;  // The deck currently being used in combat
     private Deck _nonexhaustedDeck; // An 'image' of the deck that players left their home base with
@@ -47,6 +49,9 @@ public class DeckManager : Singleton<DeckManager>
         Assert.IsNotNull(_cc);
         _cc.CardsDrawn += OnCardDrawnAction;
 
+        _uic = gameObject.GetComponent<UIController>();
+        Assert.IsNotNull(_uic);
+
         // Generate random deck for testing
         List<Card> randCards = GenerateRandomCardList(40);
         _hand = new Deck();
@@ -72,7 +77,13 @@ public class DeckManager : Singleton<DeckManager>
             return false;
         } else
         {
-            _hand.AddCard(_deck.DrawCard());
+            Card drawnCard = _deck.DrawCard();
+            _hand.AddCard(drawnCard);
+            GameObject cardGO = CardFactory.CreateCardGameObject(drawnCard);
+            
+            cardGO.transform.SetParent(_uic.HandZone);
+            cardGO.transform.localScale = new Vector3(1, 1, 1);
+
             return true;
         }
     }

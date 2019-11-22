@@ -15,7 +15,6 @@ public class Player : AbstractEntity
     private int _gold;
     private DeckManager _deckManager;
     private List<Item> _inventory;
-    private BuffHandler _buffHandler;
 
     #region Accessors -----------------------------------------------------------------------------------
 
@@ -27,7 +26,6 @@ public class Player : AbstractEntity
     public int Gold { get => _gold; set => _gold = value; }
     public DeckManager DeckManager { get => _deckManager; set => _deckManager = value; }
     public List<Item> Inventory { get => _inventory; set => _inventory = value; }
-    public BuffHandler BuffHandler { get => _buffHandler; set => _buffHandler = value; }
 
     #endregion ------------------------------------------------------------------------------------------
 
@@ -39,7 +37,6 @@ public class Player : AbstractEntity
         _level = 1;
         _currentExp = 0;
         _gold = 0;
-        _buffHandler = gameObject.GetComponent<BuffHandler>();
 
 
         // TODO: Call server to get player values?
@@ -58,7 +55,7 @@ public class Player : AbstractEntity
     }
 
     // Adds health to the player
-    public void addHealth(float restoredHealth)
+    public void AddHealth(float restoredHealth)
     {
         Health += restoredHealth;
     }
@@ -68,7 +65,7 @@ public class Player : AbstractEntity
      */
     public override void ExecuteAttack(AbstractEntity entity, float attack_damage)
     {
-        float attackModifier = _buffHandler.calculateAttackModifier();
+        float attackModifier = GetBuffHandler.calculateAttackModifier();
         entity.DamageReceived   (attack_damage * attackModifier);
     }
 

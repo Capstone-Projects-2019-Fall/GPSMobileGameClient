@@ -204,36 +204,7 @@ public class CombatController : Singleton<CombatController>
         // Send data to static classes and singletons
         _uiCont.CurrentNumCards = _deckManager.Deck.MaxLength;
         _uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
-
-        Card cardEX = CardFactory.CreateCard(0);
-        GameObject cardEXgo = CardFactory.CreateCardGameObject(cardEX);
-        cardEXgo.transform.SetParent(_uiCont.HandZone);
-        cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
-        cardEXgo.transform.localScale = new Vector3(1, 1, 1);
-
-        Card cardEX1 = CardFactory.CreateCard(1);
-        GameObject cardEX1go = CardFactory.CreateCardGameObject(cardEX1);
-        cardEX1go.transform.SetParent(_uiCont.HandZone);
-        cardEX1go.transform.localPosition = new Vector3(0, 0, 0);
-        cardEX1go.transform.localScale = new Vector3(1, 1, 1);
-
-        Card cardEX2 = CardFactory.CreateCard(2);
-        GameObject cardEX2go = CardFactory.CreateCardGameObject(cardEX2);
-        cardEX2go.transform.SetParent(_uiCont.HandZone);
-        cardEX2go.transform.localPosition = new Vector3(0, 0, 0);
-        cardEX2go.transform.localScale = new Vector3(1, 1, 1);
-
-        Card cardEX3 = CardFactory.CreateCard(3);
-        GameObject cardEX3go = CardFactory.CreateCardGameObject(cardEX3);
-        cardEX3go.transform.SetParent(_uiCont.HandZone);
-        cardEX3go.transform.localPosition = new Vector3(0, 0, 0);
-        cardEX3go.transform.localScale = new Vector3(1, 1, 1);
-
-        Card cardEX4 = CardFactory.CreateCard(4);
-        GameObject cardEX4go = CardFactory.CreateCardGameObject(cardEX4);
-        cardEX4go.transform.SetParent(_uiCont.HandZone);
-        cardEX4go.transform.localPosition = new Vector3(0, 0, 0);
-        cardEX4go.transform.localScale = new Vector3(1, 1, 1);
+        _uiCont.MaxMemory = _player.Memory;
 
         StartCoroutine(TurnSystem());
     }
