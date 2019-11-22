@@ -15,7 +15,6 @@ public class VirusHeavy : Enemy
         Regen_Rate = 0;
         Att_Modifier = 1;
         Health = 200;
-        Memory = 0;
         Exp = 10;
         Loot = 10;
     }
@@ -35,6 +34,6 @@ public class VirusHeavy : Enemy
     // Attacks the player
     public override void executeAttack(Player player)
     {
-        player.damageReceived(rand.Next((int)Attack - 10, (int)Attack) * Att_Modifier);
+        player.DamageReceived(rand.Next((int)Attack - 10, (int)Attack) * Att_Modifier);
     }
 }

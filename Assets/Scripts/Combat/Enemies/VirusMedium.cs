@@ -15,7 +15,6 @@ public class VirusMedium : Enemy
         Regen_Rate = 0;
         Att_Modifier = 1;
         Health = 75;
-        Memory = 0;
         Exp = 5;
         Loot = 6;
     }
@@ -36,6 +35,6 @@ public class VirusMedium : Enemy
     public override void executeAttack(Player player)
     {
         
-        player.damageReceived(rand.Next((int)Attack - 3, (int)Attack + 3) * Att_Modifier);
+        player.DamageReceived(rand.Next((int)Attack - 3, (int)Attack + 3) * Att_Modifier);
     }
 }

@@ -15,7 +15,6 @@ public class VirusLight : Enemy
         Regen_Rate = 0;
         Att_Modifier = 1;
         Health = 30;
-        Memory = 0;
         Exp = 2;
         Loot = 3;
     }
@@ -35,6 +34,6 @@ public class VirusLight : Enemy
     // Attacks the player
     public override void executeAttack(Player player)
     {
-        player.damageReceived(rand.Next((int)Attack, (int)Attack + 5) * Att_Modifier);
+        player.DamageReceived(rand.Next((int)Attack, (int)Attack + 5) * Att_Modifier);
     }
 }

@@ -5,25 +5,25 @@ using UnityEngine.SceneManagement;
 
 public abstract class Enemy : AbstractEntity
 {
-    [SerializeField] private float attack = 10f;
-    [SerializeField] private float armor = 0f;
-    [SerializeField] private float att_modifier = 1f;
-    [SerializeField] private float regen_rate = 0f;
-    [SerializeField] private float exp = 1f;
+    [SerializeField] private float _attack = 10f;
+    [SerializeField] private float _armor = 0f;
+    [SerializeField] private float _att_modifier = 1f;
+    [SerializeField] private float _regen_rate = 0f;
+    [SerializeField] private float _exp = 1f;
     // Loot value dictates the amount of the loot after a player kills said enemy. 
     [SerializeField] private int loot = 1;
 
-    public float Attack { get { return attack; } set { attack = value; } }
-    public float Armor { get { return armor; } set { armor = value; } }
-    public float Regen_Rate { get { return regen_rate; } set { regen_rate = value; } }
-    public float Att_Modifier { get { return att_modifier; } set { att_modifier = value; } }
-    public float Exp { get { return exp; } set { exp = value; } }
+    public float Attack { get { return _attack; } set { _attack = value; } }
+    public float Armor { get { return _armor; } set { _armor = value; } }
+    public float Regen_Rate { get { return _regen_rate; } set { _regen_rate = value; } }
+    public float Att_Modifier { get { return _att_modifier; } set { _att_modifier = value; } }
+    public float Exp { get { return _exp; } set { _exp = value; } }
     public int Loot { get { return loot; } set { loot = value; } }
 
     // Executes an attack against the player
     public virtual void executeAttack(Player player)
     {
-        base.executeAttack(player, attack);
+        base.ExecuteAttack(player, _attack);
     }
 
     protected override void Awake()
@@ -33,7 +33,6 @@ public abstract class Enemy : AbstractEntity
         Regen_Rate = 0;
         Att_Modifier = 1;
         Health = 50;
-        Memory = 0;
         Exp = 1;
         Loot = 1;
         IsAlive = true;
@@ -53,7 +52,7 @@ public abstract class Enemy : AbstractEntity
         {
             // Loads back to map scene after death
             SceneManager.LoadScene(0);
-            endCombat();
+            EndCombat();
         }
     }
 }
