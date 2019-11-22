@@ -34,6 +34,6 @@ public class VirusHeavy : Enemy
     // Attacks the player
     public override void executeAttack(Player player)
     {
-        player.damageReceived(rand.Next((int)Attack - 10, (int)Attack) * Att_Modifier);
+        player.DamageReceived(rand.Next((int)Attack - 10, (int)Attack) * Att_Modifier);
     }
 }

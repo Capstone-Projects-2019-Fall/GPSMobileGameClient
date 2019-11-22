@@ -20,7 +20,7 @@ public class IncreaseAttack : Card, ICardInterface
     {
         if (player.Memory >= MemoryCost)
         {
-            player.buffReceived(new Buff(name:"1.5x Damage",attackModifier:1.5f));
+            player.BuffReceived(new Buff(name:"1.5x Damage",attackModifier:1.5f));
             player.Memory -= MemoryCost;
         }
     }

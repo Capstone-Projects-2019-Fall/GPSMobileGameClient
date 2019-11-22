@@ -20,7 +20,7 @@ public class DecreaseDefense : Card, ICardInterface
     {
         if (player.Memory >= MemoryCost)
         {
-            enemy.buffReceived(new Buff(name: "0.75x Defense", defenseModifier: 0.75f));
+            enemy.BuffReceived(new Buff(name: "0.75x Defense", defenseModifier: 0.75f));
             player.Memory -= MemoryCost;
         }
     }

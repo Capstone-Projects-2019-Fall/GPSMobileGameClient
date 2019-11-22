@@ -63,10 +63,10 @@ public class Player : AbstractEntity
     /* Executes an attack against another entity.
      * Need to override because the reference defined in AbstractEntity will throw a NullRef
      */
-    public override void executeAttack(AbstractEntity entity, float attack_damage)
+    public override void ExecuteAttack(AbstractEntity entity, float attack_damage)
     {
         float attackModifier = _buffHandler.calculateAttackModifier();
-        entity.damageReceived(attack_damage * attackModifier);
+        entity.DamageReceived(attack_damage * attackModifier);
     }
 
     // Initializes the player

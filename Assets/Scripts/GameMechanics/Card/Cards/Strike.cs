@@ -29,7 +29,7 @@ public class Strike : Card, ICardInterface
         if (player.Memory >= MemoryCost)
         {
             Debug.LogFormat("Start of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
-            player.executeAttack(enemy, 20);
+            player.ExecuteAttack(enemy, 20);
             player.Memory -= MemoryCost;
             Debug.LogFormat("End of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
         }        

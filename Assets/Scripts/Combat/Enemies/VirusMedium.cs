@@ -35,6 +35,6 @@ public class VirusMedium : Enemy
     public override void executeAttack(Player player)
     {
         
-        player.damageReceived(rand.Next((int)Attack - 3, (int)Attack + 3) * Att_Modifier);
+        player.DamageReceived(rand.Next((int)Attack - 3, (int)Attack + 3) * Att_Modifier);
     }
 }

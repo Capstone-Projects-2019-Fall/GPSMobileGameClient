@@ -4,37 +4,37 @@ using UnityEngine;
 
 public abstract class AbstractEntity : MonoBehaviour
 {
-    [SerializeField] private float health = 100f;
-    [SerializeField] private float memory = 10f;
-    private bool alive = true;
-    private bool combat = false;
-    private BuffHandler buffHandler;
+    [SerializeField] private float _health = 100f;
+    [SerializeField] private float _memory = 10f;
+    private bool _alive = true;
+    private bool _combat = false;
+    private BuffHandler _buffHandler;
 
-    public float Health { get => health; set => health = value; }
-    public bool IsAlive { get => alive; set => alive = value; }
-    public bool InCombat { get => combat; set => combat = value; }
-    public List<Buff> GetBuffList { get => buffHandler.buffList; set => buffHandler.buffList = value; }
-    public BuffHandler GetBuffHandler { get => buffHandler; set => buffHandler = value; }
+    public float Health { get => _health; set => _health = value; }
+    public bool IsAlive { get => _alive; set => _alive = value; }
+    public bool InCombat { get => _combat; set => _combat = value; }
+    public List<Buff> GetBuffList { get => _buffHandler.buffList; set => _buffHandler.buffList = value; }
+    public BuffHandler GetBuffHandler { get => _buffHandler; set => _buffHandler = value; }
 
     // Initializes an abstract player.
     protected virtual void Awake()
     {
-        Health = health;
+        Health = _health;
         IsAlive = true;
-        buffHandler = gameObject.AddComponent<BuffHandler>();
+        _buffHandler = gameObject.AddComponent<BuffHandler>();
     }
 
     // Executes an attack against another entity.
-    public virtual void executeAttack(AbstractEntity entity, float attack_damage)
+    public virtual void ExecuteAttack(AbstractEntity entity, float attack_damage)
     {
-        float attackModifier = buffHandler.calculateAttackModifier();
-        entity.damageReceived(attack_damage * attackModifier);
+        float attackModifier = _buffHandler.calculateAttackModifier();
+        entity.DamageReceived(attack_damage * attackModifier);
     }
     
     // Receives damage.
-    public virtual void damageReceived(float damage)
+    public virtual void DamageReceived(float damage)
     {
-        float defenseModifier = buffHandler.calculateDefenseModifier();
+        float defenseModifier = _buffHandler.calculateDefenseModifier();
         Health -= damage * defenseModifier;
         if (Health <= 0)
         {
@@ -43,24 +43,24 @@ public abstract class AbstractEntity : MonoBehaviour
     }
 
     // Adds a buff to the entity
-    public virtual void buffReceived(Buff buff)
+    public virtual void BuffReceived(Buff buff)
     {
-        buffHandler.addBuff(buff);
+        _buffHandler.addBuff(buff);
     }
 
     // Removes a buff from the entity.
-    public virtual void buffRemoved(Buff buff)
+    public virtual void BuffRemoved(Buff buff)
     {
-        buffHandler.removeBuff(buff);
+        _buffHandler.removeBuff(buff);
     }
 
     // These handle the start and end of combat
-    public virtual void startCombat() => InCombat = true;
-    public virtual void endCombat() => InCombat = false;
+    public virtual void StartCombat() => InCombat = true;
+    public virtual void EndCombat() => InCombat = false;
 
 
     private void Start()
     {
-        buffHandler = new BuffHandler();
+        _buffHandler = new BuffHandler();
     }
 }

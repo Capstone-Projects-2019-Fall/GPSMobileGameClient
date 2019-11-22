@@ -23,7 +23,7 @@ public abstract class Enemy : AbstractEntity
     // Executes an attack against the player
     public virtual void executeAttack(Player player)
     {
-        base.executeAttack(player, _attack);
+        base.ExecuteAttack(player, _attack);
     }
 
     protected override void Awake()
@@ -52,7 +52,7 @@ public abstract class Enemy : AbstractEntity
         {
             // Loads back to map scene after death
             SceneManager.LoadScene(0);
-            endCombat();
+            EndCombat();
         }
     }
 }
