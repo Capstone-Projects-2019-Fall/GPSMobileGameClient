@@ -22,7 +22,9 @@ public class DeckManager : Singleton<DeckManager>
     private Deck _deck;  // The deck currently being used in combat
     private Deck _nonexhaustedDeck; // An 'image' of the deck that players left their home base with
     private Deck _hand; // All the cards currently in the player's hand
+
     [SerializeField] private int _startAmount = 5; // Dictates how many cards the starting hand should have.
+    [SerializeField] private int _maxHandSize = 7; // Dictates the maximum hand size
 
     #region Accessors ----------------------------------------------------------------------------------
 
@@ -35,9 +37,12 @@ public class DeckManager : Singleton<DeckManager>
     public Deck Hand {
         get => _hand;
     }
-    public int Start_Amount {
+    public int StartAmount {
         get => _startAmount;
         set => _startAmount = value;
+    }
+    public int MaxHandSize {
+        get => _maxHandSize;
     }
 
     #endregion ------------------------------------------------------------------------------------------
@@ -75,8 +80,13 @@ public class DeckManager : Singleton<DeckManager>
     {
         if (_deck.Cards.Count == 0)
         {
+            Debug.Log("Deck is out of cards!");
             return false;
-        } else
+        } else if(_hand.CurrentLength > _maxHandSize)
+        {
+            Debug.Log("Hand is full, draw was skipped!");
+            return false;
+        } else 
         {
             Card drawnCard = _deck.DrawCard();
             _hand.AddCard(drawnCard);
