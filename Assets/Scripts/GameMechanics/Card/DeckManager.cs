@@ -47,7 +47,8 @@ public class DeckManager : Singleton<DeckManager>
         // Grab reference to the CombatController and subscribe to related events
         _cc = gameObject.GetComponent<CombatController>();
         Assert.IsNotNull(_cc);
-        _cc.CardsDrawn += OnCardDrawnAction;
+        _cc.CardsDrawn += OnCardDrawnAction; // event handler for card drawn
+        _cc.CardPlayed += OnCardPlayedAction; // event handler for card played (removes card from hand)
 
         _uic = gameObject.GetComponent<UIController>();
         Assert.IsNotNull(_uic);
@@ -88,15 +89,6 @@ public class DeckManager : Singleton<DeckManager>
         }
     }
 
-    // Event handler for the DrawnCards event
-    public void OnCardDrawnAction(object sender, DrawEventArgs e)
-    {
-        for(int i = 0; i < e.NumCards; i++)
-        {
-            DrawCard();
-        }
-    }
-
     // This resets deck & hand after a combat instance
     public void ResetDeck()
     {
@@ -117,4 +109,26 @@ public class DeckManager : Singleton<DeckManager>
 
         return randomCards;
     }
+
+    #region Event Handlers/Subscribers ------------------------------------------------------
+
+    // Event handler for the CardsDrawn event
+    public void OnCardDrawnAction(object sender, DrawEventArgs e)
+    {
+        for (int i = 0; i < e.NumCards; i++)
+        {
+            DrawCard();
+        }
+    }
+
+    // Event hanlder for the CardPlayed event
+    public void OnCardPlayedAction(object sender, CardPlayedArgs e)
+    {
+        Hand.RemoveCard(e.Card);
+        Debug.LogFormat("Cards in hand: {0}", Hand.CurrentLength);
+    }
+
+    #endregion ------------------------------------------------------------------------------
 }
+
+

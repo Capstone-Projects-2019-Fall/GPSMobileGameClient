@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CombatController))]
+[RequireComponent(typeof(CombatController))]    
 public class UIController : Singleton<UIController>
 {
     private CombatController _cc;                   // The CombatController

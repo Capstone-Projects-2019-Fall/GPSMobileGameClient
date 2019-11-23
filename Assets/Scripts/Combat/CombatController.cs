@@ -14,14 +14,16 @@ using UnityEngine.UI;
 public class CombatController : Singleton<CombatController>
 {
     // fields
+    private bool _inCombat;
+
     private UIController _uiCont;
+    private DeckManager _deckManager;
 
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
     [SerializeField] private Player _player;
     [SerializeField] private Vector3 playerSpawnPos;
     [SerializeField] private int _startingHandSize;
-    private DeckManager _deckManager;
 
     [SerializeField] private GameObject _enemyPF;
     [SerializeField] private GameObject _enemyGO;
@@ -30,7 +32,6 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private ColyseusClient client;
 
     [SerializeField] private Text _playerList;
-    private Transform _handZone;
     private MapSchema<Entity> players;
     private TurnTimer _timer;
 
@@ -55,6 +56,9 @@ public class CombatController : Singleton<CombatController>
     public int StartingHandSize {
         get => _startingHandSize;
         set => _startingHandSize = value;
+    }
+    public bool InCombat {
+        get => _inCombat;
     }
 
     #endregion ---------------------------------------------------------------------------------------------------
@@ -117,6 +121,7 @@ public class CombatController : Singleton<CombatController>
 
     // delegates
     public event EventHandler<DrawEventArgs> CardsDrawn;
+    public event EventHandler<CardPlayedArgs> CardPlayed;
     public event EventHandler HealthChanged;
     public event EventHandler<MemEventArgs> MemoryChanged;
 
@@ -124,6 +129,11 @@ public class CombatController : Singleton<CombatController>
     public void OnCardsDrawn(DrawEventArgs e)
     {
         CardsDrawn?.Invoke(this, e);
+    }
+
+    public void OnCardPlayed(CardPlayedArgs e)
+    {
+        CardPlayed?.Invoke(this, e);
     }
 
     public void OnHealthChanged(EventArgs e)
@@ -147,6 +157,20 @@ public class CombatController : Singleton<CombatController>
     {
         DrawEventArgs args = new DrawEventArgs { NumCards = numCards };
         OnCardsDrawn(args);
+    }
+
+    /* PlayCard Description:
+     * Simple wrapper method for the OnCardPlayed event. More or less only called by a CardHandler, but still useful for several
+     * scripts that need to react to a card being played.
+     * Parameters:
+     *    -> GameObject cardGO: The card game object that the CardHandler is attached to. CardGO is bundled into the CardPlayedArgs of this event.
+     */
+    public void PlayCard(GameObject cardGO)
+    {
+        CardHandler ch = cardGO.GetComponent<CardHandler>();
+        ch.MyCard.PlayCard(_player, _enemy);
+        CardPlayedArgs args = new CardPlayedArgs { Card = ch.MyCard, CardGO = cardGO };
+        OnCardPlayed(args);
     }
 
     /* ChangeMemory Description:
