@@ -13,14 +13,18 @@ using UnityEngine.Assertions;
  * any given deck
  */
 [RequireComponent(typeof(CombatController))]
+[RequireComponent(typeof(UIController))]
 public class DeckManager : Singleton<DeckManager>
 {
     private CombatController _cc;
+    private UIController _uic;
 
     private Deck _deck;  // The deck currently being used in combat
     private Deck _nonexhaustedDeck; // An 'image' of the deck that players left their home base with
     private Deck _hand; // All the cards currently in the player's hand
+
     [SerializeField] private int _startAmount = 5; // Dictates how many cards the starting hand should have.
+    [SerializeField] private int _maxHandSize = 7; // Dictates the maximum hand size
 
     #region Accessors ----------------------------------------------------------------------------------
 
@@ -33,9 +37,12 @@ public class DeckManager : Singleton<DeckManager>
     public Deck Hand {
         get => _hand;
     }
-    public int Start_Amount {
+    public int StartAmount {
         get => _startAmount;
         set => _startAmount = value;
+    }
+    public int MaxHandSize {
+        get => _maxHandSize;
     }
 
     #endregion ------------------------------------------------------------------------------------------
@@ -45,7 +52,11 @@ public class DeckManager : Singleton<DeckManager>
         // Grab reference to the CombatController and subscribe to related events
         _cc = gameObject.GetComponent<CombatController>();
         Assert.IsNotNull(_cc);
-        _cc.CardsDrawn += OnCardDrawnAction;
+        _cc.CardsDrawn += OnCardDrawnAction; // event handler for card drawn
+        _cc.CardPlayed += OnCardPlayedAction; // event handler for card played (removes card from hand)
+
+        _uic = gameObject.GetComponent<UIController>();
+        Assert.IsNotNull(_uic);
 
         // Generate random deck for testing
         List<Card> randCards = GenerateRandomCardList(40);
@@ -69,20 +80,22 @@ public class DeckManager : Singleton<DeckManager>
     {
         if (_deck.Cards.Count == 0)
         {
+            Debug.Log("Deck is out of cards!");
             return false;
-        } else
+        } else if(_hand.CurrentLength > _maxHandSize)
         {
-            _hand.AddCard(_deck.DrawCard());
-            return true;
-        }
-    }
+            Debug.Log("Hand is full, draw was skipped!");
+            return false;
+        } else 
+        {
+            Card drawnCard = _deck.DrawCard();
+            _hand.AddCard(drawnCard);
+            GameObject cardGO = CardFactory.CreateCardGameObject(drawnCard);
+            
+            cardGO.transform.SetParent(_uic.HandZone);
+            cardGO.transform.localScale = new Vector3(1, 1, 1);
 
-    // Event handler for the DrawnCards event
-    public void OnCardDrawnAction(object sender, DrawEventArgs e)
-    {
-        for(int i = 0; i < e.NumCards; i++)
-        {
-            DrawCard();
+            return true;
         }
     }
 
@@ -106,4 +119,26 @@ public class DeckManager : Singleton<DeckManager>
 
         return randomCards;
     }
+
+    #region Event Handlers/Subscribers ------------------------------------------------------
+
+    // Event handler for the CardsDrawn event
+    public void OnCardDrawnAction(object sender, DrawEventArgs e)
+    {
+        for (int i = 0; i < e.NumCards; i++)
+        {
+            DrawCard();
+        }
+    }
+
+    // Event hanlder for the CardPlayed event
+    public void OnCardPlayedAction(object sender, CardPlayedArgs e)
+    {
+        Hand.RemoveCard(e.Card);
+        Debug.LogFormat("Cards in hand: {0}", Hand.CurrentLength);
+    }
+
+    #endregion ------------------------------------------------------------------------------
 }
+
+

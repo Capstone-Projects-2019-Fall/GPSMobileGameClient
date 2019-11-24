@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CombatController))]
+[RequireComponent(typeof(CombatController))]    
 public class UIController : Singleton<UIController>
 {
     private CombatController _cc;                   // The CombatController
@@ -29,6 +29,7 @@ public class UIController : Singleton<UIController>
     // Useful local variables
     private int _currentNumCards;
     private int _totalNumCards;
+    private int _maxMemory;
     
 
     #region Accessors --------------------------------------------------------------------------------------------------
@@ -46,7 +47,10 @@ public class UIController : Singleton<UIController>
         get => _totalNumCards;
         set => _totalNumCards = value;
     }
-
+    public int MaxMemory {
+        get => _maxMemory;
+        set => _maxMemory = value;
+    }
     #endregion ---------------------------------------------------------------------------------------------------------
 
     #region UIController Responsibilities ------------------------------------------------------------------------------
@@ -117,9 +121,10 @@ public class UIController : Singleton<UIController>
         _pHealthFill.fillAmount = n;
     }
 
-    public void UpdateMemory(float n)
+    public void UpdateMemory(int n)
     {
-        _memBarFill.fillAmount = 1 - n;
+        float memDiff = -((float)n / (float)MaxMemory);
+        _memBarFill.fillAmount += memDiff;
     }
     
     public void Start()

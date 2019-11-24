@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class AbstractEntity : MonoBehaviour
 {
     [SerializeField] private float _health = 100f;
-    [SerializeField] private float _memory = 10f;
     private bool _alive = true;
     private bool _combat = false;
     private BuffHandler _buffHandler;

@@ -14,14 +14,16 @@ using UnityEngine.UI;
 public class CombatController : Singleton<CombatController>
 {
     // fields
+    private bool _inCombat;
+
     private UIController _uiCont;
+    private DeckManager _deckManager;
 
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
     [SerializeField] private Player _player;
     [SerializeField] private Vector3 playerSpawnPos;
     [SerializeField] private int _startingHandSize;
-    private DeckManager _deckManager;
 
     [SerializeField] private GameObject _enemyPF;
     [SerializeField] private GameObject _enemyGO;
@@ -30,7 +32,6 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private ColyseusClient client;
 
     [SerializeField] private Text _playerList;
-    private Transform _handZone;
     private State state;
     private TurnTimer _timer;
 
@@ -55,6 +56,9 @@ public class CombatController : Singleton<CombatController>
     public int StartingHandSize {
         get => _startingHandSize;
         set => _startingHandSize = value;
+    }
+    public bool InCombat {
+        get => _inCombat;
     }
 
     public MapSchema<ColyseusPlayer> players
@@ -122,6 +126,7 @@ public class CombatController : Singleton<CombatController>
 
     // delegates
     public event EventHandler<DrawEventArgs> CardsDrawn;
+    public event EventHandler<CardPlayedArgs> CardPlayed;
     public event EventHandler HealthChanged;
     public event EventHandler<MemEventArgs> MemoryChanged;
 
@@ -129,6 +134,11 @@ public class CombatController : Singleton<CombatController>
     public void OnCardsDrawn(DrawEventArgs e)
     {
         CardsDrawn?.Invoke(this, e);
+    }
+
+    public void OnCardPlayed(CardPlayedArgs e)
+    {
+        CardPlayed?.Invoke(this, e);
     }
 
     public void OnHealthChanged(EventArgs e)
@@ -152,6 +162,20 @@ public class CombatController : Singleton<CombatController>
     {
         DrawEventArgs args = new DrawEventArgs { NumCards = numCards };
         OnCardsDrawn(args);
+    }
+
+    /* PlayCard Description:
+     * Simple wrapper method for the OnCardPlayed event. More or less only called by a CardHandler, but still useful for several
+     * scripts that need to react to a card being played.
+     * Parameters:
+     *    -> GameObject cardGO: The card game object that the CardHandler is attached to. CardGO is bundled into the CardPlayedArgs of this event.
+     */
+    public void PlayCard(GameObject cardGO)
+    {
+        CardHandler ch = cardGO.GetComponent<CardHandler>();
+        ch.MyCard.PlayCard(_player, _enemy);
+        CardPlayedArgs args = new CardPlayedArgs { Card = ch.MyCard, CardGO = cardGO };
+        OnCardPlayed(args);
     }
 
     /* ChangeMemory Description:
@@ -212,36 +236,7 @@ public class CombatController : Singleton<CombatController>
         // Send data to static classes and singletons
         _uiCont.CurrentNumCards = _deckManager.Deck.MaxLength;
         _uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
-
-        Card cardEX = CardFactory.CreateCard(0);
-        GameObject cardEXgo = CardFactory.CreateCardGameObject(cardEX);
-        cardEXgo.transform.SetParent(_uiCont.HandZone);
-        cardEXgo.transform.localPosition = new Vector3(0, 0, 0);
-        cardEXgo.transform.localScale = new Vector3(1, 1, 1);
-
-        Card cardEX1 = CardFactory.CreateCard(1);
-        GameObject cardEX1go = CardFactory.CreateCardGameObject(cardEX1);
-        cardEX1go.transform.SetParent(_uiCont.HandZone);
-        cardEX1go.transform.localPosition = new Vector3(0, 0, 0);
-        cardEX1go.transform.localScale = new Vector3(1, 1, 1);
-
-        Card cardEX2 = CardFactory.CreateCard(2);
-        GameObject cardEX2go = CardFactory.CreateCardGameObject(cardEX2);
-        cardEX2go.transform.SetParent(_uiCont.HandZone);
-        cardEX2go.transform.localPosition = new Vector3(0, 0, 0);
-        cardEX2go.transform.localScale = new Vector3(1, 1, 1);
-
-        Card cardEX3 = CardFactory.CreateCard(3);
-        GameObject cardEX3go = CardFactory.CreateCardGameObject(cardEX3);
-        cardEX3go.transform.SetParent(_uiCont.HandZone);
-        cardEX3go.transform.localPosition = new Vector3(0, 0, 0);
-        cardEX3go.transform.localScale = new Vector3(1, 1, 1);
-
-        Card cardEX4 = CardFactory.CreateCard(4);
-        GameObject cardEX4go = CardFactory.CreateCardGameObject(cardEX4);
-        cardEX4go.transform.SetParent(_uiCont.HandZone);
-        cardEX4go.transform.localPosition = new Vector3(0, 0, 0);
-        cardEX4go.transform.localScale = new Vector3(1, 1, 1);
+        _uiCont.MaxMemory = _player.Memory;
 
         StartCoroutine(TurnSystem());
     }
