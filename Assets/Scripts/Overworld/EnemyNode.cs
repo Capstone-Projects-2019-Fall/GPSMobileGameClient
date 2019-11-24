@@ -56,17 +56,20 @@ public class EnemyNode : NodeStructure, IRadialArea
         nodeSprite.transform.localPosition = Vector3.zero;
         nodeSprite.transform.localScale = Vector3.one;
 
-        // Attach a RadialArea to the Node
-        GameObject radialArea = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/RadialArea"));
-        _radialArea = radialArea.GetComponent<RadialArea>();
+        if(node.transform.Find("RadialArea(Clone)") == null)
+        {
+            // Attach a RadialArea to the Node
+            GameObject radialArea = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/RadialArea"));
+            _radialArea = radialArea.GetComponent<RadialArea>();
 
-        radialArea.transform.SetParent(node.transform, true);
-        _radialArea.Radius = 100.0f * (float)GpsUtility.UnityUnitsPerMeter(GpsUtility.Map.gameObject);
-        _radialArea.DrawAreaOfEffect();
+            radialArea.transform.SetParent(node.transform, true);
+            _radialArea.Radius = 100.0f * (float)GpsUtility.UnityUnitsPerMeter(GpsUtility.Map.gameObject);
+            _radialArea.DrawAreaOfEffect();
 
-        // Subscribe to RadialArea events
-        SubscribeEnter();
-        SubscribeExit();
+            // Subscribe to RadialArea events
+            SubscribeEnter();
+            SubscribeExit();
+        }
     }
 
     public override void OnClicked(string nodeIdentifier)

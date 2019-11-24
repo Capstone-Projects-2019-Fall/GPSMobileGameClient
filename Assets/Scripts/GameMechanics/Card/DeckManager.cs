@@ -4,102 +4,106 @@ using System.Reflection;
 using System.Linq;
 using System;
 using UnityEngine;
+using UnityEngine.Assertions;
 
-public class DeckManager : MonoBehaviour
+/* DeckManager Description:
+ * The DeckManager is a unity singleton that exposes the data and functionality of every Deck object to the Unity scene. This is important
+ * because Decks themselves are not MonoBehaviours, and mostly are wrappers for lists of cards.
+ * The DeckManager is referenced by the CombatController, and provides a useful interface for managing drawing, insertion, or deletion of cards
+ * any given deck
+ */
+[RequireComponent(typeof(CombatController))]
+public class DeckManager : Singleton<DeckManager>
 {
-    private static Dictionary<int, Card> CardsById;
-    private Deck deck;
-    private Deck nonexhaustedDeck;
-    private Deck hand;
-    // Dictates how many cards the starting hand should have.
-    [SerializeField] private int start_amount = 5;
+    private CombatController _cc;
 
-    public int Start_Amount { get => start_amount; set => start_amount = value; }
+    private Deck _deck;  // The deck currently being used in combat
+    private Deck _nonexhaustedDeck; // An 'image' of the deck that players left their home base with
+    private Deck _hand; // All the cards currently in the player's hand
+    [SerializeField] private int _startAmount = 5; // Dictates how many cards the starting hand should have.
 
-    System.Random rand = new System.Random();
+    #region Accessors ----------------------------------------------------------------------------------
+
+    public Deck Deck {
+        get => _deck;
+    }
+    public Deck NonexhaustedDeck {
+        get => _nonexhaustedDeck;
+    }
+    public Deck Hand {
+        get => _hand;
+    }
+    public int Start_Amount {
+        get => _startAmount;
+        set => _startAmount = value;
+    }
+
+    #endregion ------------------------------------------------------------------------------------------
+
+    private void Awake()
+    {
+        // Grab reference to the CombatController and subscribe to related events
+        _cc = gameObject.GetComponent<CombatController>();
+        Assert.IsNotNull(_cc);
+        _cc.CardsDrawn += OnCardDrawnAction;
+
+        // Generate random deck for testing
+        List<Card> randCards = GenerateRandomCardList(40);
+        _hand = new Deck();
+        _deck = new Deck(randCards);
+        _nonexhaustedDeck = new Deck(_deck);
+        _deck.ShuffleDeck();
+
+    }
 
     // Start is called before the first frame update
+    // Currently generating a random deck for testing purposes
     void Start()
     {
-        var cards = Assembly.GetAssembly(typeof(Card)).GetTypes()
-           .Where(myType => myType.IsClass && !myType.IsAbstract && myType.IsSubclassOf(typeof(Card)));
 
-
-        CardsById = new Dictionary<int, Card>();
-
-        foreach (var card in cards)
-        {
-            Card instantiatedCard = Activator.CreateInstance(card) as Card;
-            CardsById.Add(instantiatedCard.Id, instantiatedCard);
-        }
-        // TODO: Get/generate cards somehow from cardFactory
-        
-        deck = new Deck(40, generateDeck());
-        nonexhaustedDeck = new Deck(deck);
     }
 
-    // Update is called once per frame
-    void Update()
+    // Draws a card and adds it to the deck
+    // TODO: Add implementation for discard pile and reshuffling
+    public bool DrawCard()
     {
-        
-    }
-
-    // Draws the starter hand
-    public bool DrawStarterHand()
-    {
-        deck.ShuffleDeck();
-
-        if(deck.Cards.Count == 0)
+        if (_deck.Cards.Count == 0)
         {
             return false;
         } else
         {
-            int i = 0;
-            while(i<start_amount)
-            {
-                hand.AddCard(deck.DrawCard());
-                i++;
-            }
+            _hand.AddCard(_deck.DrawCard());
             return true;
         }
     }
 
-    // Draws a card and adds it to the deck
-    public bool DrawCard(int num = 1)
+    // Event handler for the DrawnCards event
+    public void OnCardDrawnAction(object sender, DrawEventArgs e)
     {
-        if (deck.Cards.Count == 0)
+        for(int i = 0; i < e.NumCards; i++)
         {
-            return false;
-        }
-        else
-        {
-            int i = 0;
-            while(i < num && deck.Cards.Count != 0)
-            {
-                hand.AddCard(deck.DrawCard());
-                i++;
-            }
-            return true;
+            DrawCard();
         }
     }
 
     // This resets deck & hand after a combat instance
     public void ResetDeck()
     {
-        deck = new Deck(nonexhaustedDeck);
-        hand = new Deck();
+        _deck = new Deck(_nonexhaustedDeck);
+        _hand = new Deck();
     }
 
-    // This randomly generates a deck
-    public List<Card> generateDeck(int size = 40)        
+    /* This generates a list of random cards of the given size
+     * Ultimately only useful for testing purposes
+     */
+    public List<Card> GenerateRandomCardList(int size)        
     {
-        List<Card> cards = new List<Card>();
-        List<Card> prefabCards = Enumerable.ToList(CardsById.Values);
+        List<Card> randomCards = new List<Card>();
         for(int i = 0; i < size; i++)
         {
-            cards.Add(prefabCards[rand.Next(5)]);
+            randomCards.Add(CardFactory.CreateRandomCard());
         }
 
-        return cards;
+        return randomCards;
     }
 }
