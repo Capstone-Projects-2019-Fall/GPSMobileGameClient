@@ -168,7 +168,7 @@ public static class APIWrapper
     public static IEnumerator deleteEnemy(string enemyname, Callback<string> callback)
     {
         
-        return DELETE(string.Format("{0}/enemy/delete/{1}", baseURL, enemyname), callback);
+        return DELETE(string.Format("{0}/enemy/{1}", baseURL, enemyname), callback);
         
     }
 
