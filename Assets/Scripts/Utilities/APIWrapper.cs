@@ -24,6 +24,16 @@ public static class APIWrapper
     }
 
     /*
+     * Base definition for all DELETE requests. URL specifies the endpoint and callback returns
+     * a JSONNode which is the server's response.
+     */
+    private static IEnumerator DELETE(string URL, Callback<JSONNode> callback)
+    {
+        UnityWebRequest unityWebRequest = UnityWebRequest.Delete(URL);
+        return SendRequest(unityWebRequest, callback);
+    }
+
+    /*
      * Base definition for all POST requests. URL specifies the endpoint, body is the POST's body, and
      * callback returns a JSONNode which is the server's response.
      */
@@ -158,8 +168,8 @@ public static class APIWrapper
     public static IEnumerator deleteEnemy(string enemyname, Callback<string> callback)
     {
         
-        return GET(string.Format("{0}/enemy/delete/{1}", baseURL, enemyname), callback);
-        });
+        return DELETE(string.Format("{0}/enemy/delete/{1}", baseURL, enemyname), callback);
+        
     }
 
     /*
