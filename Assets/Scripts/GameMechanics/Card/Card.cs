@@ -7,24 +7,41 @@ using UnityEngine.Networking;
 public abstract class Card : MonoBehaviour
 {
     // abstract fields; to be overriden by individual card types
-    abstract public int Id { get; }
+    abstract public int Id { get;}
     abstract public string Name { get; }
     abstract public string Detail { get; }
     abstract public string Flavor { get; }
     abstract public int Level { get; }
     abstract public int MemoryCost { get; }
+    abstract public int UpgradeCost { get; }
+
     //abstract public Sprite CardSprite { get; }
 
     // shared fields; common among all cards
     static public CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
     
+    // Plays a card
     public virtual void PlayCard (Player p, Enemy e) { }
+    
+    // Returns
+    public virtual int GetUpgradeId() { return -1; }
 
     // Initializes this card
-
     private void Awake()
     {
         Assert.IsNotNull(_cc);
+    }
+
+    // String display of card. For debugging purposes.
+    public string DisplayText()
+    {
+        return "ID: " + Id
+            + "\nName: " + Name
+            + "\nDetail:" + Detail
+            + "\nFlavor: " + Flavor
+            + "\nLevel: " + Level
+            + "\nMemory Cost: " + MemoryCost
+            + "\nUpgrade Cost: " + UpgradeCost;
     }
 
     /*

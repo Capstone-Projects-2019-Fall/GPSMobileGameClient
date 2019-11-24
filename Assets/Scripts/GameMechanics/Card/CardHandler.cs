@@ -31,4 +31,21 @@ public class CardHandler : MonoBehaviour
             Debug.Log("Not enough Memory to play that card!");
         }
     }
+
+    /* Handles upgrading cards in upgrade interface.
+     * Parameters:
+     *    -> Player p: The clientside representation of the player in UpgradeScene
+     *    -> Card card: The clientside representation of the card in UpgradeScene
+     */
+    public void UpgradeCard(Player p)
+    {
+        if(p.Gold - _myCard.UpgradeCost < 0)
+        {
+            int id = _myCard.GetUpgradeId();
+            if(id == -1)
+            {
+                Debug.Log("Upgrading error occurred!");
+            }
+        }
+    }
 }

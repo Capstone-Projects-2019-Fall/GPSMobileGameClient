@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DecreaseDefense : Card
+public class DecreaseDefense1 : Card
 {
     public override int Id => 4;
 
-    public override string Name => "Decrease Defense";
+    public override string Name => "Decrease Defense 1";
 
     public override string Detail => "Makes the enemy more vulnerable to damage";
 
@@ -15,6 +15,8 @@ public class DecreaseDefense : Card
     public override int Level => 1;
 
     public override int MemoryCost => 4;
+
+    public override int UpgradeCost => 75;
 
     public override void PlayCard(Player player, Enemy enemy)
     {

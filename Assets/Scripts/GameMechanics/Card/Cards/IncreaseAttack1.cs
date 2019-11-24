@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IncreaseAttack : Card
+public class IncreaseAttack1 : Card
 {
     public override int Id => 3;
 
@@ -15,6 +15,8 @@ public class IncreaseAttack : Card
     public override int Level => 1;
 
     public override int MemoryCost => 2;
+
+    public override int UpgradeCost => 100;
 
     public override void PlayCard(Player player, Enemy enemy)
     {
