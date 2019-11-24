@@ -125,6 +125,42 @@ public static class APIWrapper
             callback(jsonResponse.ToString());
         });
     }
+     /*
+     * Update the enemy health with enemy node id
+     */
+    public static IEnumerator updateEnemyHealth(string enemyname, float current_health, Callback<string> callback)
+    {
+        JSONObject jsonObject = new JSONObject();
+        
+        jsonObject["hp"] = current_health;
+        return POST(string.Format("{0}/enemy/update/{1}", baseURL, enemyname), jsonObject.ToString(), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+    }
+
+     /*
+     * Update the structure of the node
+     */
+    public static IEnumerator updateNodeStructure(string nodename, string new_structure, Callback<string> callback)
+    {
+        JSONObject jsonObject = new JSONObject();
+        
+        jsonObject["structure"] = new_structure;
+        jsonObject["name"] = nodename;
+        return POST(string.Format("{0}/geodata/updatebynamete/", baseURL), jsonObject.ToString(), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+    }
+
+    /*
+     * Update the structure of the node
+     */
+    public static IEnumerator deleteEnemy(string enemyname, Callback<string> callback)
+    {
+        
+        return GET(string.Format("{0}/enemy/delete/{1}", baseURL, enemyname), callback);
+        });
+    }
 
     /*
      * Retrieves an enemy with the specified nodename. Returns a 404 error if there is no

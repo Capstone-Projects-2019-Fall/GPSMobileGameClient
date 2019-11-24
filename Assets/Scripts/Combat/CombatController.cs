@@ -111,8 +111,11 @@ public class CombatController : Singleton<CombatController>
         //Separating player and enemy because we might need to perform different requests to server.
         if(!player.IsAlive && player.InCombat && enemy.InCombat)
         {
+            //update enemy health
             ExitCombat();
         } else if (!enemy.IsAlive && player.InCombat && enemy.InCombat){
+            //turn node to friendly
+            //delete enemy in db
             ExitCombat();
         }
     }
