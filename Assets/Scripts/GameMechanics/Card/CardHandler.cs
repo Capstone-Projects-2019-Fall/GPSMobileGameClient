@@ -41,11 +41,8 @@ public class CardHandler : MonoBehaviour
     {
         if(p.Gold - _myCard.UpgradeCost < 0)
         {
-            int id = _myCard.GetUpgradeId();
-            if(id == -1)
-            {
-                Debug.Log("Upgrading error occurred!");
-            }
+            p.Gold -= _myCard.UpgradeCost;
+            _myCard.UpgradeCard();
         }
     }
 }

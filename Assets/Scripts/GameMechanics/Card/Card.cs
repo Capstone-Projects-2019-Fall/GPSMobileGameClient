@@ -6,6 +6,14 @@ using UnityEngine.Networking;
 [CreateAssetMenu(menuName ="Card")]
 public abstract class Card : MonoBehaviour
 {
+    private static int _Id;
+    private string _Name;
+    private string _Detail;
+    private string _Flavor;
+    private int _Level;
+    private int _MemoryCost;
+    private double _UpgradeCost;
+
     // abstract fields; to be overriden by individual card types
     abstract public int Id { get;}
     abstract public string Name { get; }
@@ -13,7 +21,7 @@ public abstract class Card : MonoBehaviour
     abstract public string Flavor { get; }
     abstract public int Level { get; }
     abstract public int MemoryCost { get; }
-    abstract public int UpgradeCost { get; }
+    abstract public double UpgradeCost { get; }
 
     //abstract public Sprite CardSprite { get; }
 
@@ -23,8 +31,8 @@ public abstract class Card : MonoBehaviour
     // Plays a card
     public virtual void PlayCard (Player p, Enemy e) { }
     
-    // Returns
-    public virtual int GetUpgradeId() { return -1; }
+    // Returns the id of the card this card is upgrading to
+    public virtual void UpgradeCard() { }
 
     // Initializes this card
     private void Awake()
