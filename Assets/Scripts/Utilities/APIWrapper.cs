@@ -24,6 +24,16 @@ public static class APIWrapper
     }
 
     /*
+     * Base definition for all DELETE requests. URL specifies the endpoint and callback returns
+     * a JSONNode which is the server's response.
+     */
+    private static IEnumerator DELETE(string URL, Callback<JSONNode> callback)
+    {
+        UnityWebRequest unityWebRequest = UnityWebRequest.Delete(URL);
+        return SendRequest(unityWebRequest, callback);
+    }
+
+    /*
      * Base definition for all POST requests. URL specifies the endpoint, body is the POST's body, and
      * callback returns a JSONNode which is the server's response.
      */
@@ -124,6 +134,42 @@ public static class APIWrapper
         return POST(string.Format("{0}/user/{1}/deck", baseURL, username), jsonObject.ToString(), (jsonResponse) => {
             callback(jsonResponse.ToString());
         });
+    }
+     /*
+     * Update the enemy health with enemy node id
+     */
+    public static IEnumerator updateEnemyHealth(string enemyname, float current_health, Callback<string> callback)
+    {
+        JSONObject jsonObject = new JSONObject();
+        
+        jsonObject["hp"] = current_health;
+        return POST(string.Format("{0}/enemy/update/{1}", baseURL, enemyname), jsonObject.ToString(), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+    }
+
+     /*
+     * Update the structure of the node
+     */
+    public static IEnumerator updateNodeStructure(string nodename, string new_structure, Callback<string> callback)
+    {
+        JSONObject jsonObject = new JSONObject();
+        
+        jsonObject["structure"] = new_structure;
+        jsonObject["name"] = nodename;
+        return POST(string.Format("{0}/geodata/updatebynamete/", baseURL), jsonObject.ToString(), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+    }
+
+    /*
+     * Update the structure of the node
+     */
+    public static IEnumerator deleteEnemy(string enemyname, Callback<string> callback)
+    {
+        
+        return DELETE(string.Format("{0}/enemy/{1}", baseURL, enemyname), callback);
+        
     }
 
     /*

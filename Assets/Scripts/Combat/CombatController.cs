@@ -29,7 +29,6 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private GameObject _enemyGO;
     [SerializeField] private Enemy _enemy;
     [SerializeField] private Vector3 enemySpawnPos;
-    [SerializeField] private ColyseusClient client;
 
     [SerializeField] private Text _playerList;
     private State state;
@@ -252,11 +251,19 @@ public class CombatController : Singleton<CombatController>
     {
         // Check player and enemy condition. 
         //Separating player and enemy because we might need to perform different requests to server.
+        string enemynode = Node.getLastClickedNodename();
         if(!_player.IsAlive)
         {
-            ExitCombat();
+            //update enemy health
+            APIWrapper.updateEnemyHealth(enemynode,_enemy.Health,(jsonNode) => {
+                ExitCombat();
+            });
         } else if (!_enemy.IsAlive){
-            ExitCombat();
+            APIWrapper.deleteEnemy(enemynode,(jsonNode) =>{
+                APIWrapper.updateNodeStructure(enemynode,"Friendly",(jsonNode) => {
+                    ExitCombat();
+                });
+            });
         }
     }
     
