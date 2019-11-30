@@ -20,6 +20,10 @@ public static class Delta
     public static void Reset()
     {
         deltaJSON = new JSONObject();
+        deltaJSON[damageKey] = 0;
+        deltaJSON[healingKey] = new JSONArray();
+        deltaJSON[drawCardsKey] = new JSONArray();
+
     }
     public static void AddDamage(float additionalDamage)
     {

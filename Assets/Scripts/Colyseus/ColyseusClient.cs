@@ -16,7 +16,7 @@ public class ColyseusClient : MonoBehaviour
 {
     private static readonly string roomName = "battle";
     private static readonly string endpoint = "ws://gps-mobile-game-battle-server.herokuapp.com";
-    //private static readonly string endpoint = "ws://localhost:3001";
+    // private static readonly string endpoint = "ws://localhost:3001";
 
     public Colyseus.Client client;
     public Room<State> room;
@@ -40,7 +40,7 @@ public class ColyseusClient : MonoBehaviour
      * Username is the clients name, battleName is the name of the room to join, and stateHandler is a callback function that gets
      * invoked on a state change.
      */
-    public async void JoinOrCreateRoom(string username, string battleName, Colyseus.Room<State>.RoomOnStateChangeEventHandler stateHandler)
+    public async void JoinOrCreateRoom(string username, string battleName, Colyseus.Room<State>.RoomOnStateChangeEventHandler stateHandler, Colyseus.Room<State>.RoomOnMessageEventHandler messageHandler)
     {
         // Joins/sets up the room.
         Debug.LogFormat("{0} is trying to join room: {1}", username, battleName);
@@ -49,8 +49,9 @@ public class ColyseusClient : MonoBehaviour
 
         // Sets event callback functions.
         room.OnStateChange += stateHandler; // look at OnStateChangeHandler below as an example.
-        room.OnLeave += (code) => Debug.Log("ROOM: ON LEAVE");
-        room.OnError += (message) => Debug.LogError(message);        
+        room.OnMessage += messageHandler;
+        room.OnLeave += (code) => Debug.LogFormat("Left Room with Code: {0}", code);
+        room.OnError += (message) => Debug.LogErrorFormat("Colyseus Error: {0}", message);        
     }
      /*
       * Leaves the current room.
@@ -70,11 +71,12 @@ public class ColyseusClient : MonoBehaviour
     /*
      * Sends the damage dealt to the enemy to the Colyseus server.
      */
-    public void SendMessage(string delta)
+    public async Task SendMessage(string delta)
     {
         if (room != null)
         {
-            room.Send(delta);
+            Debug.LogFormat("Sending Delta: {0}", delta);
+            await room.Send(delta);
         }
         else
         {

@@ -44,6 +44,7 @@ public class TurnTimer : Singleton<TurnTimer>
             _timeRemaining -= 0.1f;
             if (_timeRemaining < 0.1f)
             {
+                CancelInvoke("DecreaseTimeRemaining");
                 OnTimeExpired(EventArgs.Empty); // Signal to subscribers
                 _pauseTimer = true;
             }

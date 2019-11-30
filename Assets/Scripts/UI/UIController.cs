@@ -80,6 +80,8 @@ public class UIController : Singleton<UIController>
         // Subscribe to CombatController event system
         _cc.CardsDrawn += OnCardsDrawnAction;
         _cc.MemoryChanged += OnMemoryChangedAction;
+        _cc.Player.HealthChanged += OnPlayerHealthChange;
+        _cc.Enemy.HealthChanged += OnEnemyHealthChange;
 
 
         // Validate all UI resources are loaded properly
@@ -147,6 +149,16 @@ public class UIController : Singleton<UIController>
     private void OnMemoryChangedAction(object sender, MemEventArgs e)
     {
         UpdateMemory(e.MemDiff);
+    }
+
+    private void OnPlayerHealthChange(object sender, HealthEventArgs e)
+    {
+        UpdatePlayerHealth(e.Health / 100);
+    }
+
+    private void OnEnemyHealthChange(object sender, HealthEventArgs e)
+    {
+        UpdateEnemyHealth(e.Health / 100);
     }
 
 

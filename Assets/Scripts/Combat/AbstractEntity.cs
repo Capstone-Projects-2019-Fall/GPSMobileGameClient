@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class AbstractEntity : MonoBehaviour
 {
@@ -9,11 +10,28 @@ public abstract class AbstractEntity : MonoBehaviour
     private bool _combat = false;
     private BuffHandler _buffHandler;
 
-    public float Health { get => _health; set => _health = value; }
+    public float Health {
+        get => _health;
+        set{
+             _health = value;
+             if (_health <= 0)
+            {
+                IsAlive = false;
+            }
+             HealthEventArgs args = new HealthEventArgs { Health = _health };
+            OnHealthChanged(args);            
+        } 
+    }
     public bool IsAlive { get => _alive; set => _alive = value; }
     public bool InCombat { get => _combat; set => _combat = value; }
     public List<Buff> GetBuffList { get => _buffHandler.buffList; set => _buffHandler.buffList = value; }
     public BuffHandler GetBuffHandler { get => _buffHandler; set => _buffHandler = value; }
+    public event EventHandler<HealthEventArgs> HealthChanged;
+
+    public void OnHealthChanged(HealthEventArgs e)
+    {
+        HealthChanged?.Invoke(this, e);
+    }
 
     // Initializes an abstract player.
     protected virtual void Awake()
@@ -34,11 +52,12 @@ public abstract class AbstractEntity : MonoBehaviour
     public virtual void DamageReceived(float damage)
     {
         float defenseModifier = _buffHandler.calculateDefenseModifier();
-        Health -= damage * defenseModifier;
-        if (Health <= 0)
+        float totalDamage = damage * defenseModifier;
+        if(this is Enemy)
         {
-            IsAlive = false;
-        }
+            Delta.AddDamage(totalDamage);
+        }        
+        Health -= totalDamage;        
     }
 
     // Adds a buff to the entity

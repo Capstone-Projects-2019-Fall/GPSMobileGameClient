@@ -127,7 +127,7 @@ public class CombatController : Singleton<CombatController>
     // delegates
     public event EventHandler<DrawEventArgs> CardsDrawn;
     public event EventHandler<CardPlayedArgs> CardPlayed;
-    public event EventHandler HealthChanged;
+    public event EventHandler<HealthEventArgs> HealthChanged;
     public event EventHandler<MemEventArgs> MemoryChanged;
 
     // signallers
@@ -141,7 +141,7 @@ public class CombatController : Singleton<CombatController>
         CardPlayed?.Invoke(this, e);
     }
 
-    public void OnHealthChanged(EventArgs e)
+    public void OnHealthChanged(HealthEventArgs e)
     {
         HealthChanged?.Invoke(this, e);
     }
@@ -177,6 +177,12 @@ public class CombatController : Singleton<CombatController>
         CardPlayedArgs args = new CardPlayedArgs { Card = ch.MyCard, CardGO = cardGO };
         OnCardPlayed(args);
     }
+
+    // public void ChangeHealth(float healthDiff)
+    // {
+    //     HealthEventArgs args = new HealthEventArgs { HealthDiff = healthDiff };
+    //     OnHealthChanged(args);
+    // }
 
     /* ChangeMemory Description:
      * Simple wrapper method for the OnMemoryChanged event that can be called externally by other scripts (such as cards or items)
@@ -260,7 +266,7 @@ public class CombatController : Singleton<CombatController>
         StartPhase(); 
         
         // Action phase
-        Debug.Log(_deckManager.Hand.DisplayDeck());
+        Debug.Log(_deckManager.Hand.DisplayDeck());        
         // End phase
 
         // Send Delta
@@ -270,9 +276,12 @@ public class CombatController : Singleton<CombatController>
 
     private void StartPhase()
     {
+        clientState = cState.Busy;
         Delta.Reset();
+        ChangeMemory(_uiCont.MaxMemory);
         DrawCards(_startingHandSize);
         _timer.StartTimer();
+        ActionPhase();
     }
 
     private void ActionPhase()
@@ -282,15 +291,17 @@ public class CombatController : Singleton<CombatController>
 
     private void EndPhase()
     {
-
+        clientState = cState.WaitingForServer;
+        client.SendMessage(Delta.toString());
     }
 
     private void InitializeCombat()
     {
         Debug.LogFormat("Player: {0}\nRoom:{1}", _player.Username, Node.getLastClickedNodename());
         // Connect to combat instance        
-        //client = new ColyseusClient();
-        //client.JoinOrCreateRoom(_player.Username, Node.getLastClickedNodename(), OnStateChangeHandler);
+        client = new ColyseusClient();
+        client.JoinOrCreateRoom(_player.Username, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
+        // client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
             // Read combat state
 
         // Spawn monster and player prefabs with state data
@@ -302,12 +313,18 @@ public class CombatController : Singleton<CombatController>
     }
 
     private void ExitCombat()
-    {
-            // Loads back to map scene after death
-            SceneManager.LoadScene(0);
+    {                       
             _enemy.EndCombat();
             _player.EndCombat();
-            client.LeaveRoom();
+            SafeColyseusExit();
+            // Loads back to map scene after death 
+            SceneManager.LoadScene(0);
+    }
+
+    private async void SafeColyseusExit()
+    {
+        await client.SendMessage(Delta.toString());
+        client.LeaveRoom();
     }
 
     private void SpawnCharacters()
@@ -318,19 +335,24 @@ public class CombatController : Singleton<CombatController>
 
     public void OnTimeExpired(object sender, EventArgs e)
     {
+        Debug.Log("timer off!");
         clientState = cState.Active;
+        EndPhase();
     }
 
-    /*
-     * An example of a state callback function. It will most likely be more useful to pass in a 
-     * custom stateHandler to JoinOrCreateRoom().
-     */
+    public void onMessageHandler(object message)
+    {
+        Debug.LogFormat("Message Received: {0}", message);
+        Enemy.executeAttack(Player);
+        StartPhase();
+    }
+    
     public void OnStateChangeHandler(State state, bool isFirstState)
     {
         this.state = state;
-        Debug.Log("State has been updated!");
+        Debug.LogFormat("State has been updated!\nMonsterHealth: {0}", state.monsterHealth);
+        Enemy.Health = state.monsterHealth;
         updateCurrentPlayersTextField();
-        Debug.LogFormat("MonsterHealth: {0}", state.monsterHealth);
     }
 
     private void updateCurrentPlayersTextField()

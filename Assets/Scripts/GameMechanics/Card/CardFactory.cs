@@ -49,7 +49,7 @@ public static class CardFactory
         List<Card> cards = new List<Card>(cardIds.Length);
         for(int i = 0; i < cardIds.Length; i++)
         {
-            cards.Add(Activator.CreateInstance(CardsById[i]) as Card);
+            cards.Add(Activator.CreateInstance(CardsById[cardIds[i]]) as Card);
         }
         return cards;
     }
