@@ -23,14 +23,14 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
     [SerializeField] private Player _player;
-    [SerializeField] private Vector3 playerSpawnPos;
+    [SerializeField] private Vector3 _playerSpawnPos;
     [SerializeField] private int _startingHandSize;
     private ColyseusClient client;
 
     [SerializeField] private GameObject _enemyPF;
     [SerializeField] private GameObject _enemyGO;
     [SerializeField] private Enemy _enemy;
-    [SerializeField] private Vector3 enemySpawnPos;
+    [SerializeField] private Vector3 _enemySpawnPos;
 
     [SerializeField] private Text _playerList;
     private State state;
@@ -239,12 +239,13 @@ public class CombatController : Singleton<CombatController>
 
         // Instantitate player and enemy
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
-        _playerGO = Instantiate(_playerPF, playerSpawnPos, Quaternion.identity);
+        _playerGO = Instantiate(_playerPF, _playerSpawnPos, Quaternion.identity);
         _player = _playerGO.GetComponent<Player>();
 
         // TODO: Query enemy type from web API
         _enemyPF = Resources.Load<GameObject>("Prefabs/Enemies/HeavyVirus");
-        _enemyGO = Instantiate(_enemyPF, enemySpawnPos, Quaternion.identity);
+        _enemySpawnPos = new Vector3(1.0f, 28.0f, 0.0f);
+        _enemyGO = Instantiate(_enemyPF, _enemySpawnPos, Quaternion.identity);
         _enemy = _enemyGO.GetComponent<VirusHeavy>();
         
         InitializeCombat();        
@@ -290,11 +291,21 @@ public class CombatController : Singleton<CombatController>
     private void StartPhase()
     {
         clientState = cState.Busy;
+
         Delta.Reset();
-        ChangeMemory(Player.MaxMemory);
+
+        ResetMemory();
         DrawCards(_startingHandSize);
+
         _timer.StartTimer();
         ActionPhase();
+    }
+
+    // Simple utility function to properly reset the player's Memory
+    private void ResetMemory()
+    {
+        int memDiff = _player.MaxMemory - _player.Memory;
+        ChangeMemory(memDiff); 
     }
 
     private void ActionPhase()

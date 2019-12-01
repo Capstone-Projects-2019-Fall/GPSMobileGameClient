@@ -52,7 +52,6 @@ public abstract class Enemy : AbstractEntity
         if (!IsAlive && InCombat)
         {
             // Loads back to map scene after death
-            SceneManager.LoadScene(0);
             EndCombat();
         }
     }
