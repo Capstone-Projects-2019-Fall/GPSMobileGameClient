@@ -1,6 +1,7 @@
 ﻿using Colyseus.Schema;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -152,7 +153,7 @@ public class CombatController : Singleton<CombatController>
         MemoryChanged?.Invoke(this, e);
     }
 
-    public void OnCardDiscraded(CardDiscardedArgs e)
+    public void OnCardDiscarded(CardDiscardedArgs e)
     {
         CardDiscarded?.Invoke(this, e);
     }
@@ -200,6 +201,13 @@ public class CombatController : Singleton<CombatController>
         MemEventArgs args = new MemEventArgs { MemDiff = memDiff };
         _player.Memory += memDiff; // Change the player object's memory : Seems excessive to add event in Player class
         OnMemoryChanged(args); 
+    }
+
+    public void DiscardCard(GameObject cardGO)
+    {
+        CardHandler ch = cardGO.GetComponent<CardHandler>();
+        CardDiscardedArgs args = new CardDiscardedArgs { Card = ch.MyCard, CardGO = cardGO };
+        OnCardDiscarded(args);
     }
 
     #endregion ---------------------------------------------------------------------------------------------------
@@ -296,9 +304,21 @@ public class CombatController : Singleton<CombatController>
 
     private void EndPhase()
     {
-        clientState = cState.WaitingForServer;
+        clientState = cState.Busy; // Clientside cleanup
+
+        // Discard the player's Hand
+        _uiCont.ResetCardGameObjects();
+        List<GameObject> cardGOs = _uiCont.GetHandGameObjects();
+        foreach(GameObject go in cardGOs)
+        {
+            DiscardCard(go);
+        }
+
         Player.GetBuffHandler.decrementBuffUsages();
         Enemy.GetBuffHandler.decrementBuffUsages();
+
+        clientState = cState.WaitingForServer; // Serverside delta sequence
+
         client.SendMessage(Delta.toString());
     }
 
@@ -343,7 +363,6 @@ public class CombatController : Singleton<CombatController>
     public void OnTimeExpired(object sender, EventArgs e)
     {
         Debug.Log("timer off!");
-        clientState = cState.Active;
         EndPhase();
     }
 

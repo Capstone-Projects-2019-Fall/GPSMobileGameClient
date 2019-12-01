@@ -4,10 +4,12 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(CombatController))]    
+[RequireComponent(typeof(CombatController))]  
+[RequireComponent(typeof(DeckManager))]
 public class UIController : Singleton<UIController>
 {
     private CombatController _cc;                   // The CombatController
+    private DeckManager _dm;                        // The DeckManager
     [SerializeField] private GameObject _uiCanvas;  // The UI canvas; highest level UI object in the hierarchy
 
     [SerializeField] private Transform _handZone;   // the screen region that drawn cards will populate
@@ -53,9 +55,12 @@ public class UIController : Singleton<UIController>
 
     private void Awake()
     {
+        // Get references to important game objects
+        _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+        _dm = GameObject.Find("CombatUtils").GetComponent<DeckManager>();
+
         // Get references to UI elements
         _uiCanvas = GameObject.Find("CombatUI");
-        _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
 
         _handZone = _uiCanvas.transform.Find("HandZone");
         _playZone = _uiCanvas.transform.Find("PlayZone");
@@ -99,10 +104,7 @@ public class UIController : Singleton<UIController>
         Assert.IsNotNull(_runAway);
 
     }
-    
-    /*
-     * 
-     */
+
     public void UpdateCardsInDeck(int current, int total)
     {
         _currentNumCards = Mathf.Max(0, current);
@@ -124,7 +126,38 @@ public class UIController : Singleton<UIController>
         float memDiff = -((float)n / (float)_cc.Player.MaxMemory);
         _memBarFill.fillAmount += memDiff;
     }
-    
+
+    /* GetHandGameObjects Description:
+     * A helper method that returns a list containing every GameObject that is a child of the HandZone transform
+     */
+    public List<GameObject> GetHandGameObjects()
+    {
+        int count = _handZone.childCount;
+        Assert.AreEqual(count, _dm.Hand.CurrentLength); // Should be the same
+
+        List<GameObject> GOs = new List<GameObject>();
+        for(int i = 0; i < count; i++)
+        {
+            GameObject cardGO = _handZone.GetChild(i).gameObject;
+            GOs.Add(cardGO);
+        }
+
+        return GOs;
+    }
+
+    /* ResetCardGameObjects Description:
+     * Resets the parent of each active Card GameObject in the scene to the HandZone using the "Card" GameObject
+     * tag. This is primarily called during the EndPhase to make sure all Cards are in one place before cleaning them up.
+     */
+    public void ResetCardGameObjects()
+    {
+        GameObject[] cardGOs = GameObject.FindGameObjectsWithTag("Card");
+        foreach(GameObject go in cardGOs)
+        {
+            go.transform.SetParent(_handZone);
+        }
+    }
+
     public void Start()
     {
         //updateCardsInDeck(3, 30);

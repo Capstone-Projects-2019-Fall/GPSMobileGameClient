@@ -63,6 +63,7 @@ public class DeckManager : Singleton<DeckManager>
         _hand = new Deck();
         _deck = new Deck(randCards);
         _nonexhaustedDeck = new Deck(_deck);
+        _discard = new Deck();
         _deck.ShuffleDeck();
 
     }
@@ -119,6 +120,18 @@ public class DeckManager : Singleton<DeckManager>
         return randomCards;
     }
 
+    // Reshuffle the discard pile into the player's draw pile
+    public void ReshuffleDiscard()
+    {
+        foreach(Card c in _discard.Cards)
+        {
+            _deck.AddCard(c);
+            _discard.RemoveCard(c);
+        }
+
+        _deck.ShuffleDeck();
+    }
+
     #region Event Handlers ------------------------------------------------------------------
 
     // Event handler for the CardsDrawn event
@@ -133,13 +146,14 @@ public class DeckManager : Singleton<DeckManager>
     // Event hanlder for the CardPlayed event
     public void OnCardPlayedAction(object sender, CardPlayedArgs e)
     {
-        Hand.RemoveCard(e.Card);
+        _hand.RemoveCard(e.Card);
     }
 
     public void OnCardDiscardedAction(object sender, CardDiscardedArgs e)
     {
-        Hand.RemoveCard(e.Card);
-
+        _discard.AddCard(e.Card); // Add the Card to the discard pile
+        _hand.RemoveCard(e.Card); // Remove it from the hand
+        e.CardGO.Destroy();       // Destroy the corresponding gameObject
     }
 
     #endregion ------------------------------------------------------------------------------
