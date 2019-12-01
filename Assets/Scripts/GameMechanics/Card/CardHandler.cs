@@ -47,4 +47,18 @@ public class CardHandler : MonoBehaviour
         gameObject.Destroy();
         _cc.CardPlayed -= OnCardPlayedAction; // unsubscribe from the event
     }
+    
+    /* Handles upgrading cards in upgrade interface.
+     * Parameters:
+     *    -> Player p: The clientside representation of the player in UpgradeScene
+     *    -> Card card: The clientside representation of the card in UpgradeScene
+     */
+    public void UpgradeCard(Player p)
+    {
+        if(p.Gold - _myCard.UpgradeCost < 0)
+        {
+            p.Gold -= _myCard.UpgradeCost;
+            _myCard.UpgradeCard();
+        }
+    }
 }

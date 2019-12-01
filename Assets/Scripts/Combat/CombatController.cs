@@ -24,6 +24,7 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Player _player;
     [SerializeField] private Vector3 playerSpawnPos;
     [SerializeField] private int _startingHandSize;
+    private ColyseusClient client;
 
     [SerializeField] private GameObject _enemyPF;
     [SerializeField] private GameObject _enemyGO;
