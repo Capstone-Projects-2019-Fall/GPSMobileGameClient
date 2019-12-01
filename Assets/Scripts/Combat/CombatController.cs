@@ -129,6 +129,7 @@ public class CombatController : Singleton<CombatController>
     public event EventHandler<CardPlayedArgs> CardPlayed;
     public event EventHandler<HealthEventArgs> HealthChanged;
     public event EventHandler<MemEventArgs> MemoryChanged;
+    public event EventHandler<CardDiscardedArgs> CardDiscarded;
 
     // signallers
     public void OnCardsDrawn(DrawEventArgs e)
@@ -149,6 +150,11 @@ public class CombatController : Singleton<CombatController>
     public void OnMemoryChanged(MemEventArgs e)
     {
         MemoryChanged?.Invoke(this, e);
+    }
+
+    public void OnCardDiscraded(CardDiscardedArgs e)
+    {
+        CardDiscarded?.Invoke(this, e);
     }
 
     // updaters & state checkers
@@ -301,8 +307,8 @@ public class CombatController : Singleton<CombatController>
         Debug.LogFormat("Player: {0}\nRoom:{1}", _player.Username, Node.getLastClickedNodename());
         // Connect to combat instance        
         client = new ColyseusClient();
-        client.JoinOrCreateRoom(_player.Username, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
-        // client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
+        // client.JoinOrCreateRoom(_player.Username, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
+        client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
             // Read combat state
 
         // Spawn monster and player prefabs with state data

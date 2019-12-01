@@ -27,13 +27,13 @@ public class CardHandler : MonoBehaviour
      */
     public void PlayCard(Player p, Enemy e)
     {
-        if(p.Memory >= _myCard.MemoryCost) // If the player has enough memory, then play the card
+        if((p.Memory >= _myCard.MemoryCost) && (_cc.clientState == CombatController.cState.Active)) // If the player has enough memory, and the client state is Active
         {
             _cc.CardPlayed += OnCardPlayedAction; // Listen for OK from CombatController
             _cc.PlayCard(gameObject);
         } else
         {
-            Debug.Log("Not enough Memory to play that card!");
+            Debug.Log("Cannot play that card! (Either not enough memory, or client state forbids playing cards right now)");
             gameObject.transform.SetParent(GameObject.Find("CombatUI").transform.Find("HandZone"));
         }
     }

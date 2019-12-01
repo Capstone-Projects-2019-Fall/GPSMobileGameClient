@@ -9,8 +9,8 @@ using SimpleJSON;
  */
 public static class APIWrapper
 {
-    private static readonly string baseURL = "https://gps-mobile-game-server.herokuapp.com";
-    // private static readonly string baseURL = "localhost:3000";
+    // private static readonly string baseURL = "https://gps-mobile-game-server.herokuapp.com";
+    private static readonly string baseURL = "localhost:3000";
     public delegate void Callback<T>(T obj); // This allows different objects to be returned in the callback depending on the request.
 
     /*

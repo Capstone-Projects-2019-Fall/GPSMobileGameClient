@@ -22,8 +22,8 @@ public class DeckManager : Singleton<DeckManager>
     private Deck _deck;  // The deck currently being used in combat
     private Deck _nonexhaustedDeck; // An 'image' of the deck that players left their home base with
     private Deck _hand; // All the cards currently in the player's hand
+    private Deck _discard; // The player's discard pile; cards from their hand are sent here at the end of each turn
 
-    [SerializeField] private int _startAmount = 5; // Dictates how many cards the starting hand should have.
     [SerializeField] private int _maxHandSize = 7; // Dictates the maximum hand size
 
     #region Accessors ----------------------------------------------------------------------------------
@@ -37,9 +37,8 @@ public class DeckManager : Singleton<DeckManager>
     public Deck Hand {
         get => _hand;
     }
-    public int StartAmount {
-        get => _startAmount;
-        set => _startAmount = value;
+    public Deck Discard {
+        get => _discard;
     }
     public int MaxHandSize {
         get => _maxHandSize;
@@ -54,6 +53,7 @@ public class DeckManager : Singleton<DeckManager>
         Assert.IsNotNull(_cc);
         _cc.CardsDrawn += OnCardDrawnAction; // event handler for card drawn
         _cc.CardPlayed += OnCardPlayedAction; // event handler for card played (removes card from hand)
+        _cc.CardDiscarded += OnCardDiscardedAction; // event handler for card discarded (moves card to discard pile)
 
         _uic = gameObject.GetComponent<UIController>();
         Assert.IsNotNull(_uic);
@@ -75,18 +75,17 @@ public class DeckManager : Singleton<DeckManager>
     }
 
     // Draws a card and adds it to the deck
-    // TODO: Add implementation for discard pile and reshuffling
     public bool DrawCard()
     {
-        if (_deck.Cards.Count == 0)
+        if (_deck.Cards.Count == 0) // deck is empty
         {
             Debug.Log("Deck is out of cards!");
             return false;
-        } else if(_hand.CurrentLength > _maxHandSize)
+        } else if(_hand.CurrentLength >= _maxHandSize) // hand is full
         {
             Debug.Log("Hand is full, draw was skipped!");
             return false;
-        } else 
+        } else // draw the card
         {
             Card drawnCard = _deck.DrawCard();
             _hand.AddCard(drawnCard);
@@ -120,7 +119,7 @@ public class DeckManager : Singleton<DeckManager>
         return randomCards;
     }
 
-    #region Event Handlers/Subscribers ------------------------------------------------------
+    #region Event Handlers ------------------------------------------------------------------
 
     // Event handler for the CardsDrawn event
     public void OnCardDrawnAction(object sender, DrawEventArgs e)
@@ -135,7 +134,12 @@ public class DeckManager : Singleton<DeckManager>
     public void OnCardPlayedAction(object sender, CardPlayedArgs e)
     {
         Hand.RemoveCard(e.Card);
-        Debug.LogFormat("Cards in hand: {0}", Hand.CurrentLength);
+    }
+
+    public void OnCardDiscardedAction(object sender, CardDiscardedArgs e)
+    {
+        Hand.RemoveCard(e.Card);
+
     }
 
     #endregion ------------------------------------------------------------------------------
