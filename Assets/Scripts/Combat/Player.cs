@@ -12,7 +12,7 @@ public class Player : AbstractEntity
     private string _username;
     private int _level;
     private int _currentExp;
-    private int _gold;
+    private double _gold;
     private DeckManager _deckManager;
     private List<Item> _inventory;
     private BuffHandler _buffHandler;
@@ -25,7 +25,7 @@ public class Player : AbstractEntity
     public string Username { get => _username; set => _username = value; }
     public int Level { get => _level; set => _level = value; }
     public int CurrentExp { get => _currentExp; set => _currentExp = value; }
-    public int Gold { get => _gold; set => _gold = value; }
+    public double Gold { get => _gold; set => _gold = value; }
     public DeckManager DeckManager { get => _deckManager; set => _deckManager = value; }
     public List<Item> Inventory { get => _inventory; set => _inventory = value; }
     public BuffHandler BuffHandler { get => _buffHandler; set => _buffHandler = value; }
