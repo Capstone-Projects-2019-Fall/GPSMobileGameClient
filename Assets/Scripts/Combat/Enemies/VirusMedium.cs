@@ -16,7 +16,7 @@ public class VirusMedium : Enemy
         Att_Modifier = 1;
         Health = 75;
         Exp = 5;
-        Loot = 6;
+        Loot = 40;
     }
 
     // Start is called before the first frame update

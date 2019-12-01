@@ -16,7 +16,7 @@ public class VirusHeavy : Enemy
         Att_Modifier = 1;
         Health = 200;
         Exp = 10;
-        Loot = 10;
+        Loot = 100;
     }
 
     // Start is called before the first frame update

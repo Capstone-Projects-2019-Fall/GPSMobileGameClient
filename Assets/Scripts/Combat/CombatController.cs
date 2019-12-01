@@ -311,7 +311,7 @@ public class CombatController : Singleton<CombatController>
             // Loads back to map scene after death
             SceneManager.LoadScene(0);
             _enemy.EndCombat();
-            _player.EndCombat();
+            _player.EndCombat(_enemy);
             client.LeaveRoom();
     }
 

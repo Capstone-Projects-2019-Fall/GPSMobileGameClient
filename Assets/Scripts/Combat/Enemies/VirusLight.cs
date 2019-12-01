@@ -16,7 +16,7 @@ public class VirusLight : Enemy
         Att_Modifier = 1;
         Health = 30;
         Exp = 2;
-        Loot = 3;
+        Loot = 20;
     }
 
     // Start is called before the first frame update
