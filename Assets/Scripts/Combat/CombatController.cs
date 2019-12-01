@@ -314,6 +314,8 @@ public class CombatController : Singleton<CombatController>
             DiscardCard(go);
         }
 
+        Debug.Log(_deckManager.Discard.DisplayDeck());
+
         Player.GetBuffHandler.decrementBuffUsages();
         Enemy.GetBuffHandler.decrementBuffUsages();
 

@@ -59,11 +59,15 @@ public class DeckManager : Singleton<DeckManager>
         Assert.IsNotNull(_uic);
 
         // Generate random deck for testing
-        List<Card> randCards = GenerateRandomCardList(40);
+        List<Card> randCards = GenerateRandomCardList(20);
+
         _hand = new Deck();
         _deck = new Deck(randCards);
         _nonexhaustedDeck = new Deck(_deck);
         _discard = new Deck();
+
+        _deck.MaxLength = _deck.CurrentLength;
+
         _deck.ShuffleDeck();
 
     }
@@ -80,23 +84,33 @@ public class DeckManager : Singleton<DeckManager>
     {
         if (_deck.Cards.Count == 0) // deck is empty
         {
-            Debug.Log("Deck is out of cards!");
-            return false;
-        } else if(_hand.CurrentLength >= _maxHandSize) // hand is full
+            if (_discard.CurrentLength == 0)
+            {
+                Debug.Log("Completely out of cards!");
+                return false;
+            }
+            else
+            { // Reshuffle the discard pile, then draw (if possible)
+                Debug.Log("Reshuffling discard pile...");
+                ReshuffleDiscard();
+            }
+        }
+        else if (_hand.CurrentLength >= _maxHandSize) // hand is full
         {
             Debug.Log("Hand is full, draw was skipped!");
             return false;
-        } else // draw the card
-        {
-            Card drawnCard = _deck.DrawCard();
-            _hand.AddCard(drawnCard);
-            GameObject cardGO = CardFactory.CreateCardGameObject(drawnCard);
-            
-            cardGO.transform.SetParent(_uic.HandZone);
-            cardGO.transform.localScale = new Vector3(1, 1, 1);
-
-            return true;
         }
+        
+        // draw the card (after normal circumstances or after reshuffle)
+        Card drawnCard = _deck.DrawCard();
+        _hand.AddCard(drawnCard);
+        GameObject cardGO = CardFactory.CreateCardGameObject(drawnCard);
+            
+        cardGO.transform.SetParent(_uic.HandZone);
+        cardGO.transform.localScale = new Vector3(1, 1, 1);
+
+        return true;
+        
     }
 
     // This resets deck & hand after a combat instance
@@ -126,8 +140,9 @@ public class DeckManager : Singleton<DeckManager>
         foreach(Card c in _discard.Cards)
         {
             _deck.AddCard(c);
-            _discard.RemoveCard(c);
         }
+
+        _discard = new Deck();
 
         _deck.ShuffleDeck();
     }
