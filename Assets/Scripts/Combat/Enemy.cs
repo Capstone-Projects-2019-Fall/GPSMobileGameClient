@@ -12,6 +12,7 @@ public abstract class Enemy : AbstractEntity
     [SerializeField] private float _exp = 1f;
     // Loot value dictates the amount of the loot after a player kills said enemy. 
     [SerializeField] private int loot = 1;
+    static public CombatController _cc;
 
     public float Attack { get { return _attack; } set { _attack = value; } }
     public float Armor { get { return _armor; } set { _armor = value; } }
@@ -23,7 +24,7 @@ public abstract class Enemy : AbstractEntity
     // Executes an attack against the player
     public virtual void executeAttack(Player player)
     {
-        base.ExecuteAttack(player, _attack);
+        _cc.ChangePlayerHealth(-this.CalculateDamage(player, _attack));
     }
 
     protected override void Awake()
@@ -38,6 +39,7 @@ public abstract class Enemy : AbstractEntity
         Loot = 1;
         IsAlive = true;
         GetBuffHandler = gameObject.AddComponent<BuffHandler>();
+        _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
     }
 
     // Start is called before the first frame update

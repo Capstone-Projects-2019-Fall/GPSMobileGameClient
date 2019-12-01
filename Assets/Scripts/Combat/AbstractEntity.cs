@@ -18,9 +18,7 @@ public abstract class AbstractEntity : MonoBehaviour
              if (_health <= 0)
             {
                 IsAlive = false;
-            }
-             HealthEventArgs args = new HealthEventArgs { Health = _health };
-            OnHealthChanged(args);            
+            }           
         } 
     }
     public float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
@@ -28,12 +26,6 @@ public abstract class AbstractEntity : MonoBehaviour
     public bool InCombat { get => _combat; set => _combat = value; }
     public List<Buff> GetBuffList { get => _buffHandler.buffList; set => _buffHandler.buffList = value; }
     public BuffHandler GetBuffHandler { get => _buffHandler; set => _buffHandler = value; }
-    public event EventHandler<HealthEventArgs> HealthChanged;
-
-    public void OnHealthChanged(HealthEventArgs e)
-    {
-        HealthChanged?.Invoke(this, e);
-    }
 
     // Initializes an abstract player.
     protected virtual void Awake()
@@ -43,23 +35,11 @@ public abstract class AbstractEntity : MonoBehaviour
         _buffHandler = gameObject.AddComponent<BuffHandler>();
     }
 
-    // Executes an attack against another entity.
-    public virtual void ExecuteAttack(AbstractEntity entity, float attack_damage)
+    public float CalculateDamage(AbstractEntity target, float attack_damage)
     {
-        float attackModifier = _buffHandler.calculateAttackModifier();
-        entity.DamageReceived(attack_damage * attackModifier);
-    }
-    
-    // Receives damage.
-    public virtual void DamageReceived(float damage)
-    {
-        float defenseModifier = _buffHandler.calculateDefenseModifier();
-        float totalDamage = damage * defenseModifier;
-        if(this is Enemy)
-        {
-            Delta.AddDamage(totalDamage);
-        }        
-        Health -= totalDamage;        
+        float attackModifier = _buffHandler.calculateAttackModifier();        
+        float defenseModifier = target.GetBuffHandler.calculateDefenseModifier();
+        return attack_damage * attackModifier * defenseModifier;
     }
 
     // Adds a buff to the entity

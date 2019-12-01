@@ -57,21 +57,6 @@ public class Player : AbstractEntity
         
     }
 
-    // Adds health to the player
-    public void AddHealth(float restoredHealth)
-    {
-        Health = Mathf.Min(MaxHealth, Health + restoredHealth);
-    }
-
-    /* Executes an attack against another entity.
-     * Need to override because the reference defined in AbstractEntity will throw a NullRef
-     */
-    public override void ExecuteAttack(AbstractEntity entity, float attack_damage)
-    {
-        float attackModifier = GetBuffHandler.calculateAttackModifier();
-        entity.DamageReceived   (attack_damage * attackModifier);
-    }
-
     // Initializes the player
     private void InitializePlayer()
     {

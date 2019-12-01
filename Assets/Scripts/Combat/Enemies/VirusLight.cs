@@ -35,6 +35,6 @@ public class VirusLight : Enemy
     // Attacks the player
     public override void executeAttack(Player player)
     {
-        player.DamageReceived(rand.Next((int)Attack, (int)Attack + 5) * Att_Modifier);
+        _cc.ChangePlayerHealth(-this.CalculateDamage(player, rand.Next((int)Attack, (int)Attack + 5) * Att_Modifier));
     }
 }

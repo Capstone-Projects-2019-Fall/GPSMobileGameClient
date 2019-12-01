@@ -127,7 +127,8 @@ public class CombatController : Singleton<CombatController>
     // delegates
     public event EventHandler<DrawEventArgs> CardsDrawn;
     public event EventHandler<CardPlayedArgs> CardPlayed;
-    public event EventHandler<HealthEventArgs> HealthChanged;
+    public event EventHandler<HealthEventArgs> PlayerHealthChanged;
+    public event EventHandler<HealthEventArgs> EnemyHealthChanged;
     public event EventHandler<MemEventArgs> MemoryChanged;
 
     // signallers
@@ -141,9 +142,14 @@ public class CombatController : Singleton<CombatController>
         CardPlayed?.Invoke(this, e);
     }
 
-    public void OnHealthChanged(HealthEventArgs e)
+    public void OnPlayerHealthChanged(HealthEventArgs e)
     {
-        HealthChanged?.Invoke(this, e);
+        PlayerHealthChanged?.Invoke(this, e);
+    }
+
+    public void OnEnemyHealthChanged(HealthEventArgs e)
+    {
+        EnemyHealthChanged?.Invoke(this, e);
     }
 
     public void OnMemoryChanged(MemEventArgs e)
@@ -178,11 +184,24 @@ public class CombatController : Singleton<CombatController>
         OnCardPlayed(args);
     }
 
-    // public void ChangeHealth(float healthDiff)
-    // {
-    //     HealthEventArgs args = new HealthEventArgs { HealthDiff = healthDiff };
-    //     OnHealthChanged(args);
-    // }
+    public void ChangePlayerHealth(float healthDiff)
+    {
+        HealthEventArgs args = new HealthEventArgs { Health = healthDiff };
+        Player.Health += healthDiff;
+        OnPlayerHealthChanged(args);
+    }
+
+    public void ChangeEnemyHealth(float healthDiff, bool includeInDelta = true)
+    {
+        if(includeInDelta)
+        {
+            Delta.AddDamage(healthDiff);
+        }        
+        HealthEventArgs args = new HealthEventArgs { Health = healthDiff };
+        Enemy.Health += healthDiff;
+        OnEnemyHealthChanged(args);
+        
+    }
 
     /* ChangeMemory Description:
      * Simple wrapper method for the OnMemoryChanged event that can be called externally by other scripts (such as cards or items)
@@ -352,7 +371,7 @@ public class CombatController : Singleton<CombatController>
     {
         this.state = state;
         Debug.LogFormat("State has been updated!\nMonsterHealth: {0}", state.monsterHealth);
-        Enemy.Health = state.monsterHealth;
+        ChangeEnemyHealth(-(Enemy.Health - state.monsterHealth), false);
         updateCurrentPlayersTextField();
     }
 

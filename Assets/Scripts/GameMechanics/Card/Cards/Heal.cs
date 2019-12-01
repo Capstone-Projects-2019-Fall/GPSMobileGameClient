@@ -32,7 +32,7 @@ public class Heal : Card
     {
         if (player.Memory >= MemoryCost)
         {
-            player.AddHealth(_HealAmount);
+            _cc.ChangePlayerHealth(_HealAmount);
             _cc.ChangeMemory(-MemoryCost);
         }
     }

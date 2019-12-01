@@ -76,8 +76,8 @@ public class UIController : Singleton<UIController>
         // Subscribe to CombatController event system
         _cc.CardsDrawn += OnCardsDrawnAction;
         _cc.MemoryChanged += OnMemoryChangedAction;
-        _cc.Player.HealthChanged += OnPlayerHealthChange;
-        _cc.Enemy.HealthChanged += OnEnemyHealthChange;
+        _cc.PlayerHealthChanged += OnPlayerHealthChange;
+        _cc.EnemyHealthChanged += OnEnemyHealthChange;
 
 
         // Validate all UI resources are loaded properly
@@ -149,12 +149,12 @@ public class UIController : Singleton<UIController>
 
     private void OnPlayerHealthChange(object sender, HealthEventArgs e)
     {
-        UpdatePlayerHealth(e.Health / _cc.Player.MaxHealth);
+        UpdatePlayerHealth(_cc.Player.Health / _cc.Player.MaxHealth);
     }
 
     private void OnEnemyHealthChange(object sender, HealthEventArgs e)
     {
-        UpdateEnemyHealth(e.Health / _cc.Enemy.MaxHealth);
+        UpdateEnemyHealth(_cc.Enemy.Health / _cc.Enemy.MaxHealth);
     }
 
 
