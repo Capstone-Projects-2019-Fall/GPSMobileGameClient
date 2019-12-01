@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class Player : AbstractEntity
 {
     private int _memory; 
+    private int _maxMemory;
     private int _userId;
     private string _username;
     private int _level;
@@ -19,6 +20,7 @@ public class Player : AbstractEntity
     #region Accessors -----------------------------------------------------------------------------------
 
     public int Memory { get => _memory; set => _memory = value; }
+    public int MaxMemory { get => _maxMemory; set => _maxMemory = value; }
     public int UserId { get => _userId; set => _userId = value; }
     public string Username { get => _username; set => _username = value; }
     public int Level { get => _level; set => _level = value; }
@@ -33,7 +35,8 @@ public class Player : AbstractEntity
     protected override void Awake()
     {
         base.Awake();
-        _memory = 10;
+        _maxMemory = 10;
+        _memory = _maxMemory;
         _level = 1;
         _currentExp = 0;
         _gold = 0;
@@ -57,7 +60,7 @@ public class Player : AbstractEntity
     // Adds health to the player
     public void AddHealth(float restoredHealth)
     {
-        Health += restoredHealth;
+        Health = Mathf.Min(MaxHealth, Health + restoredHealth);
     }
 
     /* Executes an attack against another entity.

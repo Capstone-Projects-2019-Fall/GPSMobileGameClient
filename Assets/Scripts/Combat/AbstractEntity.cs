@@ -6,6 +6,7 @@ using System;
 public abstract class AbstractEntity : MonoBehaviour
 {
     [SerializeField] private float _health = 100f;
+    [SerializeField] private float _maxHealth = 100f;
     private bool _alive = true;
     private bool _combat = false;
     private BuffHandler _buffHandler;
@@ -22,6 +23,7 @@ public abstract class AbstractEntity : MonoBehaviour
             OnHealthChanged(args);            
         } 
     }
+    public float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
     public bool IsAlive { get => _alive; set => _alive = value; }
     public bool InCombat { get => _combat; set => _combat = value; }
     public List<Buff> GetBuffList { get => _buffHandler.buffList; set => _buffHandler.buffList = value; }

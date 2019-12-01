@@ -14,7 +14,8 @@ public class VirusLight : Enemy
         Armor = 0;
         Regen_Rate = 0;
         Att_Modifier = 1;
-        Health = 30;
+        MaxHealth = 30;
+        Health = MaxHealth;
         Exp = 2;
         Loot = 3;
     }

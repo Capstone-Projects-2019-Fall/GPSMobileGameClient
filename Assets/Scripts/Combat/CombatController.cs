@@ -242,7 +242,6 @@ public class CombatController : Singleton<CombatController>
         // Send data to static classes and singletons
         _uiCont.CurrentNumCards = _deckManager.Deck.MaxLength;
         _uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
-        _uiCont.MaxMemory = _player.Memory;
 
         StartCoroutine(TurnSystem());
     }
@@ -252,19 +251,11 @@ public class CombatController : Singleton<CombatController>
     {
         // Check player and enemy condition. 
         //Separating player and enemy because we might need to perform different requests to server.
-        string enemynode = Node.getLastClickedNodename();
         if(!_player.IsAlive)
         {
-            //update enemy health
-            APIWrapper.updateEnemyHealth(enemynode,_enemy.Health,(jsonNode) => {
-                ExitCombat();
-            });
+            ExitCombat();
         } else if (!_enemy.IsAlive){
-            APIWrapper.deleteEnemy(enemynode,(jsonNode) =>{
-                APIWrapper.updateNodeStructure(enemynode,"Friendly",(jsonNode) => {
-                    ExitCombat();
-                });
-            });
+            ExitCombat();
         }
     }
     
@@ -286,7 +277,7 @@ public class CombatController : Singleton<CombatController>
     {
         clientState = cState.Busy;
         Delta.Reset();
-        ChangeMemory(_uiCont.MaxMemory);
+        ChangeMemory(Player.MaxMemory);
         DrawCards(_startingHandSize);
         _timer.StartTimer();
         ActionPhase();
@@ -300,6 +291,8 @@ public class CombatController : Singleton<CombatController>
     private void EndPhase()
     {
         clientState = cState.WaitingForServer;
+        Player.GetBuffHandler.decrementBuffUsages();
+        Enemy.GetBuffHandler.decrementBuffUsages();
         client.SendMessage(Delta.toString());
     }
 

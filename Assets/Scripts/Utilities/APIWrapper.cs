@@ -10,7 +10,7 @@ using SimpleJSON;
 public static class APIWrapper
 {
     private static readonly string baseURL = "https://gps-mobile-game-server.herokuapp.com";
-    //private static readonly string baseURL = "localhost:3000";
+    // private static readonly string baseURL = "localhost:3000";
     public delegate void Callback<T>(T obj); // This allows different objects to be returned in the callback depending on the request.
 
     /*
@@ -168,7 +168,9 @@ public static class APIWrapper
     public static IEnumerator deleteEnemy(string enemyname, Callback<string> callback)
     {
         
-        return DELETE(string.Format("{0}/enemy/{1}", baseURL, enemyname), callback);
+        return DELETE(string.Format("{0}/enemy/{1}", baseURL, enemyname), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
         
     }
 

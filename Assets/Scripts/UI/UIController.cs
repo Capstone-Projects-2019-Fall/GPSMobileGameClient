@@ -29,7 +29,6 @@ public class UIController : Singleton<UIController>
     // Useful local variables
     private int _currentNumCards;
     private int _totalNumCards;
-    private int _maxMemory;
     
 
     #region Accessors --------------------------------------------------------------------------------------------------
@@ -47,10 +46,7 @@ public class UIController : Singleton<UIController>
         get => _totalNumCards;
         set => _totalNumCards = value;
     }
-    public int MaxMemory {
-        get => _maxMemory;
-        set => _maxMemory = value;
-    }
+    
     #endregion ---------------------------------------------------------------------------------------------------------
 
     #region UIController Responsibilities ------------------------------------------------------------------------------
@@ -109,8 +105,8 @@ public class UIController : Singleton<UIController>
      */
     public void UpdateCardsInDeck(int current, int total)
     {
-        _currentNumCards = current;
-        _cardsInDeck.text = current.ToString() + " / " + total.ToString();
+        _currentNumCards = Mathf.Max(0, current);
+        _cardsInDeck.text = _currentNumCards.ToString() + " / " + total.ToString();
     }
 
     public void UpdateEnemyHealth(float n)
@@ -125,7 +121,7 @@ public class UIController : Singleton<UIController>
 
     public void UpdateMemory(int n)
     {
-        float memDiff = -((float)n / (float)MaxMemory);
+        float memDiff = -((float)n / (float)_cc.Player.MaxMemory);
         _memBarFill.fillAmount += memDiff;
     }
     
@@ -153,12 +149,12 @@ public class UIController : Singleton<UIController>
 
     private void OnPlayerHealthChange(object sender, HealthEventArgs e)
     {
-        UpdatePlayerHealth(e.Health / 100);
+        UpdatePlayerHealth(e.Health / _cc.Player.MaxHealth);
     }
 
     private void OnEnemyHealthChange(object sender, HealthEventArgs e)
     {
-        UpdateEnemyHealth(e.Health / 100);
+        UpdateEnemyHealth(e.Health / _cc.Enemy.MaxHealth);
     }
 
 

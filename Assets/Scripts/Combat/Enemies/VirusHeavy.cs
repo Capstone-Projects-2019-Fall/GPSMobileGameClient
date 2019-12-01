@@ -14,7 +14,8 @@ public class VirusHeavy : Enemy
         Armor = 0;
         Regen_Rate = 0;
         Att_Modifier = 1;
-        Health = 200;
+        MaxHealth = 200;
+        Health = MaxHealth;
         Exp = 10;
         Loot = 10;
     }

@@ -14,7 +14,8 @@ public class VirusMedium : Enemy
         Armor = 0;
         Regen_Rate = 0;
         Att_Modifier = 1;
-        Health = 75;
+        MaxHealth = 75;
+        Health = MaxHealth;
         Exp = 5;
         Loot = 6;
     }

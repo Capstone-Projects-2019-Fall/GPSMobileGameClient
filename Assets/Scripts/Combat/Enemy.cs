@@ -32,7 +32,8 @@ public abstract class Enemy : AbstractEntity
         Armor = 0;
         Regen_Rate = 0;
         Att_Modifier = 1;
-        Health = 50;
+        MaxHealth = 50;
+        Health = MaxHealth;
         Exp = 1;
         Loot = 1;
         IsAlive = true;
