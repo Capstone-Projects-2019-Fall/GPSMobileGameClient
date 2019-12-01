@@ -13,6 +13,7 @@ public class DecreaseDefense : Card
     public int _MemoryCost = 4;
     public double _UpgradeCost = 75;
     public float _DefenseModifier = 0.9f;
+    public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Decrease Defense");
 
     public override int Id => _Id;
 
@@ -27,6 +28,8 @@ public class DecreaseDefense : Card
     public override int MemoryCost => _MemoryCost;
 
     public override double UpgradeCost => _UpgradeCost;
+
+    public override Sprite CardArt => _CardArt;
 
     public override void PlayCard(Player player, Enemy enemy)
     {

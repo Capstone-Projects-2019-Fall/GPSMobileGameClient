@@ -78,7 +78,8 @@ public static class CardFactory
         // Populate elements
         trans.Find("card_name").GetComponent<Text>().text = card.Name; //name
         trans.Find("cost").Find("cost_number").GetComponent<Text>().text = card.MemoryCost.ToString(); //cost
-        trans.Find("description").GetComponent<Text>().text = card.Detail;
+        trans.Find("description").GetComponent<Text>().text = card.Detail; // rules text
+        trans.Find("art").GetComponent<Image>().sprite = card.CardArt;
 
         return cardGO;
     }

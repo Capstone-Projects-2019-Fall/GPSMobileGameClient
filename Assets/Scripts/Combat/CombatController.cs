@@ -279,7 +279,7 @@ public class CombatController : Singleton<CombatController>
         StartPhase(); 
         
         // Action phase
-        Debug.Log(_deckManager.Hand.DisplayDeck());        
+        
         // End phase
 
         // Send Delta

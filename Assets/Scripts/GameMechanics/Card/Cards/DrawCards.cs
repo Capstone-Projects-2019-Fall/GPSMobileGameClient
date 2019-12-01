@@ -13,6 +13,7 @@ public class DrawCards1: Card
     public int _MemoryCost = 1;
     public double _UpgradeCost = 1000;
     public int _DrawAmount = 1;
+    public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Draw Cards");
 
     public override int Id => _Id;
 
@@ -27,6 +28,8 @@ public class DrawCards1: Card
     public override int MemoryCost => _MemoryCost;
 
     public override double UpgradeCost => _UpgradeCost;
+
+    public override Sprite CardArt => _CardArt;
 
     public override void PlayCard(Player player, Enemy enemy)
     {

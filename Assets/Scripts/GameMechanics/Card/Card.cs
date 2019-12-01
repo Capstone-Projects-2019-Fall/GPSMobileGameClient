@@ -23,7 +23,7 @@ public abstract class Card : MonoBehaviour
     abstract public int MemoryCost { get; }
     abstract public double UpgradeCost { get; }
 
-    //abstract public Sprite CardSprite { get; }
+    abstract public Sprite CardArt { get; }
 
     // shared fields; common among all cards
     static public CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();

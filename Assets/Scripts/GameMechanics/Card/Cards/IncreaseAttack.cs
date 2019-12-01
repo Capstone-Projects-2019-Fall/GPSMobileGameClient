@@ -13,6 +13,7 @@ public class IncreaseAttack : Card
     public int _MemoryCost = 2;
     public double _UpgradeCost = 100;
     public float _AttackModifier = 1.1f;
+    public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Increase Attack");
 
     public override int Id => _Id;
 
@@ -27,6 +28,8 @@ public class IncreaseAttack : Card
     public override int MemoryCost => _MemoryCost;
 
     public override double UpgradeCost => _UpgradeCost;
+
+    public override Sprite CardArt => _CardArt;
 
     public override void PlayCard(Player player, Enemy enemy)
     {

@@ -13,6 +13,7 @@ public class Heal : Card
     public int _MemoryCost = 3;
     public double _UpgradeCost = 100;
     public int _HealAmount = 15;
+    public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Heal");
 
     public override int Id => _Id;
 
@@ -27,6 +28,8 @@ public class Heal : Card
     public override int MemoryCost => _MemoryCost;
 
     public override double UpgradeCost => _UpgradeCost;
+
+    public override Sprite CardArt => _CardArt;
 
     public override void PlayCard(Player player, Enemy enemy)
     {

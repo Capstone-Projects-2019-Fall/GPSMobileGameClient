@@ -13,6 +13,7 @@ public class Strike : Card
     public int _MemoryCost = 2;
     public double _UpgradeCost = 50;
     public int _DamageAmount = 20;
+    public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Strike");
 
     public override int Id => _Id;
 
@@ -27,6 +28,8 @@ public class Strike : Card
     public override int MemoryCost => _MemoryCost;
 
     public override double UpgradeCost => _UpgradeCost;
+
+    public override Sprite CardArt => _CardArt;
 
     public override void PlayCard(Player player, Enemy enemy)
     {
