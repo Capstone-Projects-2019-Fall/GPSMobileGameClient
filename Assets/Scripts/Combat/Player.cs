@@ -35,12 +35,13 @@ public class Player : AbstractEntity
     // Initializes the player with the default stats of AbstractEntity.
     protected override void Awake()
     {
-        base.Awake();
-        _memory = 10;
-        _level = 1;
-        _currentExp = 0;
-        _gold = 0;
-        _buffHandler = gameObject.GetComponent<BuffHandler>();
+        Health = 100;
+        IsAlive = true;
+        BuffHandler = gameObject.AddComponent<BuffHandler>();
+        Memory = 10;
+        Level = 1;
+        CurrentExp = 0;
+        Gold = 0;
 
 
         // TODO: Call server to get player values?
@@ -70,7 +71,7 @@ public class Player : AbstractEntity
     public override void ExecuteAttack(AbstractEntity entity, float attack_damage)
     {
         float attackModifier = _buffHandler.calculateAttackModifier();
-        entity.DamageReceived   (attack_damage * attackModifier);
+        entity.DamageReceived(attack_damage * attackModifier);
     }
 
     /* Ends combat for player and rewards player with gold and exp.

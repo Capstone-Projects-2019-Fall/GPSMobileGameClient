@@ -7,9 +7,11 @@ public class FriendlyNode : NodeStructure, IRadialArea
 {
     private static string _type = "Friendly";
     private static Sprite _sprite = Resources.Load<Sprite>("Sprites/friendly-node-01");
+    System.Random rand = new System.Random();
 
     private float _radius;
     private RadialArea _radialArea;
+    private float _cooldown = 10;
 
     public override string Type 
     {
@@ -27,6 +29,13 @@ public class FriendlyNode : NodeStructure, IRadialArea
     public RadialArea RadialArea {
         get => _radialArea;
         set => _radialArea = value;
+    }
+
+    // Clientside cooldown for clicking on the node?
+    public float CoolDown
+    {
+        get => _cooldown;
+        set => _cooldown = value;
     }
 
     // Constructor (called BEFORE attached to a Node)
@@ -74,6 +83,24 @@ public class FriendlyNode : NodeStructure, IRadialArea
     public override void OnClicked(string nodeIdentifier)
     {
         Debug.Log("Friendly OnClicked!");
+
+        /*
+         * Two different ways we can handle this. 
+         * 1) Spawn gold prefabs to be picked up/clicked on around the node by using RadialArea.SpawnObjectInRange.
+         * 2) Just reward player for clicking on node. NOT IMPLEMENTED.
+         */
+
+        // TODO: Uncomment section below once we have a gold prefab.
+        
+        
+        int goldSpawned = rand.Next(3, 10);
+        for(int i = 0; i < goldSpawned; i++)
+        {
+            GameObject goldPrefab = MonoBehaviour.Instantiate(Resources.Load<GameObject>("Prefabs/Enemies/VirusLight"));
+            RadialArea.SpawnObjectInRange(goldPrefab);
+        }
+
+
     }
 
     public void UpdateAction()
