@@ -363,7 +363,7 @@ public class CombatController : Singleton<CombatController>
     public void onMessageHandler(object message)
     {
         Debug.LogFormat("Message Received: {0}", message);
-        Enemy.executeAttack(Player);
+        Enemy.executeAttack(Player, message.ToString());
         StartPhase();
     }
     

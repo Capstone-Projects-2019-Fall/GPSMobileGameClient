@@ -22,9 +22,18 @@ public abstract class Enemy : AbstractEntity
     public int Loot { get { return loot; } set { loot = value; } }
 
     // Executes an attack against the player
-    public virtual void executeAttack(Player player)
+    public virtual void executeAttack(Player player, string enemyMove = "default move")
     {
-        _cc.ChangePlayerHealth(-this.CalculateDamage(player, _attack));
+        switch(enemyMove)
+        {
+            case "punch":
+                // break;
+            case "kick":
+                // break;
+            default:
+                _cc.ChangePlayerHealth(-this.CalculateDamage(player, _attack));
+                break;
+        }
     }
 
     protected override void Awake()

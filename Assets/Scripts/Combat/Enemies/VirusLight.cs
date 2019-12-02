@@ -33,8 +33,17 @@ public class VirusLight : Enemy
     }
 
     // Attacks the player
-    public override void executeAttack(Player player)
+    public override void executeAttack(Player player, string enemyMove = "default move")
     {
-        _cc.ChangePlayerHealth(-this.CalculateDamage(player, rand.Next((int)Attack, (int)Attack + 5) * Att_Modifier));
+        switch(enemyMove)
+        {
+            case "punch":
+                // break;
+            case "kick":
+                // break;
+            default:
+                _cc.ChangePlayerHealth(-this.CalculateDamage(player, rand.Next((int)Attack, (int)Attack + 5) * Att_Modifier));
+                break;
+        }        
     }
 }
