@@ -17,7 +17,7 @@ public class VirusMedium : Enemy
         MaxHealth = 75;
         Health = MaxHealth;
         Exp = 5;
-        Loot = 6;
+        Loot = 40;
     }
 
     // Start is called before the first frame update

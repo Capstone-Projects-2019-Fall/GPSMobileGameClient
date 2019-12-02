@@ -16,6 +16,8 @@ public class Player : AbstractEntity
     private double _gold;
     private DeckManager _deckManager;
     private List<Item> _inventory;
+    private BuffHandler _buffHandler;
+    System.Random rand = new System.Random();
 
     #region Accessors -----------------------------------------------------------------------------------
 
@@ -40,8 +42,8 @@ public class Player : AbstractEntity
         _level = 1;
         _currentExp = 0;
         _gold = 0;
-
-
+        IsAlive = true;
+        BuffHandler = gameObject.AddComponent<BuffHandler>();
         // TODO: Call server to get player values?
     }
 
@@ -68,8 +70,26 @@ public class Player : AbstractEntity
      */
     public override void ExecuteAttack(AbstractEntity entity, float attack_damage)
     {
-        float attackModifier = GetBuffHandler.calculateAttackModifier();
-        entity.DamageReceived   (attack_damage * attackModifier);
+        float attackModifier = _buffHandler.calculateAttackModifier();
+        entity.DamageReceived(attack_damage * attackModifier);
+    }
+
+    /* Ends combat for player and rewards player with gold and exp.
+     * Overrides AbstractEntity's EndCombat as it needs to grab enemy gold and exp values.
+     */
+    public override void EndCombat(Enemy enemy)
+    {
+        if(!enemy.IsAlive)
+        {
+            Gold += rand.Next(enemy.Loot / 2, enemy.Loot * 2);
+            CurrentExp += rand.Next((int)enemy.Exp - 1, (int)enemy.Exp * 2);
+            if(CurrentExp >= (Level + 1)*20)
+            {
+                CurrentExp = 0;
+                Level++;
+            }
+        }
+        base.EndCombat();
     }
 
     // Initializes the player

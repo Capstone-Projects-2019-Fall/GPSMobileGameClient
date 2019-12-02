@@ -17,7 +17,7 @@ public class VirusHeavy : Enemy
         MaxHealth = 200;
         Health = MaxHealth;
         Exp = 10;
-        Loot = 10;
+        Loot = 100;
     }
 
     // Start is called before the first frame update

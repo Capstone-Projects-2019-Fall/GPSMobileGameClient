@@ -77,6 +77,7 @@ public abstract class AbstractEntity : MonoBehaviour
     // These handle the start and end of combat
     public virtual void StartCombat() => InCombat = true;
     public virtual void EndCombat() => InCombat = false;
+    public virtual void EndCombat(Enemy enemy) => InCombat = false;
 
 
     private void Start()

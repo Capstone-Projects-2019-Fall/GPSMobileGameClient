@@ -17,7 +17,7 @@ public class VirusLight : Enemy
         MaxHealth = 30;
         Health = MaxHealth;
         Exp = 2;
-        Loot = 3;
+        Loot = 20;
     }
 
     // Start is called before the first frame update
