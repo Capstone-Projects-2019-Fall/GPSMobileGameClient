@@ -33,8 +33,17 @@ public class VirusHeavy : Enemy
     }
 
     // Attacks the player
-    public override void executeAttack(Player player)
+    public override void executeAttack(Player player, string enemyMove = "default move")
     {
-        player.DamageReceived(rand.Next((int)Attack - 10, (int)Attack) * Att_Modifier);
+        switch(enemyMove)
+        {
+            case "punch":
+                // break;
+            case "kick":
+                // break;
+            default:
+                _cc.ChangePlayerHealth(-this.CalculateDamage(player, rand.Next((int)Attack - 10, (int)Attack) * Att_Modifier));
+                break;
+        }
     }
 }

@@ -18,6 +18,8 @@ public class Player : AbstractEntity
     private List<Item> _inventory;
     System.Random rand = new System.Random();
 
+    public static string usernameKey = "username";
+
     #region Accessors -----------------------------------------------------------------------------------
 
     public int Memory { get => _memory; set => _memory = value; }
@@ -43,6 +45,14 @@ public class Player : AbstractEntity
         _gold = 0;
         IsAlive = true;
         // TODO: Call server to get player values?
+        string savedUsername = PlayerPrefs.GetString(Player.usernameKey, "Alice");
+        Username = savedUsername;
+        StartCoroutine(APIWrapper.getPlayer(savedUsername, (playerDataQuery) => {
+            if(playerDataQuery != null)
+            {
+                Debug.LogFormat("Loading {0}'s data...", savedUsername);
+            }          
+        }));
     }
 
     // Start is called before the first frame update

@@ -35,7 +35,7 @@ public class Strike : Card
     {
         if (player.Memory >= MemoryCost)
         {
-            player.ExecuteAttack(enemy, _DamageAmount);
+            _cc.ChangeEnemyHealth(-player.CalculateDamage(enemy, _DamageAmount));
             _cc.ChangeMemory(-MemoryCost);
         }        
     }
