@@ -73,15 +73,6 @@ public class Player : AbstractEntity
         Health = Mathf.Min(MaxHealth, Health + restoredHealth);
     }
 
-    /* Executes an attack against another entity.
-     * Need to override because the reference defined in AbstractEntity will throw a NullRef
-     */
-    public override void ExecuteAttack(AbstractEntity entity, float attack_damage)
-    {
-        float attackModifier = GetBuffHandler.calculateAttackModifier();
-        entity.DamageReceived(attack_damage * attackModifier);
-    }
-
     /* Ends combat for player and rewards player with gold and exp.
      * Overrides AbstractEntity's EndCombat as it needs to grab enemy gold and exp values.
      */

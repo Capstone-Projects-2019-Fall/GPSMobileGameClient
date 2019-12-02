@@ -25,6 +25,12 @@ public class UIController : Singleton<UIController>
     [SerializeField] private GameObject _memBar;    // player memory bar
     [SerializeField] private Image _memBarFill;      // player's memory bar fil
 
+    [SerializeField] private GameObject _mpHealthZone;       // Root object for the multiplayer health grid
+    [SerializeField] private GameObject _mpHealthGrid;       // Multiplayer health layout grid
+    [SerializeField] private List<GameObject> _mpHealthList; // List of multiplayer health buttons
+    [SerializeField] private List<Image> _mpHealthFills;     // List of multiplayer health fills
+    [SerializeField] private GameObject _mpHealthPF;         // Multiplayer button prefab
+
     [SerializeField] private GameObject _runAway;   // run away button
     // [SerializeField] private GameObject _items;     // button that accesses inventory (TODO)
 
@@ -77,6 +83,11 @@ public class UIController : Singleton<UIController>
 
         _runAway = _uiCanvas.transform.Find("Run").gameObject;
 
+        _mpHealthZone = _uiCanvas.transform.Find("mpHealthZone").gameObject;
+        _mpHealthGrid = _mpHealthZone.transform.Find("mpHealthGrid").gameObject;
+        _mpHealthList = new List<GameObject>(); // initialize empty list of game objects (populated dynamically)
+        _mpHealthFills = new List<Image>(); // populated dynamically with corresponding GameObjects
+        _mpHealthPF = Resources.Load<GameObject>("Prefabs/UI/mpHealth");
 
         // Subscribe to CombatController event system
         _cc.CardsDrawn += OnCardsDrawnAction;
@@ -102,6 +113,12 @@ public class UIController : Singleton<UIController>
         Assert.IsNotNull(_memBarFill);
 
         Assert.IsNotNull(_runAway);
+
+        Assert.IsNotNull(_mpHealthZone);
+        Assert.IsNotNull(_mpHealthGrid);
+        Assert.IsNotNull(_mpHealthList);
+        Assert.IsNotNull(_mpHealthFills);
+        Assert.IsNotNull(_mpHealthPF);
 
     }
 
@@ -145,9 +162,8 @@ public class UIController : Singleton<UIController>
         return GOs;
     }
 
-    /* ResetCardGameObjects Description:
-     * Resets the parent of each active Card GameObject in the scene to the HandZone using the "Card" GameObject
-     * tag. This is primarily called during the EndPhase to make sure all Cards are in one place before cleaning them up.
+    /* Resets the parent of each active Card GameObject in the scene to the HandZone using the "Card" GameObject tag.
+     * This is primarily called during the EndPhase to make sure all Cards are in one place before cleaning them up.
      */
     public void ResetCardGameObjects()
     {
@@ -156,6 +172,15 @@ public class UIController : Singleton<UIController>
         {
             go.transform.SetParent(_handZone);
         }
+    }
+
+
+    /* Called when a remote player connects to a combat instance to add a multiplayer health button to the multiplayer health grid.
+     * Parameters:
+     */
+    public void AddRemotePlayerToUI()
+    {
+
     }
 
     public void Start()

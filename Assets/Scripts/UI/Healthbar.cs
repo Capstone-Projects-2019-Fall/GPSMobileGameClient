@@ -11,11 +11,10 @@ public class Healthbar : MonoBehaviour
     private void Awake()
     {
         healthBarFill = transform.Find("fill").GetComponent<Image>();
-
     }
 
     public void updateHealthbar(float fill)
     {
-        healthBarFill.transform.Find("fill").GetComponent<Image>().fillAmount = fill;
+        healthBarFill.fillAmount = fill;
     }
 }
