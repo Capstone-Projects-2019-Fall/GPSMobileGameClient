@@ -15,8 +15,8 @@ using GameDevWare.Serialization;
 public class ColyseusClient : MonoBehaviour
 {
     private static readonly string roomName = "battle";
-    //private static readonly string endpoint = "ws://gps-mobile-game-battle-server.herokuapp.com";
-    private static readonly string endpoint = "ws://localhost:3000";
+    private static readonly string endpoint = "ws://gps-mobile-game-battle-server.herokuapp.com";
+    // private static readonly string endpoint = "ws://localhost:3000";
 
     public Colyseus.Client client;
     public Room<State> room;
@@ -40,11 +40,11 @@ public class ColyseusClient : MonoBehaviour
      * Username is the clients name, battleName is the name of the room to join, and stateHandler is a callback function that gets
      * invoked on a state change.
      */
-    public async void JoinOrCreateRoom(string username, string battleName, Colyseus.Room<State>.RoomOnStateChangeEventHandler stateHandler, Colyseus.Room<State>.RoomOnMessageEventHandler messageHandler)
+    public async void JoinOrCreateRoom(string username, float playerHealth, string battleName, Colyseus.Room<State>.RoomOnStateChangeEventHandler stateHandler, Colyseus.Room<State>.RoomOnMessageEventHandler messageHandler)
     {
         // Joins/sets up the room.
         Debug.LogFormat("{0} is trying to join room: {1}", username, battleName);
-        room = await client.JoinOrCreate<State>(roomName, new Dictionary<string, object>() { { "name", username }, { "battleName", battleName } });
+        room = await client.JoinOrCreate<State>(roomName, new Dictionary<string, object>() { { "name", username }, { "playerHealth", playerHealth }, { "battleName", battleName } });
         Debug.LogFormat("Room Id: {0}\tSession Id: {1}", room.Id, room.SessionId);
 
         // Sets event callback functions.
