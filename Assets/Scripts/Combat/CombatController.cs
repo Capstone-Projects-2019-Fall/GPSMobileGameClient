@@ -194,8 +194,9 @@ public class CombatController : Singleton<CombatController>
     public void ChangePlayerHealth(float healthDiff)
     {
         HealthEventArgs args = new HealthEventArgs { Health = healthDiff };
-        Player.Health += healthDiff;
+        Player.Health += healthDiff;        
         OnPlayerHealthChanged(args);
+        updateCurrentPlayersTextField();
     }
 
     public void ChangeEnemyHealth(float healthDiff, bool includeInDelta = true)
@@ -351,6 +352,7 @@ public class CombatController : Singleton<CombatController>
 
         clientState = cState.WaitingForServer; // Serverside delta sequence
 
+        Delta.SetPlayerHealth(Player.Health);
         client.SendMessage(Delta.toString());
     }
 
@@ -359,8 +361,8 @@ public class CombatController : Singleton<CombatController>
         Debug.LogFormat("Player: {0}\nRoom:{1}", _player.Username, Node.getLastClickedNodename());
         // Connect to combat instance        
         client = new ColyseusClient();
-        // client.JoinOrCreateRoom(_player.Username, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
-        client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
+        client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
+        // client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
             // Read combat state
 
         // Spawn monster and player prefabs with state data
@@ -418,8 +420,15 @@ public class CombatController : Singleton<CombatController>
     {
         string newString = "";
         foreach (var key in players.Keys) {
-            string pName = ((ColyseusPlayer)players[key]).name;
-            newString += pName + '\n';
+            ColyseusPlayer colyseusPlayer = ((ColyseusPlayer)players[key]);
+            if(colyseusPlayer.name == Player.Username)
+            {
+                newString += colyseusPlayer.name + ": " + Player.Health + '\n';
+            }
+            else
+            {
+                newString += colyseusPlayer.name + ": " + colyseusPlayer.health + '\n';
+            }
         }
         _playerList.text = newString;
     }

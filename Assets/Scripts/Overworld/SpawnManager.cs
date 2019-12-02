@@ -91,29 +91,32 @@ public class SpawnManager : Singleton<SpawnManager>
                     string name = jsonNode[i]["name"];
                     string nodeStruct = jsonNode[i]["structure"];
 
-                    // Check if a populated node with the same name already exists.
-                    GameObject populatedNodeGameObject = getPopulatedNodeByName(name);                    
-
-                    // There is an existing populated node.
-                    if(populatedNodeGameObject != null)
-                    {            
-                        // The already populated node is still near the player
-                        // so remove it from the list of out of bounds nodes.           
-                        outOfBoundsNodes.Remove(populatedNodeGameObject);
-
-                        Node populatedNode = populatedNodeGameObject.GetComponent<Node>();
-                        //  Update the node's structure if it has changed since the last query.
-                        // i.e. Friendly to Enemy
-                        if(!populatedNode.NodeStruct.Type.Equals(nodeStruct))
-                        {
-                            populatedNode.NodeStruct = NodeFactory.GetNodeStructureByString(nodeStruct);
-                        }                        
-                    }
-                    else // Create a new node
+                    if(nodeStruct != "")
                     {
-                        string nodeLongitude = jsonNode[i]["location"]["coordinates"][0];
-                        string nodeLatitude = jsonNode[i]["location"]["coordinates"][1];
-                        SpawnMarker(string.Format("{0}, {1}", nodeLatitude, nodeLongitude), nodeStruct, name);
+                        // Check if a populated node with the same name already exists.
+                        GameObject populatedNodeGameObject = getPopulatedNodeByName(name);                    
+
+                        // There is an existing populated node.
+                        if(populatedNodeGameObject != null)
+                        {            
+                            // The already populated node is still near the player
+                            // so remove it from the list of out of bounds nodes.           
+                            outOfBoundsNodes.Remove(populatedNodeGameObject);
+
+                            Node populatedNode = populatedNodeGameObject.GetComponent<Node>();
+                            //  Update the node's structure if it has changed since the last query.
+                            // i.e. Friendly to Enemy
+                            if(!populatedNode.NodeStruct.Type.Equals(nodeStruct))
+                            {
+                                populatedNode.NodeStruct = NodeFactory.GetNodeStructureByString(nodeStruct);
+                            }                        
+                        }
+                        else // Create a new node
+                        {
+                            string nodeLongitude = jsonNode[i]["location"]["coordinates"][0];
+                            string nodeLatitude = jsonNode[i]["location"]["coordinates"][1];
+                            SpawnMarker(string.Format("{0}, {1}", nodeLatitude, nodeLongitude), nodeStruct, name);
+                        }
                     }
                 }
 
