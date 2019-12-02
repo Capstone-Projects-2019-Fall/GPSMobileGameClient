@@ -32,7 +32,7 @@ public class Login : MonoBehaviour
                         {
                             PlayerPrefs.SetString(Player.usernameKey, createPlayerQuery["name"]);
                             PlayerPrefs.Save();
-                            SceneManager.LoadScene(0);
+                            SceneManager.LoadScene(1);
                         }
                     }));
                 }
@@ -41,7 +41,7 @@ public class Login : MonoBehaviour
                     Debug.LogFormat("Load existing data: {0}", existingPlayerQuery);
                     PlayerPrefs.SetString(Player.usernameKey, existingPlayerQuery["name"]);
                     PlayerPrefs.Save();
-                    SceneManager.LoadScene(0);
+                    SceneManager.LoadScene(1);
                 }            
             }));
         }        
