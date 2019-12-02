@@ -16,7 +16,6 @@ public class Player : AbstractEntity
     private double _gold;
     private DeckManager _deckManager;
     private List<Item> _inventory;
-    private BuffHandler _buffHandler;
     System.Random rand = new System.Random();
 
     #region Accessors -----------------------------------------------------------------------------------
@@ -43,7 +42,6 @@ public class Player : AbstractEntity
         _currentExp = 0;
         _gold = 0;
         IsAlive = true;
-        BuffHandler = gameObject.AddComponent<BuffHandler>();
         // TODO: Call server to get player values?
     }
 
@@ -70,7 +68,7 @@ public class Player : AbstractEntity
      */
     public override void ExecuteAttack(AbstractEntity entity, float attack_damage)
     {
-        float attackModifier = _buffHandler.calculateAttackModifier();
+        float attackModifier = GetBuffHandler.calculateAttackModifier();
         entity.DamageReceived(attack_damage * attackModifier);
     }
 
