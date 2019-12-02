@@ -7,7 +7,7 @@ public class MpButtonHandler : MonoBehaviour
 {
     private Healthbar _myHealthBar;
     private Text _playerName;
-    private string _pNameString;
+    private string _nameString;
 
     [SerializeField] private GameObject _buttonPF;
     [SerializeField] private Transform _gridLayout;
@@ -21,15 +21,20 @@ public class MpButtonHandler : MonoBehaviour
         set => _playerName = value;
     }
 
-    public string PNameString {
-        get => _pNameString;
-        set => _pNameString = value; 
+    public string NameString {
+        get => _nameString;
+        set => _nameString = value;
     }
 
     private void Awake()
     {
         _myHealthBar = gameObject.GetComponent<Healthbar>();
-        _playerName = gameObject.transform.Find("playerName").GetComponent<Text>().;
+        _playerName = gameObject.transform.Find("playerName").GetComponent<Text>();
+    }
+
+    public void ChangeSomething()
+    {
+        _myHealthBar.updateHealthbar(_myHealthBar.CurrentFill - 0.1f);
     }
 
     public void MakeSomething()

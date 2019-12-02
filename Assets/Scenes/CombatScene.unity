@@ -1757,24 +1757,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 591118511987919663, guid: 1854bd5ac8b64d249b42badf400f86e6,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: MakeSomething
       objectReference: {fileID: 0}
-    - target: {fileID: 591118511987919663, guid: 1854bd5ac8b64d249b42badf400f86e6,
+    - target: {fileID: 4888867651435980812, guid: 1854bd5ac8b64d249b42badf400f86e6,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
+      propertyPath: m_Name
+      value: playerName
       objectReference: {fileID: 0}
-    - target: {fileID: 591118511987919663, guid: 1854bd5ac8b64d249b42badf400f86e6,
+    - target: {fileID: 6274638458385334530, guid: 1854bd5ac8b64d249b42badf400f86e6,
         type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 591118511987919663, guid: 1854bd5ac8b64d249b42badf400f86e6,
-        type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      propertyPath: _buttonPF
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 6967926490093310651, guid: 1854bd5ac8b64d249b42badf400f86e6,
+        type: 3}
+    - target: {fileID: 6274638458385334530, guid: 1854bd5ac8b64d249b42badf400f86e6,
+        type: 3}
+      propertyPath: _gridLayout
+      value: 
+      objectReference: {fileID: 1384082546}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1854bd5ac8b64d249b42badf400f86e6, type: 3}
 --- !u!1001 &5280960367359855426
@@ -1911,24 +1912,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 745a456b3b376dc47b0359d9231bccd0, type: 3}
---- !u!1 &6274638458385334529 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6967926490093310651, guid: 1854bd5ac8b64d249b42badf400f86e6,
-    type: 3}
-  m_PrefabInstance: {fileID: 4008470125599249338}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6274638458385334530
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6274638458385334529}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8b714e10fa5f83f428735c4cde805664, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8258816069154284730
 PrefabInstance:
   m_ObjectHideFlags: 0
