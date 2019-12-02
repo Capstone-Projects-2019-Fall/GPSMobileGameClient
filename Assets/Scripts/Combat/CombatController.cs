@@ -382,6 +382,12 @@ public class CombatController : Singleton<CombatController>
             SceneManager.LoadScene(0);
     }
 
+    // Simple wrapper for public visibility called by the Run Away button
+    public void FleeCombat()
+    {
+        ExitCombat();
+    }
+
     private async void SafeColyseusExit()
     {
         await client.SendMessage(Delta.toString());

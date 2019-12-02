@@ -16,7 +16,7 @@ public class ColyseusClient : MonoBehaviour
 {
     private static readonly string roomName = "battle";
     private static readonly string endpoint = "ws://gps-mobile-game-battle-server.herokuapp.com";
-    // private static readonly string endpoint = "ws://localhost:3000";
+    // private static readonly string endpoint = "ws://localhost:3002";
 
     public Colyseus.Client client;
     public Room<State> room;
