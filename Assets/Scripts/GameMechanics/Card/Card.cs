@@ -22,7 +22,6 @@ public abstract class Card : MonoBehaviour
     abstract public int Level { get; }
     abstract public int MemoryCost { get; }
     abstract public double UpgradeCost { get; }
-
     abstract public Sprite CardArt { get; }
 
     // shared fields; common among all cards

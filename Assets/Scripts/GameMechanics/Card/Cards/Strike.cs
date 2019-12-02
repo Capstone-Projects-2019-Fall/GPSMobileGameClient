@@ -35,10 +35,8 @@ public class Strike : Card
     {
         if (player.Memory >= MemoryCost)
         {
-            Debug.LogFormat("Start of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
             player.ExecuteAttack(enemy, _DamageAmount);
             _cc.ChangeMemory(-MemoryCost);
-            Debug.LogFormat("End of Strike: EnemyHP: {0}, PlayerMem: {1}", enemy.Health, player.Memory);
         }        
     }
 
