@@ -14,9 +14,10 @@ public class VirusMedium : Enemy
         Armor = 0;
         Regen_Rate = 0;
         Att_Modifier = 1;
-        Health = 75;
+        MaxHealth = 75;
+        Health = MaxHealth;
         Exp = 5;
-        Loot = 6;
+        Loot = 40;
     }
 
     // Start is called before the first frame update
@@ -32,9 +33,17 @@ public class VirusMedium : Enemy
     }
 
     // Attacks the player
-    public override void executeAttack(Player player)
+    public override void executeAttack(Player player, string enemyMove = "default move")
     {
-        
-        player.DamageReceived(rand.Next((int)Attack - 3, (int)Attack + 3) * Att_Modifier);
+        switch(enemyMove)
+        {
+            case "punch":
+                // break;
+            case "kick":
+                // break;
+            default:
+                _cc.ChangePlayerHealth(-this.CalculateDamage(player, rand.Next((int)Attack - 3, (int)Attack + 3) * Att_Modifier));
+                break;
+        }
     }
 }

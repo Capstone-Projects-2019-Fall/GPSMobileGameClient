@@ -1,15 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public abstract class AbstractEntity : MonoBehaviour
 {
     [SerializeField] private float _health = 100f;
+    [SerializeField] private float _maxHealth = 100f;
     private bool _alive = true;
     private bool _combat = false;
     private BuffHandler _buffHandler;
 
-    public float Health { get => _health; set => _health = value; }
+    public float Health {
+        get => _health;
+        set{
+             _health = value;
+             if (_health <= 0)
+            {
+                IsAlive = false;
+            }           
+        } 
+    }
+    public float MaxHealth { get => _maxHealth; set => _maxHealth = value; }
     public bool IsAlive { get => _alive; set => _alive = value; }
     public bool InCombat { get => _combat; set => _combat = value; }
     public List<Buff> GetBuffList { get => _buffHandler.buffList; set => _buffHandler.buffList = value; }
@@ -23,22 +35,11 @@ public abstract class AbstractEntity : MonoBehaviour
         _buffHandler = gameObject.AddComponent<BuffHandler>();
     }
 
-    // Executes an attack against another entity.
-    public virtual void ExecuteAttack(AbstractEntity entity, float attack_damage)
+    public float CalculateDamage(AbstractEntity target, float attack_damage)
     {
-        float attackModifier = _buffHandler.calculateAttackModifier();
-        entity.DamageReceived(attack_damage * attackModifier);
-    }
-    
-    // Receives damage.
-    public virtual void DamageReceived(float damage)
-    {
-        float defenseModifier = _buffHandler.calculateDefenseModifier();
-        Health -= damage * defenseModifier;
-        if (Health <= 0)
-        {
-            IsAlive = false;
-        }
+        float attackModifier = _buffHandler.calculateAttackModifier();        
+        float defenseModifier = target.GetBuffHandler.calculateDefenseModifier();
+        return attack_damage * attackModifier * defenseModifier;
     }
 
     // Adds a buff to the entity
@@ -56,6 +57,7 @@ public abstract class AbstractEntity : MonoBehaviour
     // These handle the start and end of combat
     public virtual void StartCombat() => InCombat = true;
     public virtual void EndCombat() => InCombat = false;
+    public virtual void EndCombat(Enemy enemy) => InCombat = false;
 
 
     private void Start()

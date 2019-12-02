@@ -14,9 +14,10 @@ public class VirusLight : Enemy
         Armor = 0;
         Regen_Rate = 0;
         Att_Modifier = 1;
-        Health = 30;
+        MaxHealth = 30;
+        Health = MaxHealth;
         Exp = 2;
-        Loot = 3;
+        Loot = 20;
     }
 
     // Start is called before the first frame update
@@ -32,8 +33,17 @@ public class VirusLight : Enemy
     }
 
     // Attacks the player
-    public override void executeAttack(Player player)
+    public override void executeAttack(Player player, string enemyMove = "default move")
     {
-        player.DamageReceived(rand.Next((int)Attack, (int)Attack + 5) * Att_Modifier);
+        switch(enemyMove)
+        {
+            case "punch":
+                // break;
+            case "kick":
+                // break;
+            default:
+                _cc.ChangePlayerHealth(-this.CalculateDamage(player, rand.Next((int)Attack, (int)Attack + 5) * Att_Modifier));
+                break;
+        }        
     }
 }

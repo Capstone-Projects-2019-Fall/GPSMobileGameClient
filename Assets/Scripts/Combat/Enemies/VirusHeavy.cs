@@ -14,9 +14,10 @@ public class VirusHeavy : Enemy
         Armor = 0;
         Regen_Rate = 0;
         Att_Modifier = 1;
-        Health = 200;
+        MaxHealth = 200;
+        Health = MaxHealth;
         Exp = 10;
-        Loot = 10;
+        Loot = 100;
     }
 
     // Start is called before the first frame update
@@ -32,8 +33,17 @@ public class VirusHeavy : Enemy
     }
 
     // Attacks the player
-    public override void executeAttack(Player player)
+    public override void executeAttack(Player player, string enemyMove = "default move")
     {
-        player.DamageReceived(rand.Next((int)Attack - 10, (int)Attack) * Att_Modifier);
+        switch(enemyMove)
+        {
+            case "punch":
+                // break;
+            case "kick":
+                // break;
+            default:
+                _cc.ChangePlayerHealth(-this.CalculateDamage(player, rand.Next((int)Attack - 10, (int)Attack) * Att_Modifier));
+                break;
+        }
     }
 }

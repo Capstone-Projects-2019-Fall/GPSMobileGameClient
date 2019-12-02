@@ -33,11 +33,27 @@ public static class CardFactory
         CardTypesList = CardsById.Values.ToList();
     }
 
+    /*
+     * Create a Card object with a given card id.
+     */
     public static Card CreateCard(int cardId)
     {
         return Activator.CreateInstance(CardsById[cardId]) as Card;
     }
 
+    /*
+     * Create a List of Card objects with a given list of card ids.
+     */
+    public static List<Card> CreateCards(int[] cardIds)
+    {
+        List<Card> cards = new List<Card>(cardIds.Length);
+        for(int i = 0; i < cardIds.Length; i++)
+        {
+            cards.Add(Activator.CreateInstance(CardsById[cardIds[i]]) as Card);
+        }
+        return cards;
+    }
+    
     // Creates a random Card from the master list of cards
     public static Card CreateRandomCard()
     {
@@ -62,8 +78,48 @@ public static class CardFactory
         // Populate elements
         trans.Find("card_name").GetComponent<Text>().text = card.Name; //name
         trans.Find("cost").Find("cost_number").GetComponent<Text>().text = card.MemoryCost.ToString(); //cost
-        trans.Find("description").GetComponent<Text>().text = card.Detail;
+        trans.Find("description").GetComponent<Text>().text = card.Detail; // rules text
+        trans.Find("art").GetComponent<Image>().sprite = card.CardArt;
 
         return cardGO;
+    }
+
+    /*
+     * Create a List of Card Game Objects with a given list of card objects.
+     */
+    public static List<GameObject> CreateCardGameObjects(List<Card> cards)
+    {
+        List<GameObject> cardGameObjects = new List<GameObject>(cards.Count);
+        foreach(Card card in cards)
+        {
+            cardGameObjects.Add(CreateCardGameObject(card));
+        }
+        return cardGameObjects;
+    }
+
+    /*
+     * Get a List of all the Card Objects.
+     */
+    public static List<Card> CreateAllCards()
+    {
+        List<Card> cards = new List<Card>();
+        foreach(Type type in CardsById.Values)
+        {
+            cards.Add(Activator.CreateInstance(type) as Card);
+        }
+        return cards;
+    }
+
+    /*
+     * Get an array of card ids from a list of Card Objects.
+     */
+    public static int[] CardsToIdArray(List<Card> cards)
+    {
+        int[] cardIds = new int[cards.Count];
+        for(int i = 0; i < cards.Count; i++)
+        {
+            cardIds[i] = cards[i].Id;
+        }
+        return cardIds;
     }
 }

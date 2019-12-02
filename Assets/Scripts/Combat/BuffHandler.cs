@@ -38,12 +38,13 @@ public class BuffHandler : MonoBehaviour
 
     public void decrementBuffUsages()
     {
-        foreach (Buff buff in buffList)
+        for(int i = 0; i < buffList.Count; i++)
         {
-            buff.RoundDuration--;
-            if (buff.RoundDuration == 0)
+            buffList[i].RoundDuration--;
+            if (buffList[i].RoundDuration == 0)
             {
-                buffList.Remove(buff);
+                buffList.RemoveAt(i);
+                i--;
             }
         }
     }

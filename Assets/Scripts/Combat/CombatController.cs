@@ -1,6 +1,7 @@
 ﻿using Colyseus.Schema;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -22,17 +23,17 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private GameObject _playerPF;
     [SerializeField] private GameObject _playerGO;
     [SerializeField] private Player _player;
-    [SerializeField] private Vector3 playerSpawnPos;
+    [SerializeField] private Vector3 _playerSpawnPos;
     [SerializeField] private int _startingHandSize;
+    private ColyseusClient client;
 
     [SerializeField] private GameObject _enemyPF;
     [SerializeField] private GameObject _enemyGO;
     [SerializeField] private Enemy _enemy;
-    [SerializeField] private Vector3 enemySpawnPos;
-    [SerializeField] private ColyseusClient client;
+    [SerializeField] private Vector3 _enemySpawnPos;
 
     [SerializeField] private Text _playerList;
-    private MapSchema<Entity> players;
+    private State state;
     private TurnTimer _timer;
 
     #region Accessors --------------------------------------------------------------------------------------------
@@ -59,6 +60,11 @@ public class CombatController : Singleton<CombatController>
     }
     public bool InCombat {
         get => _inCombat;
+    }
+
+    public MapSchema<ColyseusPlayer> players
+    {
+        get => state.players;
     }
 
     #endregion ---------------------------------------------------------------------------------------------------
@@ -122,8 +128,10 @@ public class CombatController : Singleton<CombatController>
     // delegates
     public event EventHandler<DrawEventArgs> CardsDrawn;
     public event EventHandler<CardPlayedArgs> CardPlayed;
-    public event EventHandler HealthChanged;
+    public event EventHandler<HealthEventArgs> PlayerHealthChanged;
+    public event EventHandler<HealthEventArgs> EnemyHealthChanged;
     public event EventHandler<MemEventArgs> MemoryChanged;
+    public event EventHandler<CardDiscardedArgs> CardDiscarded;
 
     // signallers
     public void OnCardsDrawn(DrawEventArgs e)
@@ -136,14 +144,24 @@ public class CombatController : Singleton<CombatController>
         CardPlayed?.Invoke(this, e);
     }
 
-    public void OnHealthChanged(EventArgs e)
+    public void OnPlayerHealthChanged(HealthEventArgs e)
     {
-        HealthChanged?.Invoke(this, e);
+        PlayerHealthChanged?.Invoke(this, e);
+    }
+
+    public void OnEnemyHealthChanged(HealthEventArgs e)
+    {
+        EnemyHealthChanged?.Invoke(this, e);
     }
 
     public void OnMemoryChanged(MemEventArgs e)
     {
         MemoryChanged?.Invoke(this, e);
+    }
+
+    public void OnCardDiscarded(CardDiscardedArgs e)
+    {
+        CardDiscarded?.Invoke(this, e);
     }
 
     // updaters & state checkers
@@ -173,6 +191,26 @@ public class CombatController : Singleton<CombatController>
         OnCardPlayed(args);
     }
 
+    public void ChangePlayerHealth(float healthDiff)
+    {
+        HealthEventArgs args = new HealthEventArgs { Health = healthDiff };
+        Player.Health += healthDiff;        
+        OnPlayerHealthChanged(args);
+        updateCurrentPlayersTextField();
+    }
+
+    public void ChangeEnemyHealth(float healthDiff, bool includeInDelta = true)
+    {
+        if(includeInDelta)
+        {
+            Delta.AddDamage(healthDiff);
+        }        
+        HealthEventArgs args = new HealthEventArgs { Health = healthDiff };
+        Enemy.Health += healthDiff;
+        OnEnemyHealthChanged(args);
+        
+    }
+
     /* ChangeMemory Description:
      * Simple wrapper method for the OnMemoryChanged event that can be called externally by other scripts (such as cards or items)
      * Parameters:
@@ -183,6 +221,13 @@ public class CombatController : Singleton<CombatController>
         MemEventArgs args = new MemEventArgs { MemDiff = memDiff };
         _player.Memory += memDiff; // Change the player object's memory : Seems excessive to add event in Player class
         OnMemoryChanged(args); 
+    }
+
+    public void DiscardCard(GameObject cardGO)
+    {
+        CardHandler ch = cardGO.GetComponent<CardHandler>();
+        CardDiscardedArgs args = new CardDiscardedArgs { Card = ch.MyCard, CardGO = cardGO };
+        OnCardDiscarded(args);
     }
 
     #endregion ---------------------------------------------------------------------------------------------------
@@ -210,16 +255,20 @@ public class CombatController : Singleton<CombatController>
 
         // Set local private variables
         _startingHandSize = 5;
+        _playerList = GameObject.Find("CombatUI").transform.Find("PlayerList").gameObject.GetComponent<Text>();
 
         // Instantitate player and enemy
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
-        _playerGO = Instantiate(_playerPF, playerSpawnPos, Quaternion.identity);
+        _playerGO = Instantiate(_playerPF, _playerSpawnPos, Quaternion.identity);
         _player = _playerGO.GetComponent<Player>();
 
         // TODO: Query enemy type from web API
         _enemyPF = Resources.Load<GameObject>("Prefabs/Enemies/HeavyVirus");
-        _enemyGO = Instantiate(_enemyPF, enemySpawnPos, Quaternion.identity);
+        _enemySpawnPos = new Vector3(1.0f, 28.0f, 0.0f);
+        _enemyGO = Instantiate(_enemyPF, _enemySpawnPos, Quaternion.identity);
         _enemy = _enemyGO.GetComponent<VirusHeavy>();
+        
+        InitializeCombat();        
     }
 
     // Start is called before the first frame update
@@ -228,7 +277,6 @@ public class CombatController : Singleton<CombatController>
         // Send data to static classes and singletons
         _uiCont.CurrentNumCards = _deckManager.Deck.MaxLength;
         _uiCont.TotalNumCards = _deckManager.Deck.MaxLength;
-        _uiCont.MaxMemory = _player.Memory;
 
         StartCoroutine(TurnSystem());
     }
@@ -252,7 +300,7 @@ public class CombatController : Singleton<CombatController>
         StartPhase(); 
         
         // Action phase
-        Debug.Log(_deckManager.Hand.DisplayDeck());
+        
         // End phase
 
         // Send Delta
@@ -262,8 +310,22 @@ public class CombatController : Singleton<CombatController>
 
     private void StartPhase()
     {
+        clientState = cState.Busy;
+
+        Delta.Reset();
+
+        ResetMemory();
         DrawCards(_startingHandSize);
+
         _timer.StartTimer();
+        ActionPhase();
+    }
+
+    // Simple utility function to properly reset the player's Memory
+    private void ResetMemory()
+    {
+        int memDiff = _player.MaxMemory - _player.Memory;
+        ChangeMemory(memDiff); 
     }
 
     private void ActionPhase()
@@ -273,13 +335,34 @@ public class CombatController : Singleton<CombatController>
 
     private void EndPhase()
     {
+        clientState = cState.Busy; // Clientside cleanup
 
+        // Discard the player's Hand
+        _uiCont.ResetCardGameObjects();
+        List<GameObject> cardGOs = _uiCont.GetHandGameObjects();
+        foreach(GameObject go in cardGOs)
+        {
+            DiscardCard(go);
+        }
+
+        Debug.Log(_deckManager.Discard.DisplayDeck());
+
+        Player.GetBuffHandler.decrementBuffUsages();
+        Enemy.GetBuffHandler.decrementBuffUsages();
+
+        clientState = cState.WaitingForServer; // Serverside delta sequence
+
+        Delta.SetPlayerHealth(Player.Health);
+        client.SendMessage(Delta.toString());
     }
 
     private void InitializeCombat()
     {
-        // Connect to combat instance
-        
+        Debug.LogFormat("Player: {0}\nRoom:{1}", _player.Username, Node.getLastClickedNodename());
+        // Connect to combat instance        
+        client = new ColyseusClient();
+        client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
+        // client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
             // Read combat state
 
         // Spawn monster and player prefabs with state data
@@ -291,12 +374,24 @@ public class CombatController : Singleton<CombatController>
     }
 
     private void ExitCombat()
-    {
-            // Loads back to map scene after death
-            SceneManager.LoadScene(0);
+    {                       
             _enemy.EndCombat();
             _player.EndCombat();
-            client.LeaveRoom();
+            SafeColyseusExit();
+            // Loads back to map scene after death 
+            SceneManager.LoadScene(0);
+    }
+
+    // Simple wrapper for public visibility called by the Run Away button
+    public void FleeCombat()
+    {
+        ExitCombat();
+    }
+
+    private async void SafeColyseusExit()
+    {
+        await client.SendMessage(Delta.toString());
+        client.LeaveRoom();
     }
 
     private void SpawnCharacters()
@@ -307,27 +402,51 @@ public class CombatController : Singleton<CombatController>
 
     public void OnTimeExpired(object sender, EventArgs e)
     {
-        clientState = cState.Active;
+        Debug.Log("timer off!");
+        EndPhase();
     }
 
-    /*
-     * An example of a state callback function. It will most likely be more useful to pass in a 
-     * custom stateHandler to JoinOrCreateRoom().
-     */
+    public void onMessageHandler(object message)
+    {
+        Debug.LogFormat("Message Received: {0}", message);
+        Enemy.executeAttack(Player, message.ToString());
+        StartPhase();
+    }
+    
     public void OnStateChangeHandler(State state, bool isFirstState)
     {
-        players = state.players;
-        Debug.Log("State has been updated!");
-        Debug.LogFormat("MonsterHealth: {0}", state.monsterHealth);
+        this.state = state;
+        Debug.LogFormat("State has been updated!\nMonsterHealth: {0}", state.monsterHealth);
+        ChangeEnemyHealth(-(Enemy.Health - state.monsterHealth), false);
+        // updateCurrentPlayersTextField();
+        UpdateMpHealthButtons();
     }
 
-    public void UpdatePlayerList()
+    private void updateCurrentPlayersTextField()
     {
         string newString = "";
-        foreach (var player in players.Keys)
-        {
-            newString = newString + player.ToString() + '\n';
+        foreach (var key in players.Keys) {
+            ColyseusPlayer colyseusPlayer = ((ColyseusPlayer)players[key]);
+            if(colyseusPlayer.name == Player.Username)
+            {
+                newString += colyseusPlayer.name + ": " + Player.Health + '\n';
+            }
+            else
+            {
+                newString += colyseusPlayer.name + ": " + colyseusPlayer.health + '\n';
+            }
         }
         _playerList.text = newString;
+    }
+
+    // Wrapper method for the UI Controller
+    private void UpdateMpHealthButtons()
+    {
+        _uiCont.ClearRemotePlayerUI();
+        foreach (var key in players.Keys)
+        {
+            string pName = ((ColyseusPlayer)players[key]).name;
+            _uiCont.AddRemotePlayerToUI(pName);
+        }
     }
 }

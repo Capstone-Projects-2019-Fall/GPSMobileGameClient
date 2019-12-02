@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using SimpleJSON;
@@ -9,22 +10,76 @@ using SimpleJSON;
 public static class APIWrapper
 {
     private static readonly string baseURL = "https://gps-mobile-game-server.herokuapp.com";
-    //private static readonly string baseURL = "localhost:3000";
+    // private static readonly string baseURL = "localhost:3000";
     public delegate void Callback<T>(T obj); // This allows different objects to be returned in the callback depending on the request.
+
+    /*
+     * Base definition for all GET requests. URL specifies the endpoint and callback returns
+     * a JSONNode which is the server's response.
+     */
+    private static IEnumerator GET(string URL, Callback<JSONNode> callback)
+    {
+        UnityWebRequest unityWebRequest = UnityWebRequest.Get(URL);
+        return SendRequest(unityWebRequest, callback);
+    }
+
+    /*
+     * Base definition for all DELETE requests. URL specifies the endpoint and callback returns
+     * a JSONNode which is the server's response.
+     */
+    private static IEnumerator DELETE(string URL, Callback<JSONNode> callback)
+    {
+        UnityWebRequest unityWebRequest = UnityWebRequest.Delete(URL);
+        return SendRequest(unityWebRequest, callback);
+    }
+
+    /*
+     * Base definition for all POST requests. URL specifies the endpoint, body is the POST's body, and
+     * callback returns a JSONNode which is the server's response.
+     */
+    private static IEnumerator POST(string URL, string body, Callback<JSONNode> callback)
+    {
+        Debug.LogFormat("POST Body: {0}", body);
+
+        UnityWebRequest unityWebRequest = new UnityWebRequest(URL, "POST");
+        byte[] jsonToSend = new System.Text.UTF8Encoding().GetBytes(body);
+        unityWebRequest.uploadHandler = (UploadHandler)new UploadHandlerRaw(jsonToSend);
+        unityWebRequest.downloadHandler = (DownloadHandler)new DownloadHandlerBuffer();
+        unityWebRequest.SetRequestHeader("Content-Type", "application/json");
+
+        return SendRequest(unityWebRequest, callback);
+    }
+
+    /*
+     * Base definition for all Web requests. unityWebRequest is a pre-setup object (i.e. GET or POST)
+     * and callback returns a JSONNode which is the server's response.
+     */
+    private static IEnumerator SendRequest(UnityWebRequest unityWebRequest, Callback<JSONNode> callback)
+    {
+        Debug.LogFormat("Requesting: {0}", unityWebRequest.url);
+        yield return unityWebRequest.SendWebRequest();
+        //Debug.Log(unityWebRequest.downloadHandler.text);
+
+        if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+        {
+            Debug.LogFormat("Error: {0}\nServer Message: {1}", unityWebRequest.error, unityWebRequest.downloadHandler.text);
+            callback(null);
+        }
+        else
+        {
+            JSONNode jsonResponse = JSON.Parse(unityWebRequest.downloadHandler.text);
+            callback(jsonResponse);
+        }
+    }
 
     /*
      * Calls the base URL of the API. Used for testing. Should return the string "Hello World!".
      */
-    public static IEnumerator getRoot(Callback<UnityWebRequest> callback)
+    public static IEnumerator getRoot(Callback<string> callback)
     {
-        UnityWebRequest unityWebRequest = UnityWebRequest.Get(baseURL);
-        yield return unityWebRequest.SendWebRequest();
-        if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
-        {
-            Debug.Log(unityWebRequest.error);
-            callback(null);
-        }
-        callback(unityWebRequest);
+        return GET(baseURL, (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
     }
 
     /*
@@ -37,21 +92,18 @@ public static class APIWrapper
         {
             yield break;
         }
-        //Debug.LogFormat("getSurroundingNodes() Latitude: {0}, Longitude: {1}, Max Distance: {2}", latitude, longitude, maxDistance);
+        yield return GET(string.Format("{0}/geodata?long={1}&lat={2}&maxDist={3}", baseURL, longitude, latitude, maxDistance), callback);
+    }
 
-        // Sets up the endpoint  and query parameters and waits for the request to finish.
-        UnityWebRequest unityWebRequest = UnityWebRequest.Get(string.Format("{0}/geodata?long={1}&lat={2}&maxDist={3}", baseURL, longitude, latitude, maxDistance));
-        yield return unityWebRequest.SendWebRequest();
-
-        //Debug.Log(unityWebRequest.downloadHandler.text);
-        JSONNode responseJsonNodes = JSON.Parse(unityWebRequest.downloadHandler.text);
-
-        if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
-        {
-            Debug.Log(unityWebRequest.error);
-            callback(null);
-        }
-        callback(responseJsonNodes);
+    /*
+     * Creates a new player in the database and returns a player object with updated fields.
+     */
+    public static IEnumerator createPlayer(string username, string password, Callback<JSONNode> callback)
+    {
+        JSONObject newPlayer = new JSONObject();
+        newPlayer["name"] = username;
+        newPlayer["password"] = password;
+        return POST(string.Format("{0}/user", baseURL), newPlayer.ToString(), callback);
     }
 
     /*
@@ -60,21 +112,74 @@ public static class APIWrapper
      * a JSON object containing the player's data. If the array is empty then no player 
      * matching the given username was found.
      */
-    public static IEnumerator getPlayerData(string username, Callback<JSONNode> callback)
+    public static IEnumerator getPlayer(string username, Callback<JSONNode> callback)
     {
-        //Debug.LogFormat("Requesting {0}'s player data.", username);
+        return GET(string.Format("{0}/user/{1}", baseURL, username), callback);
+    }
 
-        UnityWebRequest unityWebRequest = UnityWebRequest.Get(string.Format("{0}/user?name={1}", baseURL, username));    
-        yield return unityWebRequest.SendWebRequest();
-
-        //Debug.Log(unityWebRequest.downloadHandler.text);
-        JSONNode responseJsonPlayerData = JSON.Parse(unityWebRequest.downloadHandler.text);
-
-        if (unityWebRequest.isNetworkError || unityWebRequest.isHttpError)
+    /*
+     * Syncs a player's deck with the server. Username is the name of the user who the deck belongs to,
+     * cards is a list of the cards that will overwrite the server's collection, and callback
+     * returns a string which is the server's response. Should return "OK" status code 200.
+     */
+    public static IEnumerator syncPlayerDeck(string username, List<Card> cards, Callback<string> callback)
+    {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        foreach(int cardId in CardFactory.CardsToIdArray(cards))
         {
-            Debug.Log(unityWebRequest.error);
-            callback(null);
+            jsonArray.Add(cardId);
         }
-        callback(responseJsonPlayerData[0]);
+        jsonObject["deck"] = jsonArray;
+        return POST(string.Format("{0}/user/{1}/deck", baseURL, username), jsonObject.ToString(), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+    }
+     /*
+     * Update the enemy health with enemy node id
+     */
+    public static IEnumerator updateEnemyHealth(string enemyname, float current_health, Callback<string> callback)
+    {
+        JSONObject jsonObject = new JSONObject();
+        
+        jsonObject["hp"] = current_health;
+        return POST(string.Format("{0}/enemy/update/{1}", baseURL, enemyname), jsonObject.ToString(), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+    }
+
+     /*
+     * Update the structure of the node
+     */
+    public static IEnumerator updateNodeStructure(string nodename, string new_structure, Callback<string> callback)
+    {
+        JSONObject jsonObject = new JSONObject();
+        
+        jsonObject["structure"] = new_structure;
+        jsonObject["name"] = nodename;
+        return POST(string.Format("{0}/geodata/updatebynamete/", baseURL), jsonObject.ToString(), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+    }
+
+    /*
+     * Update the structure of the node
+     */
+    public static IEnumerator deleteEnemy(string enemyname, Callback<string> callback)
+    {
+        
+        return DELETE(string.Format("{0}/enemy/{1}", baseURL, enemyname), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+        
+    }
+
+    /*
+     * Retrieves an enemy with the specified nodename. Returns a 404 error if there is no
+     * enemy with the given nodename.
+     */
+    public static IEnumerator getEnemy(string nodename, Callback<JSONNode> callback)
+    {
+        return GET(string.Format("{0}/enemy/{1}", baseURL, nodename), callback);
     }
 }
