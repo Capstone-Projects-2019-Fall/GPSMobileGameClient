@@ -23,7 +23,8 @@ public class UIController : Singleton<UIController>
     [SerializeField] private GameObject _pHealth;   // player health bar
     [SerializeField] private Image _pHealthFill;    // the fill of the player health bar
     [SerializeField] private GameObject _memBar;    // player memory bar
-    [SerializeField] private Image _memBarFill;      // player's memory bar fil
+    [SerializeField] private Image _memBarFill;      // player's memory bar fill
+    [SerializeField] private Text _memBarText;       // player's memory bar text
 
     [SerializeField] private GameObject _mpHealthZone;       // Root object for the multiplayer health grid
     [SerializeField] private GameObject _mpHealthGrid;       // Multiplayer health layout grid
@@ -78,8 +79,9 @@ public class UIController : Singleton<UIController>
         _eHealthFill = _eHealth.transform.Find("fill").GetComponent<Image>();
         _pHealth = _eHealth = _uiCanvas.transform.Find("pHealth").gameObject;
         _pHealthFill = _eHealth.transform.Find("fill").GetComponent<Image>();
-        _memBar = _eHealth = _uiCanvas.transform.Find("Memory").gameObject;
-        _memBarFill = _eHealth.transform.Find("antifill").GetComponent<Image>();
+        _memBar = _uiCanvas.transform.Find("Memory").gameObject;
+        _memBarFill = _memBar.transform.Find("antifill").GetComponent<Image>();
+        _memBarText = _memBar.transform.Find("number").GetComponent<Text>();
 
         _runAway = _uiCanvas.transform.Find("Run").gameObject;
 
@@ -142,6 +144,7 @@ public class UIController : Singleton<UIController>
     {
         float memDiff = -((float)n / (float)_cc.Player.MaxMemory);
         _memBarFill.fillAmount += memDiff;
+        _memBarText.text = _cc.Player.Memory.ToString();
     }
 
     /* GetHandGameObjects Description:
@@ -174,13 +177,31 @@ public class UIController : Singleton<UIController>
         }
     }
 
-
     /* Called when a remote player connects to a combat instance to add a multiplayer health button to the multiplayer health grid.
      * Parameters:
+     *   -> string playerName: The name of the client joining the game
      */
-    public void AddRemotePlayerToUI()
+    public void AddRemotePlayerToUI(string playerName)
     {
+        GameObject mpHpButton = MonoBehaviour.Instantiate(_mpHealthPF);
+        MpButtonHandler handler = mpHpButton.GetComponent<MpButtonHandler>();
 
+        handler.NameString = playerName;
+        mpHpButton.transform.SetParent(_mpHealthGrid.transform);
+        mpHpButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
+
+        _mpHealthList.Add(mpHpButton);
+    }
+    
+    /* Clears all of the current player buttons from the player button grid
+     * Primarily called from CombatController's OnStateChanged handler
+     */
+    public void ClearRemotePlayerUI()
+    {
+        foreach(GameObject button in _mpHealthList)
+        {
+            button.Destroy();
+        }
     }
 
     public void Start()

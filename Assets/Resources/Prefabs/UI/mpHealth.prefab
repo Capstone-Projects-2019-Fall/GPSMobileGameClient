@@ -85,7 +85,7 @@ GameObject:
   - component: {fileID: 2765024228222605490}
   - component: {fileID: 633866422710258739}
   m_Layer: 5
-  m_Name: Text
+  m_Name: pname
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -272,7 +272,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 6274638458385334530}
-        m_MethodName: SaySomething
+        m_MethodName: ChangeSomething
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -306,4 +306,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b277419ed56dcda44ae2eeb1fde22c4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonPF: {fileID: 6967926490093310651}
+  _buttonPF: {fileID: 6967926490093310651}
+  _gridLayout: {fileID: 0}

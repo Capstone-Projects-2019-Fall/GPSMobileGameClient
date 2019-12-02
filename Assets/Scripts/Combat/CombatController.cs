@@ -410,15 +410,28 @@ public class CombatController : Singleton<CombatController>
         this.state = state;
         Debug.LogFormat("State has been updated!\nMonsterHealth: {0}", state.monsterHealth);
         ChangeEnemyHealth(-(Enemy.Health - state.monsterHealth), false);
-        updateCurrentPlayersTextField();
+        // updateCurrentPlayersTextField();
+        UpdateMpHealthButtons();
     }
 
     private void updateCurrentPlayersTextField()
     {
         string newString = "";
         foreach (var key in players.Keys) {
-            newString += ((ColyseusPlayer)players[key]).name + '\n';
+            string pName = ((ColyseusPlayer)players[key]).name;
+            newString += pName + '\n';
         }
         _playerList.text = newString;
+    }
+
+    // Wrapper method for the UI Controller
+    private void UpdateMpHealthButtons()
+    {
+        _uiCont.ClearRemotePlayerUI();
+        foreach (var key in players.Keys)
+        {
+            string pName = ((ColyseusPlayer)players[key]).name;
+            _uiCont.AddRemotePlayerToUI(pName);
+        }
     }
 }

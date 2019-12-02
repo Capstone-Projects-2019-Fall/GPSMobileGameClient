@@ -1,13 +1,12 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
-
+using UnityEngine.Assertions;
 
 [RequireComponent(typeof(Healthbar))]
 public class MpButtonHandler : MonoBehaviour
 {
     private Healthbar _myHealthBar;
     private Text _playerName;
-    private string _nameString;
 
     [SerializeField] private GameObject _buttonPF;
     [SerializeField] private Transform _gridLayout;
@@ -22,19 +21,23 @@ public class MpButtonHandler : MonoBehaviour
     }
 
     public string NameString {
-        get => _nameString;
-        set => _nameString = value;
+        get => _playerName.text;
+        set => _playerName.text = value;
     }
 
     private void Awake()
     {
         _myHealthBar = gameObject.GetComponent<Healthbar>();
-        _playerName = gameObject.transform.Find("playerName").GetComponent<Text>();
+        _playerName = gameObject.transform.Find("pname").GetComponent<Text>();
+
+        Assert.IsNotNull(_playerName);
     }
 
     public void ChangeSomething()
     {
-        _myHealthBar.updateHealthbar(_myHealthBar.CurrentFill - 0.1f);
+        //_myHealthBar.updateHealthbar(_myHealthBar.CurrentFill - 0.1f);
+        Debug.Log("ChangeSomething!");
+        _playerName.text = "Clicked!";   
     }
 
     public void MakeSomething()

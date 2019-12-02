@@ -26,6 +26,8 @@ public class DeckManager : Singleton<DeckManager>
 
     [SerializeField] private int _maxHandSize = 7; // Dictates the maximum hand size
 
+    private List<Card> _demoDecklist;
+
     #region Accessors ----------------------------------------------------------------------------------
 
     public Deck Deck {
@@ -61,8 +63,11 @@ public class DeckManager : Singleton<DeckManager>
         // Generate random deck for testing
         List<Card> randCards = GenerateRandomCardList(20);
 
+        // Generate demo deck for testing
+        List<Card> demoCards = GenerateDemoDeckList();
+
         _hand = new Deck();
-        _deck = new Deck(randCards);
+        _deck = new Deck(demoCards);
         _nonexhaustedDeck = new Deck(_deck);
         _discard = new Deck();
 
@@ -133,6 +138,18 @@ public class DeckManager : Singleton<DeckManager>
 
         return randomCards;
     }
+
+    public List<Card> GenerateDemoDeckList()
+    {
+        List<Card> deckList = new List<Card>();
+        for(int i = 0; i < 12; i++) { deckList.Add(CardFactory.CreateCard(0)); } // Strike
+        for(int i = 0; i < 10; i++) { deckList.Add(CardFactory.CreateCard(1)); } // Heal
+        for (int i = 0; i < 10; i++) { deckList.Add(CardFactory.CreateCard(2)); } // Draw Cards
+        for (int i = 0; i < 4; i++) { deckList.Add(CardFactory.CreateCard(3)); } // Increase Attack
+        for (int i = 0; i < 4; i++) { deckList.Add(CardFactory.CreateCard(4)); } // Decrease Defense
+
+        return deckList;
+    } 
 
     // Reshuffle the discard pile into the player's draw pile
     public void ReshuffleDiscard()
