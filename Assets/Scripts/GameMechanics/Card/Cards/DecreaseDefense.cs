@@ -42,28 +42,12 @@ public class DecreaseDefense : Card
 
     public override void UpgradeCard()
     {
-        if (_Level <= 10)
+        if (_Level < 10)
         {
             _UpgradeCost += (_Level - 1) * 100;
             _Level++;
             _DefenseModifier += 0.1f;
-
-            // Every 2 levels memory cost goes up 1 while Card Level < 10.
-            if (_Level % 2 == 0)
-            {
-                _MemoryCost += 1;
-            }
-
-        }
-        else
-        {
-            _UpgradeCost += (_Level - 1) ^ 2 * 5;
-            _Level++;
-
-            if (_Level % 2 == 0)
-            {
-                _DefenseModifier += 0.05f;
-            }
+            _Name = "Decrease Defense " + Utils.ToRoman(_Level);
         }
     }
 }
