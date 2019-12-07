@@ -40,31 +40,27 @@ public class DrawCards1: Card
         }
     }
 
-    public override void UpgradeCard()
+    // Updates the level in the card from the database.
+    public void SetCardLevel(int level)
     {
-        if (_Level <= 10)
-        {
-            _UpgradeCost += (_Level - 1) * 100;
-            _Level++;
-            // After the first 10 levels increase draw amount by 1 and memory cost by 2.
-            if (_Level % 10 == 0)
-            {
-                _DrawAmount += 1;
-                _MemoryCost += 2;
-            }
-
-        }
-        else
-        {
-            _UpgradeCost += (_Level - 1) ^ 2 * 15;
-            _Level++;
-
-            if (_Level % 10 == 0)
-            {
-                _DrawAmount += 1;
-                _MemoryCost += 2;
-            }
-        }
+        _Level = level;
+        _UpgradeCost = 1000 + (_Level - 1) * 100;
+        _DrawAmount = 1 + Mathf.FloorToInt((_Level - 1) / 2);
+        _Name = "Draw Cards " + Utils.ToRoman(_Level);
         _Detail = "Draw " + _DrawAmount + " card from your deck.";
     }
+
+    // Upgrades the card. Max level of 10. Extra card every 2 levels.
+    public override void UpgradeCard()
+    {
+        if (_Level < 10)
+        {
+            _Level++;
+            _UpgradeCost = 1000 + (_Level - 1) * 100;
+            _DrawAmount = 1 + Mathf.FloorToInt((_Level - 1) / 2);
+            _Name = "Draw Cards " + Utils.ToRoman(_Level);
+            _Detail = "Draw " + _DrawAmount + " card from your deck.";
+        }
+    }
+    
 }
