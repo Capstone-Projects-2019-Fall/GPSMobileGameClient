@@ -40,27 +40,27 @@ public class Heal : Card
         }
     }
 
+    // Updates the level in the card from the database.
+    public void SetCardLevel(int level)
+    {
+        _Level = level;
+        _UpgradeCost = 100 + (_Level - 1) * 15;
+        _HealAmount = 15 + (_Level - 1) * 2;
+        _Name = "Heal " + Utils.ToRoman(_Level);
+        _Detail = "Restores " + _HealAmount + " HP.";
+    }
+
+    // Upgrades the card. Max level of 10. Extra card every 2 levels.
     public override void UpgradeCard()
     {
-        if(_Level <= 5)
+        if (_Level < 10)
         {
-            _UpgradeCost += (_Level - 1) * 15;
             _Level++;
-            _HealAmount += 2;
-
-            // Every 2 levels memory cost goes up 1 while Card Level <= 10.
-            if (_Level % 5 == 0)
-            {
-                _MemoryCost += 1;
-            }
-
-        } else
-        {
-            _UpgradeCost += (_Level - 1)^2 * 7;
-            _Level++;
-            _HealAmount += 1;
-            
+            _UpgradeCost = 100 + (_Level - 1) * 15;
+            _HealAmount = 15 + (_Level - 1) * 2;
+            _Name = "Heal " + Utils.ToRoman(_Level);
+            _Detail = "Restores " + _HealAmount + " HP.";
         }
-        _Detail = "Restores " + _HealAmount  + " HP.";
     }
+    
 }
