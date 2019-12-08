@@ -20,8 +20,10 @@ public class UIController : Singleton<UIController>
 
     [SerializeField] private GameObject _eHealth;   // enemy health bar
     [SerializeField] private Image _eHealthFill;    // the fill of the enemy health bar
+    [SerializeField] private Text _eHealthText;       // enemy health bar text
     [SerializeField] private GameObject _pHealth;   // player health bar
     [SerializeField] private Image _pHealthFill;    // the fill of the player health bar
+    [SerializeField] private Text _pHealthText;       // player's health bar text
     [SerializeField] private GameObject _memBar;    // player memory bar
     [SerializeField] private Image _memBarFill;      // player's memory bar fill
     [SerializeField] private Text _memBarText;       // player's memory bar text
@@ -77,8 +79,10 @@ public class UIController : Singleton<UIController>
 
         _eHealth = _uiCanvas.transform.Find("eHealth").gameObject;
         _eHealthFill = _eHealth.transform.Find("fill").GetComponent<Image>();
+        _eHealthText = _eHealth.transform.Find("percent").GetComponent<Text>();
         _pHealth = _eHealth = _uiCanvas.transform.Find("pHealth").gameObject;
         _pHealthFill = _eHealth.transform.Find("fill").GetComponent<Image>();
+        _pHealthText = _pHealth.transform.Find("percent").GetComponent<Text>();
         _memBar = _uiCanvas.transform.Find("Memory").gameObject;
         _memBarFill = _memBar.transform.Find("antifill").GetComponent<Image>();
         _memBarText = _memBar.transform.Find("number").GetComponent<Text>();
@@ -133,11 +137,13 @@ public class UIController : Singleton<UIController>
     public void UpdateEnemyHealth(float n)
     {
         _eHealthFill.fillAmount = n;
+        _eHealthText.text = _cc.Enemy.Health.ToString();
     }
 
     public void UpdatePlayerHealth(float n)
     {
         _pHealthFill.fillAmount = n;
+        _pHealthText.text = _cc.Player.Health.ToString();
     }
 
     public void UpdateMemory(int n)
