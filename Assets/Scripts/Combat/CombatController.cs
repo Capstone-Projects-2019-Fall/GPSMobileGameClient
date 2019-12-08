@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using SimpleJSON;
 
 /* CombatContoller Description:
  * The CombatController is the main context for all of our clientside combat API. It is primarily responsible for:
@@ -32,7 +33,6 @@ public class CombatController : Singleton<CombatController>
     [SerializeField] private Enemy _enemy;
     [SerializeField] private Vector3 _enemySpawnPos;
 
-    [SerializeField] private Text _playerList;
     private State state;
     private TurnTimer _timer;
 
@@ -185,18 +185,33 @@ public class CombatController : Singleton<CombatController>
      */
     public void PlayCard(GameObject cardGO)
     {
+        // Debug.LogFormat("SELECTED PLAYER: {0}", _uiCont.GetSelectedPlayerName());
         CardHandler ch = cardGO.GetComponent<CardHandler>();
         ch.MyCard.PlayCard(_player, _enemy);
         CardPlayedArgs args = new CardPlayedArgs { Card = ch.MyCard, CardGO = cardGO };
         OnCardPlayed(args);
+        _uiCont.SelectCurrentPlayer();
     }
 
     public void ChangePlayerHealth(float healthDiff)
-    {
+    {        
         HealthEventArgs args = new HealthEventArgs { Health = healthDiff };
         Player.Health += healthDiff;        
         OnPlayerHealthChanged(args);
-        updateCurrentPlayersTextField();
+        UpdateMpHealthButtons();
+    }
+
+    public void ChangeSelectedPlayersHealth(float healthDiff)
+    {
+        string selectedPlayerName = _uiCont.GetSelectedPlayerName();
+        if(Player.Username == selectedPlayerName)
+        {
+            ChangePlayerHealth(healthDiff);
+        }
+        else
+        {
+            Delta.HealTarget(selectedPlayerName, healthDiff);
+        }
     }
 
     public void ChangeEnemyHealth(float healthDiff, bool includeInDelta = true)
@@ -255,7 +270,6 @@ public class CombatController : Singleton<CombatController>
 
         // Set local private variables
         _startingHandSize = 5;
-        _playerList = GameObject.Find("CombatUI").transform.Find("PlayerList").gameObject.GetComponent<Text>();
 
         // Instantitate player and enemy
         _playerPF = Resources.Load<GameObject>("Prefabs/PlayerCombat");
@@ -297,15 +311,7 @@ public class CombatController : Singleton<CombatController>
     IEnumerator TurnSystem()
     {
         yield return new WaitForSeconds(0.2f);
-        StartPhase(); 
-        
-        // Action phase
-        
-        // End phase
-
-        // Send Delta
-
-        // Enemy phase
+        StartPhase();
     }
 
     private void StartPhase()
@@ -352,7 +358,7 @@ public class CombatController : Singleton<CombatController>
 
         clientState = cState.WaitingForServer; // Serverside delta sequence
 
-        Delta.SetPlayerHealth(Player.Health);
+        Delta.SetPlayerHealth(Player.Health / Player.MaxHealth);
         client.SendMessage(Delta.toString());
     }
 
@@ -362,21 +368,13 @@ public class CombatController : Singleton<CombatController>
         // Connect to combat instance        
         client = new ColyseusClient();
         client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
-        // client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
-            // Read combat state
-
-        // Spawn monster and player prefabs with state data
-
-            // Initialize clientside ui/system handlers
-
-        // Start TurnSystem
-        //return null;  
+        // client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler); 
     }
 
     private void ExitCombat()
     {                       
             _enemy.EndCombat();
-            _player.EndCombat();
+            _player.EndCombat(_enemy);
             SafeColyseusExit();
             // Loads back to map scene after death 
             SceneManager.LoadScene(0);
@@ -394,12 +392,6 @@ public class CombatController : Singleton<CombatController>
         client.LeaveRoom();
     }
 
-    private void SpawnCharacters()
-    {
-        
-        
-    }
-
     public void OnTimeExpired(object sender, EventArgs e)
     {
         Debug.Log("timer off!");
@@ -409,44 +401,51 @@ public class CombatController : Singleton<CombatController>
     public void onMessageHandler(object message)
     {
         Debug.LogFormat("Message Received: {0}", message);
-        Enemy.executeAttack(Player, message.ToString());
+        Delta.SetDeltaResponse(JSONObject.Parse(message.ToString()).AsObject);
+        HandlePlayerToPlayerMoves();
+        Enemy.executeAttack(Player, Delta.GetEnemyAttack());
         StartPhase();
     }
     
     public void OnStateChangeHandler(State state, bool isFirstState)
-    {
+    {        
         this.state = state;
         Debug.LogFormat("State has been updated!\nMonsterHealth: {0}", state.monsterHealth);
         ChangeEnemyHealth(-(Enemy.Health - state.monsterHealth), false);
-        // updateCurrentPlayersTextField();
         UpdateMpHealthButtons();
-    }
-
-    private void updateCurrentPlayersTextField()
-    {
-        string newString = "";
-        foreach (var key in players.Keys) {
-            ColyseusPlayer colyseusPlayer = ((ColyseusPlayer)players[key]);
-            if(colyseusPlayer.name == Player.Username)
-            {
-                newString += colyseusPlayer.name + ": " + Player.Health + '\n';
-            }
-            else
-            {
-                newString += colyseusPlayer.name + ": " + colyseusPlayer.health + '\n';
-            }
+        if(isFirstState)
+        {
+            _uiCont.SelectCurrentPlayer();        
         }
-        _playerList.text = newString;
     }
 
     // Wrapper method for the UI Controller
     private void UpdateMpHealthButtons()
     {
-        _uiCont.ClearRemotePlayerUI();
         foreach (var key in players.Keys)
         {
-            string pName = ((ColyseusPlayer)players[key]).name;
-            _uiCont.AddRemotePlayerToUI(pName);
-        }
+            ColyseusPlayer colyseusPlayer = ((ColyseusPlayer)players[key]);
+            MpButtonHandler handler = _uiCont.GetMpButtonHanlderPlayerByName(colyseusPlayer.name);
+            if(handler == null)
+            {
+                _uiCont.AddRemotePlayerToUI(colyseusPlayer.name, colyseusPlayer.health);
+            }
+            else
+            {
+                if(colyseusPlayer.name == Player.Username)
+                {
+                    handler.Healthbar.updateHealthbar(Player.Health / Player.MaxHealth);
+                }
+                else
+                {
+                    handler.Healthbar.updateHealthbar(colyseusPlayer.health);
+                }  
+            }     
+        }        
+    }
+
+    public void HandlePlayerToPlayerMoves()
+    {
+        ChangePlayerHealth(Delta.GetMyHealing(Player.Username));
     }
 }

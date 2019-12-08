@@ -1,12 +1,16 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.Assertions;
+using System;
 
 [RequireComponent(typeof(Healthbar))]
 public class MpButtonHandler : MonoBehaviour
 {
     private Healthbar _myHealthBar;
     private Text _playerName;
+    private bool _isSelected;
+
+    public event EventHandler<SelectionEventArgs> SelectionEvent;
 
     [SerializeField] private GameObject _buttonPF;
     [SerializeField] private Transform _gridLayout;
@@ -25,6 +29,20 @@ public class MpButtonHandler : MonoBehaviour
         set => _playerName.text = value;
     }
 
+    public string CleanedNameString{
+        get => _playerName.text.Replace("*","");
+    }
+
+    public bool IsSelected{
+        get  => _isSelected;
+        set => _isSelected = value;
+    }
+
+    public void OnSelectionEvent(SelectionEventArgs e)
+    {
+        SelectionEvent?.Invoke(this, e);
+    }
+
     private void Awake()
     {
         _myHealthBar = gameObject.GetComponent<Healthbar>();
@@ -33,11 +51,30 @@ public class MpButtonHandler : MonoBehaviour
         Assert.IsNotNull(_playerName);
     }
 
-    public void ChangeSomething()
+    public void SetSelection(bool isSelected)
     {
-        //_myHealthBar.updateHealthbar(_myHealthBar.CurrentFill - 0.1f);
-        Debug.Log("ChangeSomething!");
-        _playerName.text = "Clicked!";   
+        if(!(_isSelected && isSelected))
+        {
+            _isSelected = isSelected;
+            UpdateButtonState();
+            if(isSelected)
+            {
+                SelectionEventArgs args = new SelectionEventArgs { SelectedPlayerName = CleanedNameString };
+                OnSelectionEvent(args);
+            }
+        }
+    }
+
+    public void UpdateButtonState()
+    {
+        if(_isSelected)
+        {
+            _playerName.text = string.Format("**{0}**", _playerName.text);
+        }
+        else
+        {
+            _playerName.text = CleanedNameString;
+        }
     }
 
     public void MakeSomething()

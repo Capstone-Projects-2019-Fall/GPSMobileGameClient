@@ -77,8 +77,8 @@ public class UIController : Singleton<UIController>
 
         _eHealth = _uiCanvas.transform.Find("eHealth").gameObject;
         _eHealthFill = _eHealth.transform.Find("fill").GetComponent<Image>();
-        _pHealth = _eHealth = _uiCanvas.transform.Find("pHealth").gameObject;
-        _pHealthFill = _eHealth.transform.Find("fill").GetComponent<Image>();
+        _pHealth = _uiCanvas.transform.Find("pHealth").gameObject;
+        _pHealthFill = _pHealth.transform.Find("fill").GetComponent<Image>();
         _memBar = _uiCanvas.transform.Find("Memory").gameObject;
         _memBarFill = _memBar.transform.Find("antifill").GetComponent<Image>();
         _memBarText = _memBar.transform.Find("number").GetComponent<Text>();
@@ -121,7 +121,6 @@ public class UIController : Singleton<UIController>
         Assert.IsNotNull(_mpHealthList);
         Assert.IsNotNull(_mpHealthFills);
         Assert.IsNotNull(_mpHealthPF);
-
     }
 
     public void UpdateCardsInDeck(int current, int total)
@@ -181,12 +180,14 @@ public class UIController : Singleton<UIController>
      * Parameters:
      *   -> string playerName: The name of the client joining the game
      */
-    public void AddRemotePlayerToUI(string playerName)
+    public void AddRemotePlayerToUI(string playerName, float healthRatio)
     {
         GameObject mpHpButton = MonoBehaviour.Instantiate(_mpHealthPF);
         MpButtonHandler handler = mpHpButton.GetComponent<MpButtonHandler>();
 
         handler.NameString = playerName;
+        handler.Healthbar.updateHealthbar(healthRatio);
+        handler.SelectionEvent += OnSelection;
         mpHpButton.transform.SetParent(_mpHealthGrid.transform);
         mpHpButton.GetComponent<RectTransform>().localScale = new Vector3(1, 1, 1);
 
@@ -201,6 +202,50 @@ public class UIController : Singleton<UIController>
         foreach(GameObject button in _mpHealthList)
         {
             button.Destroy();
+        }
+        _mpHealthList.Clear();
+    }
+
+    public string GetSelectedPlayerName()
+    {
+        foreach(GameObject button in _mpHealthList)
+        {
+            MpButtonHandler handler = button.GetComponent<MpButtonHandler>();
+            if(handler.IsSelected)
+            {
+                return handler.CleanedNameString;
+            }
+        }
+        return null;
+    }
+
+    public MpButtonHandler GetMpButtonHanlderPlayerByName(string name)
+    {
+        foreach(GameObject button in _mpHealthList)
+        {
+            MpButtonHandler handler = button.GetComponent<MpButtonHandler>();
+            if(name == handler.CleanedNameString)
+            {
+                return handler;
+            }
+        }
+        return null;
+    }
+
+    public void SelectCurrentPlayer()
+    {
+        GetMpButtonHanlderPlayerByName(_cc.Player.Username).SetSelection(true);
+    }
+
+    public void DeselectAllExcept(string name)
+    {
+        foreach(GameObject button in _mpHealthList)
+        {
+            MpButtonHandler handler = button.GetComponent<MpButtonHandler>();
+            if(handler.CleanedNameString != name)
+            {
+                handler.SetSelection(false);
+            }
         }
     }
 
@@ -234,6 +279,11 @@ public class UIController : Singleton<UIController>
     private void OnEnemyHealthChange(object sender, HealthEventArgs e)
     {
         UpdateEnemyHealth(_cc.Enemy.Health / _cc.Enemy.MaxHealth);
+    }
+
+    private void OnSelection(object sender, SelectionEventArgs e)
+    {
+        DeselectAllExcept(e.SelectedPlayerName);
     }
 
 
