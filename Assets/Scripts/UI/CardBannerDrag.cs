@@ -14,7 +14,7 @@ public class CardBannerDrag : Drag
     public override void OnBeginDrag(PointerEventData data)
     {
         _returnParent = this.transform.parent;
-        this.transform.SetParent(this.transform.parent.parent);
+        this.transform.SetParent(GameObject.Find("Canvas").transform); // Set the parent to the UI canvas to facilitate drops between different UI elements
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
