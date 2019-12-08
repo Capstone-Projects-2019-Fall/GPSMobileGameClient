@@ -376,7 +376,7 @@ public class CombatController : Singleton<CombatController>
     private void ExitCombat()
     {                       
             _enemy.EndCombat();
-            _player.EndCombat();
+            _player.EndCombat(_enemy);
             SafeColyseusExit();
             // Loads back to map scene after death 
             SceneManager.LoadScene(0);
