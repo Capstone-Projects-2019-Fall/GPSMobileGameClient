@@ -82,6 +82,7 @@ public class CardScrollList : MonoBehaviour
         _cardBannerList.Add(cardBannerGO);
         _myCards.AddCard(cardBannerGO.GetComponent<CardBanner>().Card);
 
+        cardBannerGO.GetComponent<CardBanner>().CardScrollList = this;
         cardBannerGO.transform.SetParent(_contentTrans);
     }
 
@@ -96,15 +97,16 @@ public class CardScrollList : MonoBehaviour
 
     /* Initialize the CardScrollList's content using _myCards
      * NOTE: The CardScrollList will then populate itself with card banners corresponding to its _myCards field
+     * NOTE: Cannot call AddCardToList, as this will throw an InvalidOperationException (modifying collection while enumerating over collection)
      */
     private void InitializeListContent()
     {
-        // Create new
         foreach(Card c in _myCards.Cards)
         {
             GameObject cardBannerGO = CreateBannerPrefab(c);
             _cardBannerList.Add(cardBannerGO);
 
+            cardBannerGO.GetComponent<CardBanner>().CardScrollList = this;
             cardBannerGO.transform.SetParent(_contentTrans);
         }
     }

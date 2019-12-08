@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3038884162474842118}
   - component: {fileID: 3038884162474842119}
   - component: {fileID: 1846707372742651942}
+  - component: {fileID: 3983556489684263606}
+  - component: {fileID: 7844061692344239346}
   m_Layer: 5
   m_Name: CardBanner
   m_TagString: Untagged
@@ -89,6 +91,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _myCard: {fileID: 0}
+  _myScrollList: {fileID: 0}
+  _myDrag: {fileID: 0}
+--- !u!114 &3983556489684263606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3038884162474842233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdca28f3589e62e4d85f052cad68e3a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _returnParent: {fileID: 0}
+--- !u!225 &7844061692344239346
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3038884162474842233}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &3038884162827720150
 GameObject:
   m_ObjectHideFlags: 0

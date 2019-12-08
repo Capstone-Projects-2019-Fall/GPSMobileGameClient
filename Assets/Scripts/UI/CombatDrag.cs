@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class CombatDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class CombatDrag : Drag
 {
     public Transform returnParent = null;
 
@@ -19,7 +19,7 @@ public class CombatDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
 
     }
 
-    public void OnBeginDrag(PointerEventData data)
+    public override void OnBeginDrag(PointerEventData data)
     {
         returnParent = this.transform.parent;
         this.transform.SetParent(this.transform.parent.parent);
@@ -27,13 +27,13 @@ public class CombatDrag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDr
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData data)
+    public override void OnDrag(PointerEventData data)
     {
         this.transform.position = data.position;
 
     }
 
-    public void OnEndDrag(PointerEventData data)
+    public override void OnEndDrag(PointerEventData data)
     {
         this.transform.SetParent(returnParent);
         GetComponent<CanvasGroup>().blocksRaycasts = true;

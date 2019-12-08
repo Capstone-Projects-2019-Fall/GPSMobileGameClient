@@ -7,16 +7,11 @@ using UnityEngine.EventSystems;
  * in that it should be plug-in-and-play ready in a variety of scenes and on a variety of objects (check out the CombatDrag.cs script for
  * the previous version of Drag that interaces with the Combat scene)
  */ 
-public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+public class CardBannerDrag : Drag
 {
     [SerializeField] private Transform _returnParent = null;
 
-    public Transform ReturnParent {
-        get => _returnParent;
-        set => _returnParent = value;
-    }
-
-    public virtual void OnBeginDrag(PointerEventData data)
+    public override void OnBeginDrag(PointerEventData data)
     {
         _returnParent = this.transform.parent;
         this.transform.SetParent(this.transform.parent.parent);
@@ -24,13 +19,13 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
-    public virtual void OnDrag(PointerEventData data)
+    public override void OnDrag(PointerEventData data)
     {
         this.transform.position = data.position;
 
     }
 
-    public virtual void OnEndDrag(PointerEventData data)
+    public override void OnEndDrag(PointerEventData data)
     {
         this.transform.SetParent(_returnParent);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
