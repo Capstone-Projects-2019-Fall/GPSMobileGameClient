@@ -8,14 +8,16 @@ using UnityEngine;
  * flexible enough to add to other scenes in the future. */
 public class CardInventoryZone : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    // Data fields
+    [SerializeField] private Deck _myCards;
+    [SerializeField] private GameObject _cardImagePF;
 
-    // Update is called once per frame
-    void Update()
+    // UI-related fields
+    [SerializeField] private List<GameObject> _cardImageList;
+    [SerializeField] private GameObject _cardViewport;
+    [SerializeField] private GameObject _cardListContent;
+
+    private void Awake()
     {
         
     }
