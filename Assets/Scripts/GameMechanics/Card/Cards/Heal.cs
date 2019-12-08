@@ -14,7 +14,7 @@ public class Heal : Card
     public double _UpgradeCost = 100;
     public int _HealAmount = 15;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Heal");
-    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/heal-banner.png");
+    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/heal-banner");
 
     public override int Id => _Id;
 

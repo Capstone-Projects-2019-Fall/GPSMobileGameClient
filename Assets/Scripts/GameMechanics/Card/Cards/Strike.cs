@@ -14,7 +14,7 @@ public class Strike : Card
     public double _UpgradeCost = 50;
     public int _DamageAmount = 20;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Strike");
-    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/strike-banner.png");
+    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/strike-banner");
 
     public override int Id => _Id;
 

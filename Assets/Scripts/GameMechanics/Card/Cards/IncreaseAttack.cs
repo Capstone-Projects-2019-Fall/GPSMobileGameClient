@@ -14,7 +14,7 @@ public class IncreaseAttack : Card
     public double _UpgradeCost = 100;
     public float _AttackModifier = 1.2f;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Increase Attack");
-    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/increase_attack-banner.png");
+    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/increase_attack-banner");
 
     public override int Id => _Id;
 

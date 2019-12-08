@@ -56,7 +56,7 @@ public class CardScrollList : MonoBehaviour
 
         // Initialize GUI
         GenerateTestDeck();
-        ResetListContent();
+        InitializeListContent();
     }
 
     /* Creates an instance of a Card banner prefab to be inserted into the scroll view area of the CardScrollList.
@@ -79,6 +79,7 @@ public class CardScrollList : MonoBehaviour
     public void AddCardToList(Card card)
     {
         GameObject cardBannerGO = CreateBannerPrefab(card);
+        _cardBannerList.Add(cardBannerGO);
         _myCards.AddCard(cardBannerGO.GetComponent<CardBanner>().Card);
 
         cardBannerGO.transform.SetParent(_contentTrans);
@@ -93,16 +94,19 @@ public class CardScrollList : MonoBehaviour
         cardGO.Destroy();
     }
 
-    /* Fully resets the content within the CardScrollList (also used for initialization purposes)
+    /* Initialize the CardScrollList's content using _myCards
      * NOTE: The CardScrollList will then populate itself with card banners corresponding to its _myCards field
      */
-    private void ResetListContent()
+    private void InitializeListContent()
     {
-        // Cleanup previous
-        foreach(GameObject go in _cardBannerList) { RemoveCardFromList(go); }
-
         // Create new
-        foreach(Card c in _myCards.Cards) { AddCardToList(c); }
+        foreach(Card c in _myCards.Cards)
+        {
+            GameObject cardBannerGO = CreateBannerPrefab(c);
+            _cardBannerList.Add(cardBannerGO);
+
+            cardBannerGO.transform.SetParent(_contentTrans);
+        }
     }
 
     /* Generate a starter deck for testing purposes and update the _myCards data field

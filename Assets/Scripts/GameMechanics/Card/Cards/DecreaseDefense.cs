@@ -14,7 +14,7 @@ public class DecreaseDefense : Card
     public double _UpgradeCost = 75;
     public float _DefenseModifier = 0.9f;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Decrease Defense");
-    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/decrease_defense-banner.png");
+    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/decrease_defense-banner");
 
     public override int Id => _Id;
 

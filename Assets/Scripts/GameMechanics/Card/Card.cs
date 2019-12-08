@@ -31,12 +31,6 @@ public abstract class Card : MonoBehaviour
     // Returns the id of the card this card is upgrading to
     public virtual void UpgradeCard() { }
 
-    // Initializes this card
-    private void Awake()
-    {
-        Assert.IsNotNull(_cc);
-    }
-
     // String display of card. For debugging purposes.
     public string DisplayText()
     {
