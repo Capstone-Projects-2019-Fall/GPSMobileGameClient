@@ -64,7 +64,7 @@ public class DeckManager : Singleton<DeckManager>
         List<Card> randCards = GenerateRandomCardList(20);
 
         // Generate demo deck for testing
-        List<Card> demoCards = GenerateDemoDeckList();
+        List<Card> demoCards = GenerateStarterDeck();
 
         _hand = new Deck();
         _deck = new Deck(demoCards);
@@ -139,7 +139,7 @@ public class DeckManager : Singleton<DeckManager>
         return randomCards;
     }
 
-    public List<Card> GenerateDemoDeckList()
+    public List<Card> GenerateStarterDeck()
     {
         List<Card> deckList = new List<Card>();
         for(int i = 0; i < 12; i++) { deckList.Add(CardFactory.CreateCard(0)); } // Strike
