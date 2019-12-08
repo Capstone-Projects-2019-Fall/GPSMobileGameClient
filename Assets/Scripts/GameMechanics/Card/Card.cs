@@ -25,11 +25,6 @@ public abstract class Card : MonoBehaviour
     abstract public Sprite CardArt { get; }
     abstract public Sprite CardBannerArt { get;  }
 
-    // shared fields; common among all cards
-    static public CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
-    static public DeckManager _dm = GameObject.Find("CombatUtils").GetComponent<DeckManager>();
-
-    
     // Plays a card
     public virtual void PlayCard (Player p, Enemy e) { }
     

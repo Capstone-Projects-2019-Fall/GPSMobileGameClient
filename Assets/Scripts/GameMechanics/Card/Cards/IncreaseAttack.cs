@@ -36,6 +36,8 @@ public class IncreaseAttack : Card
 
     public override void PlayCard(Player player, Enemy enemy)
     {
+        CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+
         if (player.Memory >= MemoryCost)
         {
             player.BuffReceived(new Buff(name: _AttackModifier.ToString("#.##") + "x Damage",attackModifier:_AttackModifier));

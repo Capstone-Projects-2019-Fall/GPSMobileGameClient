@@ -33,8 +33,8 @@ public static class CardFactory
         CardTypesList = CardsById.Values.ToList();
     }
 
-    /*
-     * Create a Card object with a given card id.
+    
+     /* Create a Card object with a given card id.
      */
     public static Card CreateCard(int cardId)
     {

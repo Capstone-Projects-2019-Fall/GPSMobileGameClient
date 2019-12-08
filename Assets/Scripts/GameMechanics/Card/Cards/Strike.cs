@@ -36,6 +36,8 @@ public class Strike : Card
 
     public override void PlayCard(Player player, Enemy enemy)
     {
+        CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+
         if (player.Memory >= MemoryCost)
         {
             _cc.ChangeEnemyHealth(-player.CalculateDamage(enemy, _DamageAmount));

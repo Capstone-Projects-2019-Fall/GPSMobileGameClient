@@ -36,6 +36,8 @@ public class DecreaseDefense : Card
 
     public override void PlayCard(Player player, Enemy enemy)
     {
+        CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+
         if (player.Memory >= MemoryCost)
         {
             enemy.BuffReceived(new Buff(name: _DefenseModifier.ToString("#.##") + "x Defense", defenseModifier: _DefenseModifier));
