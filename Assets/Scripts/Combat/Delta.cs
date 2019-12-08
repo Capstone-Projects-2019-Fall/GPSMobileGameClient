@@ -10,6 +10,8 @@ public static class Delta
     private static string damageKey = "damage";
     private static string playerHealthKey = "playerHealth";
     private static string healingKey = "healing";
+    private static string drawCardsKey = "drawCards";
+    private static string buffKey = "buff";
     private static string targetObjectClientKey = "client";
     private static string targetObjectDataKey = "data";
     private static string enemyAttackKey = "attack";
@@ -31,6 +33,8 @@ public static class Delta
         deltaJSON[damageKey] = 0;
         deltaJSON[playerHealthKey] = 0;
         deltaJSON[healingKey] = new JSONArray();
+        deltaJSON[drawCardsKey] = new JSONArray();
+        deltaJSON[buffKey] = new JSONArray();
 
     }
     public static void AddDamage(float additionalDamage)
@@ -43,9 +47,20 @@ public static class Delta
         deltaJSON[playerHealthKey] = playerHealth;        
     }
 
+    public static void DrawCardsTarget(string client, int numCards)
+    {
+        deltaJSON[drawCardsKey].AsArray.Add(createTargetJSONObject(client, numCards));
+    }
+
     public static void HealTarget(string client, float health)
     {        
         deltaJSON[healingKey].AsArray.Add(createTargetJSONObject(client, health));
+    }
+
+    public static void BuffTarget(string client, Buff buff)
+    {
+        // Debug.LogFormat("Buff as JSON: {0}", JsonUtility.ToJson(buff));
+        deltaJSON[buffKey].AsArray.Add(createTargetJSONObject(client, JSONNode.Parse(JsonUtility.ToJson(buff))));
     }
 
     private static JSONObject createTargetJSONObject(string client, JSONNode data)
@@ -73,5 +88,34 @@ public static class Delta
         }
         // Debug.LogFormat("Healing {0}: {1}", name, healing);
         return healing;
+    }
+
+    public static int GetMyDrawCards(string name)
+    {
+        int numCards = 0;
+        for(int i = 0; i < deltaJSONResponse[drawCardsKey].Count; i++)
+        {
+            if(deltaJSONResponse[drawCardsKey][i][targetObjectClientKey] == name)
+            {
+                numCards += deltaJSONResponse[drawCardsKey][i][targetObjectDataKey];
+            }
+        }
+        // Debug.LogFormat("DrawCards {0}: {1}", name, numCards);
+        return numCards;
+    }
+
+    public static List<Buff> GetEntityBuffs(string name)
+    {
+        List<Buff> buffs = new List<Buff>();
+        for(int i = 0; i < deltaJSONResponse[buffKey].Count; i++)
+        {
+            if(deltaJSONResponse[buffKey][i][targetObjectClientKey] == name)
+            {
+                JSONObject buffAsJSON = deltaJSONResponse[buffKey][i][targetObjectDataKey].AsObject;
+                buffs.Add(new Buff(name: buffAsJSON["name"], roundDuration: buffAsJSON["roundDuration"], attackModifier:buffAsJSON["attackModifier"], defenseModifier: buffAsJSON["defenseModifier"]));
+                // Debug.LogFormat("Received buff: {0}", buffs[buffs.Count - 1].Name);
+            }
+        }
+        return buffs;
     }
 }

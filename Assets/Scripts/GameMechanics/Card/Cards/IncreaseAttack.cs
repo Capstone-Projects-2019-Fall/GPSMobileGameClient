@@ -35,7 +35,7 @@ public class IncreaseAttack : Card
     {
         if (player.Memory >= MemoryCost)
         {
-            player.BuffReceived(new Buff(name: _AttackModifier.ToString("#.##") + "x Damage",attackModifier:_AttackModifier));
+            _cc.BuffSelectedPlayer(new Buff(name: _AttackModifier.ToString("#.##") + "x Damage",attackModifier:_AttackModifier));
             _cc.ChangeMemory(-MemoryCost);
         }
     }

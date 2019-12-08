@@ -206,6 +206,10 @@ public class UIController : Singleton<UIController>
         _mpHealthList.Clear();
     }
 
+    /* 
+      Gets the currently selected players name. Returns null if there is no currently selected player.
+      (null should only be returned on initialization when there are no players populated into the UI)
+     */
     public string GetSelectedPlayerName()
     {
         foreach(GameObject button in _mpHealthList)
@@ -219,34 +223,66 @@ public class UIController : Singleton<UIController>
         return null;
     }
 
+    /*
+      Gets the MpButtonHandler for the given player name. Returns null if that player name is not found. 
+     */
     public MpButtonHandler GetMpButtonHanlderPlayerByName(string name)
     {
-        foreach(GameObject button in _mpHealthList)
+        if(name != null)
         {
-            MpButtonHandler handler = button.GetComponent<MpButtonHandler>();
-            if(name == handler.CleanedNameString)
+            foreach(GameObject button in _mpHealthList)
             {
-                return handler;
+                MpButtonHandler handler = button.GetComponent<MpButtonHandler>();
+                if(name == handler.CleanedNameString)
+                {
+                    return handler;
+                }
             }
-        }
+        }        
         return null;
     }
 
-    public void SelectCurrentPlayer()
+    /* 
+      Selects the current local player.
+     */
+    public bool SelectCurrentPlayer()
     {
-        GetMpButtonHanlderPlayerByName(_cc.Player.Username).SetSelection(true);
+        return SelectPlayer(_cc.Player.Username);
     }
 
+    /* 
+      Selects the given player. Returns true if the selection was successful, false otherwise.
+     */
+    public bool SelectPlayer(string name)
+    {
+        if(name != null)
+        {
+            MpButtonHandler handler = GetMpButtonHanlderPlayerByName(name);
+            if(handler != null)
+            {
+                handler.SetSelection(true);
+                return true;
+            }
+        }        
+        return false;
+    }
+
+    /* 
+      Deselects all players except for the player with the given name.
+     */
     public void DeselectAllExcept(string name)
     {
-        foreach(GameObject button in _mpHealthList)
+        if(name != null)
         {
-            MpButtonHandler handler = button.GetComponent<MpButtonHandler>();
-            if(handler.CleanedNameString != name)
+            foreach(GameObject button in _mpHealthList)
             {
-                handler.SetSelection(false);
+                MpButtonHandler handler = button.GetComponent<MpButtonHandler>();
+                if(handler.CleanedNameString != name)
+                {
+                    handler.SetSelection(false);
+                }
             }
-        }
+        }        
     }
 
     public void Start()

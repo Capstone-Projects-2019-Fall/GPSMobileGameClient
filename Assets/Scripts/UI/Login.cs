@@ -14,6 +14,7 @@ public class Login : MonoBehaviour
     {
         loginCanvas = GameObject.Find("LoginUI");
         username = loginCanvas.transform.Find("Username").GetComponent<InputField>();
+        username.text = PlayerPrefs.GetString(Player.usernameKey, "");
         password = loginCanvas.transform.Find("Password").GetComponent<InputField>();
         loginCanvas.transform.Find("LoginButton").GetComponent<Button>().onClick.AddListener(StartLogin);
     }
@@ -32,7 +33,7 @@ public class Login : MonoBehaviour
                         {
                             PlayerPrefs.SetString(Player.usernameKey, createPlayerQuery["name"]);
                             PlayerPrefs.Save();
-                            SceneManager.LoadScene(1);
+                            SceneManager.LoadScene("GPSMobileGame");
                         }
                     }));
                 }
@@ -41,7 +42,7 @@ public class Login : MonoBehaviour
                     Debug.LogFormat("Load existing data: {0}", existingPlayerQuery);
                     PlayerPrefs.SetString(Player.usernameKey, existingPlayerQuery["name"]);
                     PlayerPrefs.Save();
-                    SceneManager.LoadScene(1);
+                    SceneManager.LoadScene("GPSMobileGame");
                 }            
             }));
         }        

@@ -35,7 +35,7 @@ public class DecreaseDefense : Card
     {
         if (player.Memory >= MemoryCost)
         {
-            enemy.BuffReceived(new Buff(name: _DefenseModifier.ToString("#.##") + "x Defense", defenseModifier: _DefenseModifier));
+            _cc.DebuffEnemy(new Buff(name: _DefenseModifier.ToString("#.##") + "x Defense", defenseModifier: _DefenseModifier));
             _cc.ChangeMemory(-MemoryCost);
         }
     }

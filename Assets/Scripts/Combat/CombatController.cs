@@ -177,6 +177,19 @@ public class CombatController : Singleton<CombatController>
         OnCardsDrawn(args);
     }
 
+    public void SelectedPlayerDrawCards(int numCards)
+    {
+        string selectedPlayerName = _uiCont.GetSelectedPlayerName();
+        if(Player.Username == selectedPlayerName)
+        {
+            DrawCards(numCards);
+        }
+        else
+        {
+            Delta.DrawCardsTarget(selectedPlayerName, numCards);
+        }
+    }
+
     /* PlayCard Description:
      * Simple wrapper method for the OnCardPlayed event. More or less only called by a CardHandler, but still useful for several
      * scripts that need to react to a card being played.
@@ -236,6 +249,25 @@ public class CombatController : Singleton<CombatController>
         MemEventArgs args = new MemEventArgs { MemDiff = memDiff };
         _player.Memory += memDiff; // Change the player object's memory : Seems excessive to add event in Player class
         OnMemoryChanged(args); 
+    }
+
+    public void BuffSelectedPlayer(Buff buff)
+    {
+        string selectedPlayerName = _uiCont.GetSelectedPlayerName();
+        if(Player.Username == selectedPlayerName)
+        {
+            Player.BuffReceived(buff);
+        }
+        else
+        {
+            Delta.BuffTarget(selectedPlayerName, buff);
+        }
+    }
+
+    public void DebuffEnemy(Buff buff)
+    {
+        Enemy.BuffReceived(buff);
+        Delta.BuffTarget(Node.getLastClickedNodename(), buff);
     }
 
     public void DiscardCard(GameObject cardGO)
@@ -377,7 +409,7 @@ public class CombatController : Singleton<CombatController>
             _player.EndCombat(_enemy);
             SafeColyseusExit();
             // Loads back to map scene after death 
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("GPSMobileGame");
     }
 
     // Simple wrapper for public visibility called by the Run Away button
@@ -385,7 +417,11 @@ public class CombatController : Singleton<CombatController>
     {
         ExitCombat();
     }
-
+    /*
+      Must wait for client to send delta or else LeaveRoom will cause the message to not be sent.
+      Covers the case where the client executes the finishing attack and needs to notify the other clients
+      immediately becuase the scene is going to change.
+     */
     private async void SafeColyseusExit()
     {
         await client.SendMessage(Delta.toString());
@@ -398,6 +434,10 @@ public class CombatController : Singleton<CombatController>
         EndPhase();
     }
 
+    /*
+      Handles the response message from the server that contains the enemy's attack,
+       player to player moves, and indicates the next round should start.
+     */
     public void onMessageHandler(object message)
     {
         Debug.LogFormat("Message Received: {0}", message);
@@ -407,45 +447,61 @@ public class CombatController : Singleton<CombatController>
         StartPhase();
     }
     
+    /*
+      Updates whenever the state is changed server-side. Primariy enemy health and connected clients state. 
+     */
     public void OnStateChangeHandler(State state, bool isFirstState)
     {        
         this.state = state;
         Debug.LogFormat("State has been updated!\nMonsterHealth: {0}", state.monsterHealth);
         ChangeEnemyHealth(-(Enemy.Health - state.monsterHealth), false);
         UpdateMpHealthButtons();
-        if(isFirstState)
-        {
-            _uiCont.SelectCurrentPlayer();        
-        }
     }
 
     // Wrapper method for the UI Controller
     private void UpdateMpHealthButtons()
     {
+        // remember the currently selected player so we can reselect them after clearing the UI.
+        string currentlySelectedPlayer = _uiCont.GetSelectedPlayerName();
+        _uiCont.ClearRemotePlayerUI();
         foreach (var key in players.Keys)
         {
             ColyseusPlayer colyseusPlayer = ((ColyseusPlayer)players[key]);
-            MpButtonHandler handler = _uiCont.GetMpButtonHanlderPlayerByName(colyseusPlayer.name);
-            if(handler == null)
+            float healthRatio = 1;
+
+            if(colyseusPlayer.name == Player.Username)
             {
-                _uiCont.AddRemotePlayerToUI(colyseusPlayer.name, colyseusPlayer.health);
+                healthRatio = Player.Health / Player.MaxHealth; // use the player's most up-to-date health
             }
             else
             {
-                if(colyseusPlayer.name == Player.Username)
-                {
-                    handler.Healthbar.updateHealthbar(Player.Health / Player.MaxHealth);
-                }
-                else
-                {
-                    handler.Healthbar.updateHealthbar(colyseusPlayer.health);
-                }  
-            }     
-        }        
+                healthRatio = colyseusPlayer.health; // this will always be a round
+                                                     // behind the player's actual health due to the turn system
+            }
+            _uiCont.AddRemotePlayerToUI(colyseusPlayer.name, healthRatio);
+        }
+
+        // Try reselecting the player and if they disconnected then select the current player.
+        if(!_uiCont.SelectPlayer(currentlySelectedPlayer))
+        {
+            _uiCont.SelectCurrentPlayer();
+        }
     }
 
+    /* 
+      Handles applying player to player moves from the server response Delta.
+     */
     public void HandlePlayerToPlayerMoves()
     {
         ChangePlayerHealth(Delta.GetMyHealing(Player.Username));
+        DrawCards(Delta.GetMyDrawCards(Player.Username));
+        foreach(Buff buff in Delta.GetEntityBuffs(Player.Username))
+        {
+            Player.BuffReceived(buff);
+        }
+        foreach(Buff buff in Delta.GetEntityBuffs(Node.getLastClickedNodename()))
+        {
+            Enemy.BuffReceived(buff);
+        }
     }
 }

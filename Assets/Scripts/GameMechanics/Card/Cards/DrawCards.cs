@@ -35,7 +35,7 @@ public class DrawCards1: Card
     {
         if (player.Memory >= MemoryCost)
         {
-            _cc.DrawCards(_DrawAmount);
+            _cc.SelectedPlayerDrawCards(_DrawAmount);
             _cc.ChangeMemory(-MemoryCost);
         }
     }
