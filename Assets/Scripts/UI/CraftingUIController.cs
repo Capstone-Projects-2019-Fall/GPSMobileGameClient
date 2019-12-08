@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class CraftingUIController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private GameObject _uiCanvas;  // The UI canvas; highest level UI object in the hierarchy
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private Transform _upgradeZone;   // the screen region that holds cards when upgrading
+    [SerializeField] private Transform _cardsZone;   // the screen region holds cards in player's deck
+
+    
 }

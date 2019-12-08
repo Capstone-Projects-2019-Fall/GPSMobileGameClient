@@ -34,6 +34,9 @@ public class UIController : Singleton<UIController>
     [SerializeField] private List<Image> _mpHealthFills;     // List of multiplayer health fills
     [SerializeField] private GameObject _mpHealthPF;         // Multiplayer button prefab
 
+    [SerializeField] private Image _playPhase;         // indicates the player may play cards during this phase
+    [SerializeField] private Image _enemyPhase;         // indicates the wiating on enemy actions during this phase
+
     [SerializeField] private GameObject _runAway;   // run away button
     // [SerializeField] private GameObject _items;     // button that accesses inventory (TODO)
 
@@ -86,6 +89,9 @@ public class UIController : Singleton<UIController>
         _memBar = _uiCanvas.transform.Find("Memory").gameObject;
         _memBarFill = _memBar.transform.Find("antifill").GetComponent<Image>();
         _memBarText = _memBar.transform.Find("number").GetComponent<Text>();
+
+        _playPhase = _uiCanvas.transform.Find("PlayerTurn").GetComponent<Image>();
+        _enemyPhase = _uiCanvas.transform.Find("EnemyTurn").GetComponent<Image>();
 
         _runAway = _uiCanvas.transform.Find("Run").gameObject;
 
