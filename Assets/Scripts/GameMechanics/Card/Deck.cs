@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
 public class Deck
 {
@@ -119,5 +119,23 @@ public class Deck
             s += "\n";
         }
         return s;
+    }
+    
+    /* Simple utility method to JSONify the deck
+     * Parameters:
+     *    -> bool isDeck: Indicates whether or not the Deck being JSONified is the players Deck (true if so, set to false
+     *                    if it is some other collection of cards (such as the Collection))
+     * Returns:
+     *    -> A JSONArray: A collection of JSONified cards */
+    public JSONArray JSONDeck(bool isDeck)
+    {
+        JSONArray jsnDeck = new JSONArray();
+
+        foreach(Card card in _cards)
+        {
+            jsnDeck.Add(card.JSONCard(isDeck));
+        }
+
+        return jsnDeck;
     }
 }

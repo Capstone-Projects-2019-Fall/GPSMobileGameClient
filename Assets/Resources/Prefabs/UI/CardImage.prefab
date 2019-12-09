@@ -643,7 +643,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: 631, y: -282}
-  m_SizeDelta: {x: 101.5, y: 100}
+  m_SizeDelta: {x: 230.93, y: 315.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1003776911909431009
 CanvasRenderer:
@@ -660,7 +660,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7867657219335036908}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
@@ -696,10 +696,10 @@ MonoBehaviour:
   m_IgnoreLayout: 0
   m_MinWidth: -1
   m_MinHeight: -1
-  m_PreferredWidth: 50
-  m_PreferredHeight: 50
-  m_FlexibleWidth: 0
-  m_FlexibleHeight: 0
+  m_PreferredWidth: 150
+  m_PreferredHeight: 100
+  m_FlexibleWidth: 50
+  m_FlexibleHeight: 50
   m_LayoutPriority: 1
 --- !u!225 &8039430931077602484
 CanvasGroup:
@@ -722,7 +722,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7867657219335036908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 73e3edd9d3641674981162bbf149ee9e, type: 3}
+  m_Script: {fileID: 11500000, guid: b4df7d33caea7ed4fabf335e630fee7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _myCard: {fileID: 0}
@@ -737,7 +737,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 7867657219335036908}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33ab569385d0bec42bc868cc902a5138, type: 3}
+  m_Script: {fileID: 11500000, guid: 6edbc00feec15b443a254556d67ec6dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _returnParent: {fileID: 0}

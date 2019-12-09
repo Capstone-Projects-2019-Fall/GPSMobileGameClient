@@ -6,16 +6,16 @@ using UnityEngine.EventSystems;
  * (the UI data object that populates CardInventoryZones) */
 public class CardImageDrag : Drag
 {
-    private Transform _returnParent = null;
+    private Transform _retParent = null;
 
     public override Transform ReturnParent {
-        get => _returnParent;
-        set => _returnParent = value;
+        get => _retParent;
+        set => _retParent = value;
     }
 
     public override void OnBeginDrag(PointerEventData data)
     {
-        _returnParent = this.transform.parent;
+        _retParent = this.transform.parent;
         this.transform.SetParent(GameObject.Find("Canvas").transform); // Set the parent to the UI canvas to facilitate drops between different UI elements
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -32,13 +32,13 @@ public class CardImageDrag : Drag
      * this CardImage, and the original CardImage will be destroyed */
     public override void OnEndDrag(PointerEventData data)
     {
-        this.transform.SetParent(_returnParent);
+        this.transform.SetParent(_retParent);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-        if (_returnParent.name == "CardScrollList")
+        if (_retParent.name == "CardScrollList")
         {
             Card myCard = gameObject.GetComponent<CardImage>().Card;
-            _returnParent.gameObject.GetComponent<CardScrollList>().AddCardToList(myCard);
+            _retParent.gameObject.GetComponent<CardScrollList>().AddCardToList(myCard);
             gameObject.GetComponent<CardImage>().CardInventoryZone.RemoveCardFromList(gameObject);
         }
     }

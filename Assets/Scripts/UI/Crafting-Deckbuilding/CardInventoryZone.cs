@@ -20,6 +20,9 @@ public class CardInventoryZone : MonoBehaviour
     [SerializeField] private GameObject _cardListContent;
     [SerializeField] private Transform _contentTrans;
     [SerializeField] private GameObject _myScrollbar;
+    [SerializeField] private GridLayoutGroup _gridLayoutGroup;
+
+    [SerializeField] private float _cardImageScalar; // default value (updated by UpdateCellSize) 
 
     private void Awake()
     {
@@ -34,6 +37,7 @@ public class CardInventoryZone : MonoBehaviour
         _cardListContent = _cardViewport.transform.Find("CardListContent").gameObject; // Content MUST be childed under the card viewport to function properly
         _contentTrans = _cardListContent.transform;
         _myScrollbar = gameObject.transform.Find("CardListScrollbar").gameObject;
+        _gridLayoutGroup = _cardListContent.GetComponent<GridLayoutGroup>();
 
         // Validate references obtained successfully
         Assert.IsNotNull(_cardImagePF);
@@ -43,8 +47,10 @@ public class CardInventoryZone : MonoBehaviour
         Assert.IsNotNull(_cardListContent);
         Assert.IsNotNull(_contentTrans);
         Assert.IsNotNull(_myScrollbar);
+        Assert.IsNotNull(_gridLayoutGroup);
 
         // Initialize GUI
+        UpdateCellSize();
         GenerateTestDeck();
         InitializeListContent();
     }
@@ -73,6 +79,7 @@ public class CardInventoryZone : MonoBehaviour
 
         cardImageGO.GetComponent<CardImage>().CardInventoryZone = this;
         cardImageGO.transform.SetParent(_contentTrans);
+        cardImageGO.transform.localScale = new Vector3(_cardImageScalar, _cardImageScalar);
     }
 
     public void RemoveCardFromList(GameObject cardGO)
@@ -93,6 +100,7 @@ public class CardInventoryZone : MonoBehaviour
 
             cardImageGO.GetComponent<CardImage>().CardInventoryZone = this;
             cardImageGO.transform.SetParent(_contentTrans);
+            cardImageGO.transform.localScale = new Vector3(_cardImageScalar, _cardImageScalar);
         }
     }
 
@@ -108,5 +116,22 @@ public class CardInventoryZone : MonoBehaviour
         for (int i = 0; i < 4; i++) { deckList.Add(CardFactory.CreateCard(4)); } // Decrease Defense
 
         _myCards = new Deck(deckList);
+    }
+
+    /* Helper method to update the cell size in the grid layout group to support multiple resolution sizes (called in Awake)
+     *  TODO: Currently hacked together with some magic numbers. Will definitely require refactors to work on variety of resolutions. */
+    private void UpdateCellSize()
+    {
+        float width = _cardViewport.GetComponent<RectTransform>().rect.width;
+        float cellX = width / 4.15f;
+        float cellY = width / 3.0f;
+
+        float pfWidth = _cardImagePF.GetComponent<RectTransform>().rect.width;
+        _cardImageScalar = cellX / (pfWidth * 1.05f);
+
+        Debug.LogFormat("New card image scale: {0}", _cardImageScalar);
+
+        Vector2 newCellSize = new Vector2(cellX, cellY);
+        _gridLayoutGroup.cellSize = newCellSize;
     }
 }

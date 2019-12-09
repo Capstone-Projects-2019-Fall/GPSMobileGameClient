@@ -3,14 +3,14 @@ using UnityEngine.EventSystems;
 
 public class CombatDrag : Drag
 {
-    private Transform _returnParent = null;
+    private Transform _retParent = null;
 
     private CombatController _cc;
     private CardHandler _ch;
 
     public override Transform ReturnParent {
-        get => _returnParent;
-        set => _returnParent = value;
+        get => _retParent;
+        set => _retParent = value;
     }
 
     private void Awake()
@@ -26,7 +26,7 @@ public class CombatDrag : Drag
 
     public override void OnBeginDrag(PointerEventData data)
     {
-        _returnParent = this.transform.parent;
+        _retParent = this.transform.parent;
         this.transform.SetParent(this.transform.parent.parent);
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -40,10 +40,10 @@ public class CombatDrag : Drag
 
     public override void OnEndDrag(PointerEventData data)
     {
-        this.transform.SetParent(_returnParent);
+        this.transform.SetParent(_retParent);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-        if(_returnParent.name == "PlayZone")
+        if(_retParent.name == "PlayZone")
         {
             _ch.PlayCard(_cc.Player, _cc.Enemy);
         }

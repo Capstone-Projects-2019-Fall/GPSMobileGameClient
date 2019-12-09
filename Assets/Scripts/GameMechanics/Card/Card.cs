@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Networking;
-
+using SimpleJSON;
 
 [CreateAssetMenu(menuName ="Card")]
 public abstract class Card : MonoBehaviour
@@ -41,6 +39,22 @@ public abstract class Card : MonoBehaviour
             + "\nLevel: " + Level
             + "\nMemory Cost: " + MemoryCost
             + "\nUpgrade Cost: " + UpgradeCost;
+    }
+
+    /* Simple utility method to JSONify a card
+     * Parameters:
+     *    -> bool inDeck: Used to indicate whether this particular Card is in the player's deck or not (this is important for the cards representation in our MongoDB collection)
+     *                    Pass in false if this card is part of some other collection (like the Collection! Caller beware!)
+     * Returns:
+     *    -> A JSONObject (often used in the Deck.JSONDeck method) */
+    public JSONObject JSONCard(bool inDeck)
+    {
+        JSONObject jsnCard = new JSONObject();
+        jsnCard["id"] = _Id;
+        jsnCard["level"] = _Level;
+        jsnCard["in-deck"] = false;
+
+        return jsnCard;
     }
 
     /*

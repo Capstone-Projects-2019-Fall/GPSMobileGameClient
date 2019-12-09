@@ -1,22 +1,21 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-
 /* CardBannerDrag Description:
  * A utility script to be attached to objects that you want to add drag and drop functionality to. This script should be attached specifically to a CardBanner
  * (the UI data object that populates CardScrollLists) */ 
 public class CardBannerDrag : Drag
 {
-    private Transform _returnParent = null;
+    private Transform _retParent = null;
 
     public override Transform ReturnParent {
-        get => _returnParent;
-        set => _returnParent = value;
+        get => _retParent;
+        set => _retParent = value;
     }
 
     public override void OnBeginDrag(PointerEventData data)
     {
-        _returnParent = this.transform.parent;
+        _retParent = this.transform.parent;
         this.transform.SetParent(GameObject.Find("Canvas").transform); // Set the parent to the UI canvas to facilitate drops between different UI elements
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -33,13 +32,13 @@ public class CardBannerDrag : Drag
      * CardBanner's card, and the original CardBanner will be destroyed. */
     public override void OnEndDrag(PointerEventData data)
     {
-        this.transform.SetParent(_returnParent);
+        this.transform.SetParent(_retParent);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
 
-        if(_returnParent.name == "CardInventoryZone")
+        if(_retParent.name == "CardInventoryZone")
         {
             Card myCard = gameObject.GetComponent<CardBanner>().Card;
-            _returnParent.gameObject.GetComponent<CardInventoryZone>().AddCardToList(myCard);
+            _retParent.gameObject.GetComponent<CardInventoryZone>().AddCardToList(myCard);
             gameObject.GetComponent<CardBanner>().CardScrollList.RemoveCardFromList(gameObject);
         }
     }    
