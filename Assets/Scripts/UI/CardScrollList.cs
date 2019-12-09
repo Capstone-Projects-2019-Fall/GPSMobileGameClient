@@ -59,17 +59,14 @@ public class CardScrollList : MonoBehaviour
         InitializeListContent();
     }
 
-    /* Creates an instance of a Card banner prefab to be inserted into the scroll view area of the CardScrollList.
+    /* Creates an instance of a Card banner from its prefab to be inserted into the scroll view area of the CardScrollList.
      * Note that this method is called from the AddCardToList method in order to fully add the prefab to the proper
      * place in the hierarchy (so you will typically want to call that method when interacting with a CardScrollList).
      */
-    private GameObject CreateBannerPrefab(Card card)
+    private GameObject CreateCardBanner(Card card)
     {
         GameObject cardBannerGO = MonoBehaviour.Instantiate(_cardBannerPF); // create instance of banner prefab
-
-        cardBannerGO.transform.Find("art").GetComponent<Image>().sprite = card.CardBannerArt;  // dynamically populate banner UI elements
-        cardBannerGO.transform.Find("card_name").GetComponent<Text>().text = card.Name;
-        cardBannerGO.GetComponent<CardBanner>().Card = card;
+        cardBannerGO.GetComponent<CardBanner>().UpdateBanner(card); // Update its data and UI representation
 
         return cardBannerGO;
     }
@@ -78,7 +75,7 @@ public class CardScrollList : MonoBehaviour
      */
     public void AddCardToList(Card card)
     {
-        GameObject cardBannerGO = CreateBannerPrefab(card);
+        GameObject cardBannerGO = CreateCardBanner(card);
         _cardBannerList.Add(cardBannerGO);
         _myCards.AddCard(cardBannerGO.GetComponent<CardBanner>().Card);
 
@@ -103,7 +100,7 @@ public class CardScrollList : MonoBehaviour
     {
         foreach(Card c in _myCards.Cards)
         {
-            GameObject cardBannerGO = CreateBannerPrefab(c);
+            GameObject cardBannerGO = CreateCardBanner(c);
             _cardBannerList.Add(cardBannerGO);
 
             cardBannerGO.GetComponent<CardBanner>().CardScrollList = this;

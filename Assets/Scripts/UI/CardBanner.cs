@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 /* CardBanner Description: 
  * Primary controller script attached to a Card Banner prefab. Card Banners are used in CardScrollLists to create nice-looking interactive lists
@@ -11,9 +10,14 @@ using UnityEngine.Assertions;
 [RequireComponent(typeof(CardBannerDrag))]
 public class CardBanner : MonoBehaviour
 {
+    // Data
     [SerializeField] private Card _myCard;
+    [SerializeField] private CardBannerDrag _myDrag;
+
+    // UI
     [SerializeField] private CardScrollList _myScrollList;
-    [SerializeField] private Drag _myDrag;
+    [SerializeField] private string _cardName;
+    [SerializeField] private Sprite _bannerArt;
 
     #region Accessors ------------------------------------------------------------------------------------------------------------------
 
@@ -31,9 +35,20 @@ public class CardBanner : MonoBehaviour
 
     private void Awake()
     {
-        _myDrag = gameObject.GetComponent<Drag>();
+        _myDrag = gameObject.GetComponent<CardBannerDrag>();
+        _cardName = gameObject.transform.Find("card_name").GetComponent<Text>().text;
+        _bannerArt = gameObject.transform.Find("art").GetComponent<Image>().sprite;
 
         Assert.IsNotNull(_myDrag);
+    }
+
+    /* Updates the sprite and name of the banner in accordance with the given card
+     * Mainly called from the CardScrollList */
+    public void UpdateBanner(Card c)
+    {
+        _myCard = c;
+        _cardName = c.Name;
+        _bannerArt = c.CardBannerArt;
     }
 
     public void PlaceInScrollList(CardScrollList scrollList)

@@ -1,12 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
-
-/* CardBannerDrag Description:
- * A utility script to be attached to objects that you want to add drag and drop functionality to. This script should be attached specifically to a CardBanner
- * (the UI data object that populates CardScrollLists)
- */ 
-public class CardBannerDrag : Drag
+public class CardImageDrag : Drag
 {
     [SerializeField] private Transform _returnParent = null;
 
@@ -26,7 +21,7 @@ public class CardBannerDrag : Drag
 
     public override void OnEndDrag(PointerEventData data)
     {
-        this.transform.SetParent(_returnParent);
+        this.transform.SetParent(_returnParent);    
         GetComponent<CanvasGroup>().blocksRaycasts = true;
-    }    
+    }
 }
