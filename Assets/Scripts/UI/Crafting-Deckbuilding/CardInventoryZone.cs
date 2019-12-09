@@ -24,6 +24,11 @@ public class CardInventoryZone : MonoBehaviour
 
     [SerializeField] private float _cardImageScalar; // default value (updated by UpdateCellSize) 
 
+    public Deck MyCards {
+        get => _myCards;
+        set => _myCards = value;
+    }
+
     private void Awake()
     {
         CardFactory.InitializeFactory(); // Ensure the CardFactory is initialized

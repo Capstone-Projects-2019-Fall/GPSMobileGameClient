@@ -407,8 +407,8 @@ public class CombatController : Singleton<CombatController>
         // Connect to combat instance        
         client = new ColyseusClient();
 
-        // client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
-       client.JoinOrCreateRoom("Alice", 1, "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
+        client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
+        // client.JoinOrCreateRoom("Alice", 1, "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
     }
 
     private void ExitCombat()
