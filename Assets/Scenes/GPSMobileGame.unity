@@ -470,6 +470,18 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+--- !u!114 &626463899 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 114658503893516242, guid: 35ce2bb4caba9434db5e656796b632b1,
+    type: 3}
+  m_PrefabInstance: {fileID: 843921207}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b5c815d91f9d4c3690891f3ed4c3162, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &773682131
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1491,12 +1503,12 @@ PrefabInstance:
     - target: {fileID: 114658503893516242, guid: 35ce2bb4caba9434db5e656796b632b1,
         type: 3}
       propertyPath: _latitudeLongitude.Array.data[0]
-      value: 39.9798065, -75.157966
+      value: 39.981712, -75.152995
       objectReference: {fileID: 0}
     - target: {fileID: 114658503893516242, guid: 35ce2bb4caba9434db5e656796b632b1,
         type: 3}
       propertyPath: _latitudeLongitude.Array.data[0]
-      value: 39.9798065, -75.157966
+      value: 39.981712, -75.152995
       objectReference: {fileID: 0}
     - target: {fileID: 114811608996724456, guid: 35ce2bb4caba9434db5e656796b632b1,
         type: 3}
@@ -1529,12 +1541,12 @@ PrefabInstance:
         type: 3}
       propertyPath: _editorLocationProvider
       value: 
-      objectReference: {fileID: 1196112185}
+      objectReference: {fileID: 626463899}
     - target: {fileID: 114467468983267246, guid: 35ce2bb4caba9434db5e656796b632b1,
         type: 3}
       propertyPath: _editorLocationProvider
       value: 
-      objectReference: {fileID: 1196112185}
+      objectReference: {fileID: 626463899}
     - target: {fileID: 1996530296785342, guid: 35ce2bb4caba9434db5e656796b632b1, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -1549,11 +1561,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1514120829208204, guid: 35ce2bb4caba9434db5e656796b632b1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1514120829208204, guid: 35ce2bb4caba9434db5e656796b632b1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114668955501623132, guid: 35ce2bb4caba9434db5e656796b632b1,
         type: 3}
@@ -1583,6 +1595,10 @@ PrefabInstance:
     - target: {fileID: 114668955501623132, guid: 35ce2bb4caba9434db5e656796b632b1,
         type: 3}
       propertyPath: _useNegativeAngle
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1890051226035590, guid: 35ce2bb4caba9434db5e656796b632b1, type: 3}
+      propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1750,18 +1766,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1196112185 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 114275890671072080, guid: 35ce2bb4caba9434db5e656796b632b1,
-    type: 3}
-  m_PrefabInstance: {fileID: 843921207}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c34c76d6349bc9844998f48d16f0d3bb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1220223447
 GameObject:
   m_ObjectHideFlags: 0
