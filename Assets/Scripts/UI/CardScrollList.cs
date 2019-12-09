@@ -68,6 +68,7 @@ public class CardScrollList : MonoBehaviour
         GameObject cardBannerGO = MonoBehaviour.Instantiate(_cardBannerPF); // create instance of banner prefab
         cardBannerGO.transform.Find("art").GetComponent<Image>().sprite = card.CardBannerArt;
         cardBannerGO.transform.Find("card_name").GetComponent<Text>().text = card.Name;
+
         cardBannerGO.GetComponent<CardBanner>().Card = card;
 
         return cardBannerGO;

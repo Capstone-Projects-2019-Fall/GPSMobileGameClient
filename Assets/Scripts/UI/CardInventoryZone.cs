@@ -60,6 +60,8 @@ public class CardInventoryZone : MonoBehaviour
         cardImageGO.transform.Find("art").GetComponent<Image>().sprite = card.CardArt;
         cardImageGO.transform.Find("description").GetComponent<Text>().text = card.Detail;
 
+        cardImageGO.GetComponent<CardImage>().Card = card;
+
         return cardImageGO;
     }
 
