@@ -271,7 +271,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6274638458385334530}
+      - m_Target: {fileID: 2073502328856930021}
         m_MethodName: SetSelection
         m_Mode: 6
         m_Arguments:
@@ -291,9 +291,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6967926490093310651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 95b4ddfdc971cff42b1bbd36639c9996, type: 3}
+  m_Script: {fileID: 11500000, guid: e796530dbab33774eaea5cee71117f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buttonPF: {fileID: 0}
+  _gridLayout: {fileID: 0}
 --- !u!114 &6274638458385334530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -303,8 +305,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 6967926490093310651}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b277419ed56dcda44ae2eeb1fde22c4f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6f50364dd3ceffb4aaae5420865838fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buttonPF: {fileID: 6967926490093310651}
-  _gridLayout: {fileID: 0}

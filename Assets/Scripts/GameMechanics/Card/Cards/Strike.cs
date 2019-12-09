@@ -41,7 +41,7 @@ public class Strike : Card
         if (player.Memory >= MemoryCost)
         {
             _cc.ChangeEnemyHealth(-player.CalculateDamage(enemy, _DamageAmount));
-            //_cc.Enemy.GetComponent<Shake>().ShakeIt();
+            //_cc.Enemy.GetComponent<Shak   e>().ShakeIt();
             Camera.main.GetComponent<Shake>().ShakeIt();
             _cc.ChangeMemory(-MemoryCost);
         }        

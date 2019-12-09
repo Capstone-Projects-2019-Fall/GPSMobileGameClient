@@ -227,7 +227,6 @@ MonoBehaviour:
   _enemyGO: {fileID: 0}
   _enemy: {fileID: 0}
   _enemySpawnPos: {x: 0, y: 0, z: 0}
-  _playerList: {fileID: 0}
   clientState: 0
 --- !u!4 &594666064
 Transform:
@@ -277,7 +276,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 594666062}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a50c080214eef94da7cca08fd02189c, type: 3}
+  m_Script: {fileID: 11500000, guid: 20e18751bf27c46408d2aa4072972227, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _uiCanvas: {fileID: 0}
@@ -486,10 +485,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1593166127}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3a40828799622347883e9ca6fa69bfd, type: 3}
+  m_Script: {fileID: 11500000, guid: 3036820ec71723740baa85c7a74e9ff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ferocity: 100
+  ferocity: 0
 --- !u!1 &1714611629
 GameObject:
   m_ObjectHideFlags: 0

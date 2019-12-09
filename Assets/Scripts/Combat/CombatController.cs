@@ -180,6 +180,7 @@ public class CombatController : Singleton<CombatController>
     public void SelectedPlayerDrawCards(int numCards)
     {
         string selectedPlayerName = _uiCont.GetSelectedPlayerName();
+        Debug.Log(Player.Username);
         if(Player.Username == selectedPlayerName)
         {
             DrawCards(numCards);
@@ -267,7 +268,8 @@ public class CombatController : Singleton<CombatController>
     public void DebuffEnemy(Buff buff)
     {
         Enemy.BuffReceived(buff);
-        Delta.BuffTarget(Node.getLastClickedNodename(), buff);
+        Delta.BuffTarget("Helsinki_Center", buff);
+        //Delta.BuffTarget(Node.getLastClickedNodename(), buff);
     }
 
     public void DiscardCard(GameObject cardGO)
@@ -405,9 +407,8 @@ public class CombatController : Singleton<CombatController>
         // Connect to combat instance        
         client = new ColyseusClient();
 
-        client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), 
-OnStateChangeHandler, onMessageHandler);
-       //client.JoinOrCreateRoom("Andrew", 1, "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
+        // client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
+       client.JoinOrCreateRoom("Alice", 1, "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
     }
 
     private void ExitCombat()

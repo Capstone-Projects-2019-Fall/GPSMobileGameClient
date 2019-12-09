@@ -218,6 +218,8 @@ public class UIController : Singleton<UIController>
         GameObject mpHpButton = MonoBehaviour.Instantiate(_mpHealthPF);
         MpButtonHandler handler = mpHpButton.GetComponent<MpButtonHandler>();
 
+        Debug.LogFormat("Handler in ARPUI: {0}", (handler == null));
+
         handler.NameString = playerName;
         handler.Healthbar.updateHealthbar(healthRatio);
         handler.SelectionEvent += OnSelection;
