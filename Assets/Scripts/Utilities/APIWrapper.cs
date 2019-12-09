@@ -11,6 +11,8 @@ public static class APIWrapper
 {
     private static readonly string baseURL = "https://gps-mobile-game-server.herokuapp.com";
     // private static readonly string baseURL = "localhost:3000";
+    private static readonly string mapboxBaseURL = "https://api.mapbox.com";
+    private static readonly string mapboxAPIKey = "pk.eyJ1IjoiZ3BzNDM5OCIsImEiOiJjazFvMThha2QwaGhuM25yeXg0cXBvZGtsIn0.P478dP-OvvW_0JQOiI9RZA";
     public delegate void Callback<T>(T obj); // This allows different objects to be returned in the callback depending on the request.
 
     /*
@@ -98,11 +100,13 @@ public static class APIWrapper
     /*
      * Creates a new player in the database and returns a player object with updated fields.
      */
-    public static IEnumerator createPlayer(string username, string password, Callback<JSONNode> callback)
+    public static IEnumerator createPlayer(string username, string password, double latitude, double longitude, Callback<JSONNode> callback)
     {
         JSONObject newPlayer = new JSONObject();
         newPlayer["name"] = username;
         newPlayer["password"] = password;
+        newPlayer["lat"] = latitude;
+        newPlayer["lon"] = longitude;
         return POST(string.Format("{0}/user", baseURL), newPlayer.ToString(), callback);
     }
 
@@ -181,5 +185,10 @@ public static class APIWrapper
     public static IEnumerator getEnemy(string nodename, Callback<JSONNode> callback)
     {
         return GET(string.Format("{0}/enemy/{1}", baseURL, nodename), callback);
+    }
+
+    public static IEnumerator geocodeAddress(string address, Callback<JSONNode> callback)
+    {
+        return GET(string.Format("{0}/geocoding/v5/mapbox.places/{1}.json?access_token={2}&limit=1", mapboxBaseURL, address, mapboxAPIKey), callback);
     }
 }
