@@ -16,7 +16,7 @@ public class ColyseusClient : MonoBehaviour
 {
     private static readonly string roomName = "battle";
     private static readonly string endpoint = "ws://gps-mobile-game-battle-server.herokuapp.com";
-    //private static readonly string endpoint = "ws://localhost:3000";
+    // private static readonly string endpoint = "ws://localhost:3002";
 
     public Colyseus.Client client;
     public Room<State> room;
@@ -40,38 +40,47 @@ public class ColyseusClient : MonoBehaviour
      * Username is the clients name, battleName is the name of the room to join, and stateHandler is a callback function that gets
      * invoked on a state change.
      */
-    public async void JoinOrCreateRoom(string username, string battleName, Colyseus.Room<State>.RoomOnStateChangeEventHandler stateHandler)
+    public async void JoinOrCreateRoom(string username, float playerHealth, string battleName, Colyseus.Room<State>.RoomOnStateChangeEventHandler stateHandler, Colyseus.Room<State>.RoomOnMessageEventHandler messageHandler)
     {
         // Joins/sets up the room.
         Debug.LogFormat("{0} is trying to join room: {1}", username, battleName);
-        room = await client.JoinOrCreate<State>(roomName, new Dictionary<string, object>() { { "name", username }, { "battleName", battleName } });
+        room = await client.JoinOrCreate<State>(roomName, new Dictionary<string, object>() { { "name", username }, { "playerHealth", playerHealth }, { "battleName", battleName } });
         Debug.LogFormat("Room Id: {0}\tSession Id: {1}", room.Id, room.SessionId);
 
         // Sets event callback functions.
         room.OnStateChange += stateHandler; // look at OnStateChangeHandler below as an example.
-        room.OnLeave += (code) => Debug.Log("ROOM: ON LEAVE");
-        room.OnError += (message) => Debug.LogError(message);        
+        room.OnMessage += messageHandler;
+        room.OnLeave += (code) => Debug.LogFormat("Left Room with Code: {0}", code);
+        room.OnError += (message) => Debug.LogErrorFormat("Colyseus Error: {0}", message);        
     }
      /*
       * Leaves the current room.
       */
     public async void LeaveRoom()
     {
-        await room.Leave(false);
+        if(room != null)
+        {
+            await room.Leave(false);
+        }
+        else
+        {
+            Debug.Log("Cannot leave room, currently not connected to one!");
+        }        
     }
 
     /*
      * Sends the damage dealt to the enemy to the Colyseus server.
      */
-    public void SendMessage(float damage)
+    public async Task SendMessage(string delta)
     {
         if (room != null)
         {
-            room.Send(damage);
+            Debug.LogFormat("Sending Delta: {0}", delta);
+            await room.Send(delta);
         }
         else
         {
-            Debug.Log("Room is not connected!");
+            Debug.Log("Cannot send delta, room is not connected!");
         }
     }
 
@@ -82,6 +91,5 @@ public class ColyseusClient : MonoBehaviour
     public void OnStateChangeHandler(State state, bool isFirstState)
     {
         Debug.Log("State has been updated!");
-        Debug.LogFormat("MonsterHealth: {0}", state.monsterHealth);
     }
 }

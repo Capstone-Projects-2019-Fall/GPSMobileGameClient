@@ -1,30 +1,37 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
+/* Drag Description:
+ * A utility script to be attached to objects that you want to add drag and drop functionality to. This version of Drag is 'scene agnostic',
+ * in that it should be plug-in-and-play ready in a variety of scenes and on a variety of objects (check out the CombatDrag.cs script for
+ * the previous version of Drag that interaces with the Combat scene)
+ */ 
 public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    public Transform returnParent = null;
+    private Transform _returnParent = null;
 
-    public void OnBeginDrag(PointerEventData data)
+    public virtual Transform ReturnParent {
+        get => _returnParent;
+        set => _returnParent = value;
+    }
+
+    public virtual void OnBeginDrag(PointerEventData data)
     {
-        returnParent = this.transform.parent;
+        _returnParent = this.transform.parent;
         this.transform.SetParent(this.transform.parent.parent);
 
         GetComponent<CanvasGroup>().blocksRaycasts = false;
     }
 
-    public void OnDrag(PointerEventData data)
+    public virtual void OnDrag(PointerEventData data)
     {
         this.transform.position = data.position;
 
     }
 
-    public void OnEndDrag(PointerEventData data)
+    public virtual void OnEndDrag(PointerEventData data)
     {
-        this.transform.SetParent(returnParent);
+        this.transform.SetParent(_returnParent);
         GetComponent<CanvasGroup>().blocksRaycasts = true;
-    }
-    
+    }    
 }

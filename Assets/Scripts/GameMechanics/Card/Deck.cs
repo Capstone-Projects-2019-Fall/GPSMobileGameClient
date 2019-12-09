@@ -1,83 +1,88 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using SimpleJSON;
 
-public class Deck : MonoBehaviour
+public class Deck
 {
-    [SerializeField] private int max_size = 40;
-    private List<Card> cards;
-    private static System.Random rng = new System.Random();
+    private int _maxSize = 40;
+    private List<Card> _cards;
 
-    public int Max_Size { get => max_size; set => max_size = value; }
-    public List<Card> Cards { get => cards; }
+    #region Accessors -----------------------------------------------------------------------------------
+
+    public int MaxLength 
+    {
+        get => _maxSize;
+        set => _maxSize = value;
+    }
+    public int CurrentLength {
+        get => _cards.Count;
+    }
+    public List<Card> Cards 
+    {
+        get => _cards;
+    }
+
+    #endregion ------------------------------------------------------------------------------------------
+
+    #region Deck constructors ---------------------------------------------------------------------------
 
     // Constructor to reset a deck
     public Deck()
     {
-        cards = new List<Card>();
+        _cards = new List<Card>();
     }
 
     // Constructor to set max size of deck
     public Deck(int max_size)
     {
-        Max_Size = max_size;
-        cards = new List<Card>();
+        MaxLength = max_size;
+        _cards = new List<Card>();
     }
 
     // Constructor to set max size and a given set of cards.
     public Deck(int max_size, List<Card> cards)
     {
-        Max_Size = max_size;
-        cards = new List<Card>(cards);
+        MaxLength = max_size;
+        _cards = new List<Card>(cards);
     }
 
     // Constructor to set a given set of cards.
     public Deck(List<Card> cards)
     {
-        cards = new List<Card>(cards);
+        _cards = cards.ConvertAll(card => CardFactory.CreateCard(card.Id));
     }
 
     // Constructor to copy decks
     public Deck(Deck deck)
     {
-        Max_Size = deck.Max_Size;
-        cards = new List<Card>(deck.Cards);
+        MaxLength = deck.MaxLength;
+        _cards = deck.Cards.ConvertAll(card => CardFactory.CreateCard(card.Id));
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        cards = new List<Card>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    #endregion ------------------------------------------------------------------------------------------
 
     // Adds card to list
     public void AddCard(Card card)
     {
-        if(cards.Count > max_size)
+        if(_cards.Count > _maxSize)
         {
             return;
         } else
         {
-            cards.Add(card);
+            _cards.Add(card);
         }
     }
 
     // Returns bool if card was removed or doesn't exist
     public bool RemoveCard(Card card)
     {
-        return cards.Remove(card);
+        return _cards.Remove(card);
     }
 
     // Returns a card and removes it from the deck
     public Card DrawCard()
     {
-        Card card = cards[0];
+        Card card = _cards[0];
         RemoveCard(card);
         return card;
     }
@@ -85,35 +90,52 @@ public class Deck : MonoBehaviour
     // Shuffles cards in deck
     public void ShuffleDeck()
     {
-        int n = cards.Count;
+        int n = _cards.Count;
         while (n > 1)
         {
             n--;
-            int k = rng.Next(n + 1);
-            Card value = cards[k];
-            cards[k] = cards[n];
-            cards[n] = value;
+            int k = Random.Range(0, n + 1);
+            Card value = _cards[k];
+            _cards[k] = _cards[n];
+            _cards[n] = value;
         }
     }
 
     // Copies card list over
     public void CopyDeck(List<Card> cardList)
     {
-        cards = new List<Card>(cardList);
+        _cards = new List<Card>(cardList);
     }
 
     // Returns a string of all cards.
     public string DisplayDeck()
     {
         string s = "";
-        foreach (Card card in cards)
+        foreach (Card card in _cards)
         {
             s += "Name: " + card.Name;
             s += "Level: " + card.Level;
             s += "Memory Cost: " + card.MemoryCost;
-            //s += "Pp Left: " + card.PP;
             s += "\n";
         }
         return s;
+    }
+    
+    /* Simple utility method to JSONify the deck
+     * Parameters:
+     *    -> bool isDeck: Indicates whether or not the Deck being JSONified is the players Deck (true if so, set to false
+     *                    if it is some other collection of cards (such as the Collection))
+     * Returns:
+     *    -> A JSONArray: A collection of JSONified cards */
+    public JSONArray JSONDeck(bool isDeck)
+    {
+        JSONArray jsnDeck = new JSONArray();
+
+        foreach(Card card in _cards)
+        {
+            jsnDeck.Add(card.JSONCard(isDeck));
+        }
+
+        return jsnDeck;
     }
 }

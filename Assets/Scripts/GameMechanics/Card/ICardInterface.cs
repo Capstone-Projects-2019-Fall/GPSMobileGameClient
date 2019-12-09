@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface ICardInterface
 {
-    void playCard(Player player, Enemy enemy);
+    //protected void PlayCard(Player player, Enemy enemy);
 }

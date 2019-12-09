@@ -104,7 +104,7 @@ public class ColyseusClientExample : MonoBehaviour {
 
 	public async void JoinOrCreateRoom()
 	{
-		room = await client.JoinOrCreate<State>(roomName, new Dictionary<string, object>() { { "name", "Jon" }, { "battleName", "Node_1" } });
+		room = await client.JoinOrCreate<State>(roomName, new Dictionary<string, object>() { { "name", "Jordan" }, { "battleName", "Node_1" } });
 
 		m_SessionIdText.text = "sessionId: " + room.SessionId;
 

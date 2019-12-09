@@ -1,59 +1,60 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Networking;
-
+﻿using UnityEngine;
+using SimpleJSON;
 
 [CreateAssetMenu(menuName ="Card")]
-public class Card : ScriptableObject
+public abstract class Card : MonoBehaviour
 {
-    [SerializeField] private int id;
-    [SerializeField] private string cardName;
-    [SerializeField] private string cardDetail;
-    [SerializeField] private string cardFlavor;
-    public Sprite art;
-    [SerializeField] private int level;
-    [SerializeField] private int memoryCost;
+    private static int _Id;
+    private string _Name;
+    private string _Detail;
+    private string _Flavor;
+    private int _Level;
+    private int _MemoryCost;
+    private double _UpgradeCost;
+
+    // abstract fields; to be overriden by individual card types
+    abstract public int Id { get;}
+    abstract public string Name { get; }
+    abstract public string Detail { get; }
+    abstract public string Flavor { get; }
+    abstract public int Level { get; }
+    abstract public int MemoryCost { get; }
+    abstract public double UpgradeCost { get; }
+    abstract public Sprite CardArt { get; }
+    abstract public Sprite CardBannerArt { get;  }
+
+    // Plays a card
+    public virtual void PlayCard (Player p, Enemy e) { }
     
+    // Returns the id of the card this card is upgrading to
+    public virtual void UpgradeCard() { }
 
-
-    public int Id { get => id; set => id = value; }
-    public string Name { get => cardName; set => cardName = value; }
-    public string Detail { get => cardDetail; set => cardDetail = value; }
-    public string Flavor { get => cardFlavor; set => cardFlavor = value; }
-    public int Level { get => level; set => level = value; }
-    public int MemoryCost { get => memoryCost; set => memoryCost = value; }
-    // public int PP { get => pp; set => pp = value; }
-
-    // Constructor for empty card
-    public Card()
+    // String display of card. For debugging purposes.
+    public string DisplayText()
     {
-        id = -1;
-        Name = "";
-        Level = 0;
-        MemoryCost = 0;
+        return "ID: " + Id
+            + "\nName: " + Name
+            + "\nDetail:" + Detail
+            + "\nFlavor: " + Flavor
+            + "\nLevel: " + Level
+            + "\nMemory Cost: " + MemoryCost
+            + "\nUpgrade Cost: " + UpgradeCost;
     }
 
-    // Constructor for a filled in card
-    public Card(int id, string name, string detail, string cardFlavor, int level, int mem_cost)
+    /* Simple utility method to JSONify a card
+     * Parameters:
+     *    -> bool inDeck: Used to indicate whether this particular Card is in the player's deck or not (this is important for the cards representation in our MongoDB collection)
+     *                    Pass in false if this card is part of some other collection (like the Collection! Caller beware!)
+     * Returns:
+     *    -> A JSONObject (often used in the Deck.JSONDeck method) */
+    public JSONObject JSONCard(bool inDeck)
     {
-        Id = id;
-        Name = name;
-        Detail = detail;
-        Flavor = cardFlavor;
-        Level = level;
-        MemoryCost = mem_cost;
-    }
+        JSONObject jsnCard = new JSONObject();
+        jsnCard["id"] = _Id;
+        jsnCard["level"] = _Level;
+        jsnCard["in-deck"] = false;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        return jsnCard;
     }
 
     /*
@@ -62,6 +63,7 @@ public class Card : ScriptableObject
         string json = "\"cardname\": " + CardName + ",\n\"isrefresh\": " + isRefresh.ToString();
         StartCoroutine(PostRequest("https://gps-mobile-game-server.herokuapp.com/user/deck", json));
     }
+
     IEnumerator PostRequest(string uri, string json)
     {
         var uwr = new UnityWebRequest(uri, "POST");
@@ -80,6 +82,7 @@ public class Card : ScriptableObject
         else
         {
             Debug.Log("Received: " + uwr.downloadHandler.text);
+            pp = Int32.Parse(uwr.downloadHandler.text);
         }
     }*/
 }

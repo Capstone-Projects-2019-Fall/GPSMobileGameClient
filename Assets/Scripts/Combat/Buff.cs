@@ -1,12 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
+[Serializable]
 public class Buff : MonoBehaviour
 {
+    [SerializeField]
     private string name = "";
+    [SerializeField]
     private int roundDuration = 1;
+    [SerializeField]
     private float attackModifier = 1f;
+    [SerializeField]
     private float defenseModifier = 1f;
 
     public string Name { get { return name; } set { name = value; } }

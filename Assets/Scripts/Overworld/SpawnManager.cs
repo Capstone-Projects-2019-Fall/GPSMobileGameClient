@@ -6,6 +6,7 @@ using SimpleJSON;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /*
  * SpawnManager handles populating Nodes on the overworld map. On start it repeats a query to get surrounding nodes and
@@ -15,7 +16,9 @@ public class SpawnManager : Singleton<SpawnManager>
 {
     [SerializeField] private AbstractMap _map;
     [SerializeField] private int _nodeQueryInSeconds = 10;
-    [SerializeField] private float _spawnScale = 20f;
+    [SerializeField] private float _spawnScale = 2f;
+    [SerializeField] private int maxDistance = 2000;
+
     private Vector3 _spawnScaleVector;
 
     private Dictionary<GameObject, Vector2d> nodeLocations;
@@ -46,7 +49,7 @@ public class SpawnManager : Singleton<SpawnManager>
 
     void Start()
     {
-        InvokeRepeating("QueryNodes", 3, NodeQueryInSeconds); // Calls QueryNodes() every "NodeQueryInSeconds" seconds 
+        InvokeRepeating("QueryNodes", 1, NodeQueryInSeconds); // Calls QueryNodes() every "NodeQueryInSeconds" seconds 
                                                               // starting in 3 seconds. The 3 seconds is to allow the game to load
                                                               // before making the first call.
         nodeLocations = new Dictionary<GameObject, Vector2d>();
@@ -79,48 +82,84 @@ public class SpawnManager : Singleton<SpawnManager>
         StartCoroutine(APIWrapper.getSurroundingNodes(latLon.x, latLon.y, (jsonNode) => {
             if (jsonNode != null)
             {
-                SpawnNodes(jsonNode);
+                // Assume all currently populated nodes are not surrounding the player
+                // and should be removed from the map after new nodes are created.
+                List<GameObject> outOfBoundsNodes = new List<GameObject>(nodeLocations.Keys);
+
+                for (int i = 0; i < jsonNode.Count; i++)
+                {
+                    string name = jsonNode[i]["name"];
+                    string nodeStruct = jsonNode[i]["structure"];
+
+                    if(nodeStruct != "")
+                    {
+                        // Check if a populated node with the same name already exists.
+                        GameObject populatedNodeGameObject = getPopulatedNodeByName(name);                    
+
+                        // There is an existing populated node.
+                        if(populatedNodeGameObject != null)
+                        {            
+                            // The already populated node is still near the player
+                            // so remove it from the list of out of bounds nodes.           
+                            outOfBoundsNodes.Remove(populatedNodeGameObject);
+
+                            Node populatedNode = populatedNodeGameObject.GetComponent<Node>();
+                            //  Update the node's structure if it has changed since the last query.
+                            // i.e. Friendly to Enemy
+                            if(!populatedNode.NodeStruct.Type.Equals(nodeStruct))
+                            {
+                                populatedNode.NodeStruct = NodeFactory.GetNodeStructureByString(nodeStruct);
+                            }                        
+                        }
+                        else // Create a new node
+                        {
+                            string nodeLongitude = jsonNode[i]["location"]["coordinates"][0];
+                            string nodeLatitude = jsonNode[i]["location"]["coordinates"][1];
+                            SpawnMarker(string.Format("{0}, {1}", nodeLatitude, nodeLongitude), nodeStruct, name);
+                        }
+                    }
+                }
+
+                // Only remove and destroy nodes that are no longer near the player.
+                foreach(GameObject outOfBoundsNode in outOfBoundsNodes)
+                {
+                    nodeLocations.Remove(outOfBoundsNode);
+                    Destroy(outOfBoundsNode);
+                }
             }
-        }));
-    }
-
-    /*
-     * Takes a JSONNode object representing a list of surrounding nodes and spawns each one.
-     * Before spawning new nodes, all currently populated nodes are removed from the overworld map
-     * and replaced with the new set of surrounding nodes.
-     */
-    public void SpawnNodes(JSONNode jsonNode)
-    {
-
-        foreach (KeyValuePair<GameObject, Vector2d> node in nodeLocations)
-        {
-            Destroy(node.Key);
-        }
-
-        nodeLocations.Clear();
-
-        for (int i = 0; i < jsonNode.Count; i++)
-        {
-            string nodeLongitude = jsonNode[i]["location"]["coordinates"][0];
-            string nodeLatitude = jsonNode[i]["location"]["coordinates"][1];
-            SpawnMarker(string.Format("{0}, {1}", nodeLatitude, nodeLongitude));
-        }
+        }, maxDistance));
     }
 
     /*
      * Spawns a node at a specified latitude and longitude location.
      * The locationString's format is "latitude, longitude"
      */
-    public void SpawnMarker(string locationString)
+    public void SpawnMarker(string locationString, string nodeStruct, string name)
     {
         Vector2d latLon = Conversions.StringToLatLon(locationString);
 
-        // TODO: Get NodeStructure from API (currently calling random Node)
-        GameObject myNode = NodeFactory.nCreateNode(locationString);
+        GameObject myNode = NodeFactory.nCreateNode(locationString, NodeFactory.GetNodeStructureByString(nodeStruct), name);
         // var instance = Instantiate(myNode);
         myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
         myNode.transform.localScale = _spawnScaleVector;
 
         nodeLocations.Add(myNode, latLon);
+    }
+
+    /*
+     * Gets an already populated node GameObject based on the node's name.
+     * Returns a GameObject or null if there is no existing node with that name.
+     */
+    public GameObject getPopulatedNodeByName(string name)
+    {
+        foreach (KeyValuePair<GameObject, Vector2d> node in nodeLocations)
+        {
+            Node populatedNode = node.Key.GetComponent<Node>();
+            if(populatedNode.Name.Equals(name))
+            {
+                return node.Key;
+            }
+        }
+        return null;
     }
 }
