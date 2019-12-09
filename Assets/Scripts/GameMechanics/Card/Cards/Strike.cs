@@ -42,31 +42,26 @@ public class Strike : Card
         }        
     }
 
+    // Updates the level in the card from the database.
+    public void SetCardLevel(int level)
+    {
+        _Level = level;
+        _UpgradeCost = 100 + (_Level - 1) * 10;
+        _DamageAmount = 20 + (_Level - 1) * 5;
+        _Name = "Strike " + Utils.ToRoman(_Level);
+        _Detail = "Deal " + _DamageAmount + " damage to the enemy.";
+    }
+
+    // Upgrades the card. Max level of 10.
     public override void UpgradeCard()
     {
-        if (_Level <= 10)
+        if (_Level < 10)
         {
-            _UpgradeCost += (_Level - 1) * 10;
             _Level++;
-            _DamageAmount += 5;
-
-            // Every 2 levels memory cost goes up 1 while Card Level <= 10.
-            if (_Level % 2 == 0)
-            {
-                _MemoryCost += 1;
-            }
-
+            _UpgradeCost = 100 + (_Level - 1) * 10;
+            _DamageAmount = 20 + (_Level - 1) * 5;
+            _Name = "Strike " + Utils.ToRoman(_Level);
+            _Detail = "Deal " + _DamageAmount + " damage to the enemy.";
         }
-        else
-        {
-            _UpgradeCost += (_Level - 1) ^ 2 * 15;
-            _Level++;
-
-            if (_Level % 2 == 0)
-            {
-                _DamageAmount += 2;
-            }
-        }
-        _Detail = "Deal " + _DamageAmount + " damage to the enemy.";
     }
 }

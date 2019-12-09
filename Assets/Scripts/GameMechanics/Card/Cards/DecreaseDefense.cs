@@ -30,7 +30,7 @@ public class DecreaseDefense : Card
     public override double UpgradeCost => _UpgradeCost;
 
     public override Sprite CardArt => _CardArt;
-
+    
     public override void PlayCard(Player player, Enemy enemy)
     {
         if (player.Memory >= MemoryCost)
@@ -40,30 +40,24 @@ public class DecreaseDefense : Card
         }
     }
 
+    // Updates the level in the card from the database.
+    public void SetCardLevel(int level)
+    {
+        _Level = level;
+        _UpgradeCost = 75 + (_Level - 1) * 100;
+        _DefenseModifier = 0.9f + (_Level - 1) * 0.1f;
+        _Name = "Decrease Defense " + Utils.ToRoman(_Level);
+    }
+
+    // Upgrades the card. Max level of 10.
     public override void UpgradeCard()
     {
-        if (_Level <= 10)
+        if (_Level < 10)
         {
-            _UpgradeCost += (_Level - 1) * 100;
             _Level++;
-            _DefenseModifier += 0.1f;
-
-            // Every 2 levels memory cost goes up 1 while Card Level < 10.
-            if (_Level % 2 == 0)
-            {
-                _MemoryCost += 1;
-            }
-
-        }
-        else
-        {
-            _UpgradeCost += (_Level - 1) ^ 2 * 5;
-            _Level++;
-
-            if (_Level % 2 == 0)
-            {
-                _DefenseModifier += 0.05f;
-            }
+            _UpgradeCost = 75 + (_Level - 1) * 100;
+            _DefenseModifier = 0.9f + (_Level - 1) * 0.1f;
+            _Name = "Decrease Defense " + Utils.ToRoman(_Level);
         }
     }
 }

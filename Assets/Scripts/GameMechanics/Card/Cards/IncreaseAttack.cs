@@ -12,7 +12,7 @@ public class IncreaseAttack : Card
     public int _Level = 1;
     public int _MemoryCost = 2;
     public double _UpgradeCost = 100;
-    public float _AttackModifier = 1.2f;
+    public float _AttackModifier = 1.1f;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Increase Attack");
 
     public override int Id => _Id;
@@ -40,30 +40,27 @@ public class IncreaseAttack : Card
         }
     }
 
+    // Updates the level in the card from the database.
+    public void SetCardLevel(int level)
+    {
+        _Level = level;
+        _UpgradeCost = 100 + (_Level - 1) * 100;
+        _AttackModifier = 1.1f + (_Level - 1) * 0.1f;
+        _Name = "Increase Attack " + Utils.ToRoman(_Level);
+        _Detail = "Deal " + _AttackModifier + "% more damage with attacks for 1 round.";
+    }
+
+    // Upgrades the card. Max level of 10.
     public override void UpgradeCard()
     {
-        if (_Level <= 10)
+        if (_Level < 10)
         {
-            _UpgradeCost += (_Level - 1) * 100;
             _Level++;
-            _AttackModifier += 0.1f;
-
-            // Every 2 levels memory cost goes up 1 while Card Level < 10.
-            if (_Level % 2 == 0)
-            {
-                _MemoryCost += 1;
-            }
-
-        }
-        else
-        {
-            _UpgradeCost += (_Level - 1) ^ 2 * 5;
-            _Level++;
-
-            if (_Level % 2 == 0)
-            {
-                _AttackModifier += 0.05f;
-            }
+            _UpgradeCost = 100 + (_Level - 1) * 100;
+            _AttackModifier = 1.1f + (_Level - 1) * 0.1f;
+            _Name = "Increase Attack " + Utils.ToRoman(_Level);
+            _Detail = "Deal " + (_AttackModifier - 1) + "% more damage with attacks for 1 round.";
         }
     }
+    
 }
