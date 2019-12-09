@@ -32,6 +32,7 @@ public abstract class Enemy : AbstractEntity
                 // break;
             default:
                 _cc.ChangePlayerHealth(-this.CalculateDamage(player, _attack));
+                Camera.main.gameObject.GetComponent<Shake>().ShakeIt();
                 break;
         }
     }

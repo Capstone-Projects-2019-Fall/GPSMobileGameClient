@@ -12,21 +12,27 @@ public class Shake : MonoBehaviour
     {
         if (shaking)
         {
+            
             Vector3 newPos = Random.insideUnitSphere * (Time.deltaTime * ferocity);
             newPos.y = transform.position.y;
             newPos.z = transform.position.z;
+
+            transform.position = newPos;
+            //Debug.Log(transform.position.ToString());
 
         }
     }
 
     public void ShakeIt()
     {
+        //Debug.Log("Starting to shake");
         StartCoroutine("ShakeNow");
 
     }
 
     IEnumerator ShakeNow()
     {
+        //Debug.Log("Shaking Now");
         Vector3 originalPos = transform.position;
 
         if (!shaking)
@@ -34,7 +40,7 @@ public class Shake : MonoBehaviour
             shaking = true;
         }
 
-       yield return new WaitForSeconds(0.5f);
+       yield return new WaitForSeconds(0.25f);
 
         shaking = false;
         transform.position = originalPos;

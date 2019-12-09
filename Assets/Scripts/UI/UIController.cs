@@ -146,13 +146,14 @@ public class UIController : Singleton<UIController>
     public void UpdateEnemyHealth(float n)
     {
         _eHealthFill.fillAmount = n;
-        _eHealthText.text = _cc.Enemy.Health.ToString();
+        _eHealthText.text = (n * 100).ToString() + "%";
     }
 
     public void UpdatePlayerHealth(float n)
     {
         _pHealthFill.fillAmount = n;
-        _pHealthText.text = _cc.Player.Health.ToString();
+        _pHealthText.text = (n * 100).ToString() + "%";
+        
     }
 
     public void UpdateMemory(int n)

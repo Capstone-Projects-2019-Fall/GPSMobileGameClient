@@ -404,6 +404,7 @@ GameObject:
   - component: {fileID: 1593166130}
   - component: {fileID: 1593166129}
   - component: {fileID: 1593166128}
+  - component: {fileID: 1593166131}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -470,12 +471,25 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1593166127}
   m_LocalRotation: {x: 0.11927039, y: 0, z: 0, w: 0.9928618}
-  m_LocalPosition: {x: 0, y: 30.8, z: -77.44}
+  m_LocalPosition: {x: 1, y: 30.8, z: -77.44}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 13.7, y: 0, z: 0}
+--- !u!114 &1593166131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593166127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3a40828799622347883e9ca6fa69bfd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ferocity: 100
 --- !u!1 &1714611629
 GameObject:
   m_ObjectHideFlags: 0
@@ -709,7 +723,7 @@ PrefabInstance:
     - target: {fileID: 5242066661246842664, guid: b7616e7f26b63e64896e26c1a47b5caa,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 10.400002
+      value: 10.399902
       objectReference: {fileID: 0}
     - target: {fileID: 5242066661246842664, guid: b7616e7f26b63e64896e26c1a47b5caa,
         type: 3}
@@ -755,6 +769,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchorMax.x
       value: 0.767
+      objectReference: {fileID: 0}
+    - target: {fileID: 8013495968427303606, guid: b7616e7f26b63e64896e26c1a47b5caa,
+        type: 3}
+      propertyPath: m_Spacing.x
+      value: 189.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 5242066661152565284, guid: b7616e7f26b63e64896e26c1a47b5caa,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 8013495969277545868, guid: b7616e7f26b63e64896e26c1a47b5caa,
         type: 3}
