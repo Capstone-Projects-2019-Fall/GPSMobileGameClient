@@ -19,6 +19,7 @@ public class Player : AbstractEntity
     System.Random rand = new System.Random();
 
     public static string usernameKey = "username";
+    public static string addressKey = "address";
 
     #region Accessors -----------------------------------------------------------------------------------
 
