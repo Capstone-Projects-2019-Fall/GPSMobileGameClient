@@ -1549,11 +1549,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1514120829208204, guid: 35ce2bb4caba9434db5e656796b632b1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1514120829208204, guid: 35ce2bb4caba9434db5e656796b632b1, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114668955501623132, guid: 35ce2bb4caba9434db5e656796b632b1,
         type: 3}
@@ -1811,7 +1811,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 2
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 800, y: 600}
@@ -1954,12 +1954,12 @@ PrefabInstance:
     - target: {fileID: 3946691696096127236, guid: fc888a35b80ea6a4695fe9ad3bc781ce,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 35.6
+      value: 42
       objectReference: {fileID: 0}
     - target: {fileID: 3946691696096127236, guid: fc888a35b80ea6a4695fe9ad3bc781ce,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 54.1
+      value: 152
       objectReference: {fileID: 0}
     - target: {fileID: 3946691696096127236, guid: fc888a35b80ea6a4695fe9ad3bc781ce,
         type: 3}
@@ -2306,7 +2306,7 @@ GameObject:
   - component: {fileID: 1962332874}
   - component: {fileID: 1962332873}
   m_Layer: 5
-  m_Name: Text
+  m_Name: GPS
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2447,12 +2447,12 @@ PrefabInstance:
     - target: {fileID: 2508250882813612773, guid: f79b293dece3e0e47a2dee8f7888239d,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 90.6
+      value: 123
       objectReference: {fileID: 0}
     - target: {fileID: 2508250882813612773, guid: f79b293dece3e0e47a2dee8f7888239d,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 55.3
+      value: 154
       objectReference: {fileID: 0}
     - target: {fileID: 2508250882813612773, guid: f79b293dece3e0e47a2dee8f7888239d,
         type: 3}
