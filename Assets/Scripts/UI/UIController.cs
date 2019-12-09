@@ -90,8 +90,8 @@ public class UIController : Singleton<UIController>
         _memBarFill = _memBar.transform.Find("antifill").GetComponent<Image>();
         _memBarText = _memBar.transform.Find("number").GetComponent<Text>();
 
-        _playPhase = _uiCanvas.transform.Find("PlayerTurn").GetComponent<Image>();
-        _enemyPhase = _uiCanvas.transform.Find("EnemyTurn").GetComponent<Image>();
+        _playPhase = _uiCanvas.transform.Find("ActionPhase").GetComponent<Image>();
+        _enemyPhase = _uiCanvas.transform.Find("WaitingPhase").GetComponent<Image>();
 
         _runAway = _uiCanvas.transform.Find("Run").gameObject;
 
@@ -123,6 +123,9 @@ public class UIController : Singleton<UIController>
         Assert.IsNotNull(_pHealthFill);
         Assert.IsNotNull(_memBar);
         Assert.IsNotNull(_memBarFill);
+
+        Assert.IsNotNull(_playPhase);
+        Assert.IsNotNull(_enemyPhase);
 
         Assert.IsNotNull(_runAway);
 
@@ -157,6 +160,22 @@ public class UIController : Singleton<UIController>
         float memDiff = -((float)n / (float)_cc.Player.MaxMemory);
         _memBarFill.fillAmount += memDiff;
         _memBarText.text = _cc.Player.Memory.ToString();
+    }
+
+    public void UpdatePhase()
+    {
+        if(_cc.clientState == CombatController.cState.Active)
+        {
+            _playPhase.color = Color.green;
+            _enemyPhase.color = Color.gray;
+
+        }
+        else if (_cc.clientState == CombatController.cState.Busy || _cc.clientState == CombatController.cState.WaitingForServer)
+        {
+            _playPhase.color = Color.gray;
+            _enemyPhase.color = new Color(251/255f, 176/255f, 59/255f, 1f);
+
+        }
     }
 
     /* GetHandGameObjects Description:

@@ -311,6 +311,7 @@ public class CombatController : Singleton<CombatController>
     private void StartPhase()
     {
         clientState = cState.Busy;
+        _uiCont.UpdatePhase();
 
         Delta.Reset();
 
@@ -331,11 +332,14 @@ public class CombatController : Singleton<CombatController>
     private void ActionPhase()
     {
         clientState = cState.Active;
+        _uiCont.UpdatePhase();
     }
 
     private void EndPhase()
     {
         clientState = cState.Busy; // Clientside cleanup
+        _uiCont.UpdatePhase();
+
 
         // Discard the player's Hand
         _uiCont.ResetCardGameObjects();
@@ -351,6 +355,7 @@ public class CombatController : Singleton<CombatController>
         Enemy.GetBuffHandler.decrementBuffUsages();
 
         clientState = cState.WaitingForServer; // Serverside delta sequence
+        _uiCont.UpdatePhase();
 
         Delta.SetPlayerHealth(Player.Health);
         client.SendMessage(Delta.toString());
@@ -361,8 +366,8 @@ public class CombatController : Singleton<CombatController>
         Debug.LogFormat("Player: {0}\nRoom:{1}", _player.Username, Node.getLastClickedNodename());
         // Connect to combat instance        
         client = new ColyseusClient();
-        client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
-        // client.JoinOrCreateRoom("Bob", "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
+       client.JoinOrCreateRoom(_player.Username, _player.Health, Node.getLastClickedNodename(), OnStateChangeHandler, onMessageHandler);
+       //client.JoinOrCreateRoom("Andrew", 1, "Helsinki_Center", OnStateChangeHandler, onMessageHandler);
             // Read combat state
 
         // Spawn monster and player prefabs with state data
@@ -379,7 +384,7 @@ public class CombatController : Singleton<CombatController>
             _player.EndCombat();
             SafeColyseusExit();
             // Loads back to map scene after death 
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene("GPSMobileGame");
     }
 
     // Simple wrapper for public visibility called by the Run Away button
