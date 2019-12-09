@@ -49,7 +49,6 @@ public class CardInventoryZone : MonoBehaviour
         InitializeListContent();
     }
 
-
     /* Creates an instance of a Card image from its prefab to be inserted into the CardInventoryZone. This method
      * is called from AddCardToList (which does the additional responsibilities of maintaining the relevant data
      * structures within the CardInventoryZone. This only creates the necessary GameObject. */
@@ -62,6 +61,22 @@ public class CardInventoryZone : MonoBehaviour
         cardImageGO.transform.Find("description").GetComponent<Text>().text = card.Detail;
 
         return cardImageGO;
+    }
+
+    public void AddCardToList(Card card)
+    {
+        GameObject cardImageGO = CreateCardImage(card);
+        _cardImageList.Add(cardImageGO);
+        _myCards.AddCard(cardImageGO.GetComponent<CardImage>().Card);
+
+        cardImageGO.GetComponent<CardImage>().CardInventoryZone = this;
+        cardImageGO.transform.SetParent(_contentTrans);
+    }
+
+    public void RemoveCardFromList(GameObject cardGO)
+    {
+        _myCards.RemoveCard(cardGO.GetComponent<CardImage>().Card);
+        cardGO.Destroy();
     }
 
     /* Initialize the CardScrollList's content using _myCards
