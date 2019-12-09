@@ -10,9 +10,12 @@ using UnityEngine;
  [RequireComponent(typeof(CardImageDrag))]
 public class CardImage : MonoBehaviour
 {
+    // Data
     [SerializeField] private Card _myCard;
-    [SerializeField] private CardInventoryZone _myInventoryZone;
     [SerializeField] private CardImageDrag _myDrag;
+
+    // UI
+    [SerializeField] private CardInventoryZone _myInventoryZone;
 
     #region Accessors ----------------------------------------------------------------------------------------
 
@@ -30,6 +33,12 @@ public class CardImage : MonoBehaviour
 
     private void Awake()
     {
-       
+        _myDrag = GetComponent<CardImageDrag>();
+    }
+
+    public void PlaceInInventoryZone(CardInventoryZone cInvZone)
+    {
+        _myInventoryZone = cInvZone;
+        transform.SetParent(cInvZone.transform.FindDeepChild("CardListContent"));
     }
 }

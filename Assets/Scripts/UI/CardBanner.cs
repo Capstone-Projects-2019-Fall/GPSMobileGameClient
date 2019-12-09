@@ -16,8 +16,6 @@ public class CardBanner : MonoBehaviour
 
     // UI
     [SerializeField] private CardScrollList _myScrollList;
-    [SerializeField] private string _cardName;
-    [SerializeField] private Sprite _bannerArt;
 
     #region Accessors ------------------------------------------------------------------------------------------------------------------
 
@@ -35,20 +33,7 @@ public class CardBanner : MonoBehaviour
 
     private void Awake()
     {
-        _myDrag = gameObject.GetComponent<CardBannerDrag>();
-        _cardName = gameObject.transform.Find("card_name").GetComponent<Text>().text;
-        _bannerArt = gameObject.transform.Find("art").GetComponent<Image>().sprite;
-
-        Assert.IsNotNull(_myDrag);
-    }
-
-    /* Updates the sprite and name of the banner in accordance with the given card
-     * Mainly called from the CardScrollList */
-    public void UpdateBanner(Card c)
-    {
-        _myCard = c;
-        _cardName = c.Name;
-        _bannerArt = c.CardBannerArt;
+        _myDrag = GetComponent<CardBannerDrag>();
     }
 
     public void PlaceInScrollList(CardScrollList scrollList)

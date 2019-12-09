@@ -13,7 +13,7 @@ public class CardScrollList : MonoBehaviour
 {
     // Data fields
     [SerializeField] private Deck _myCards;
-    [SerializeField] private GameObject _cardBannerPF;
+    private GameObject _cardBannerPF;
 
     // UI-related fields
     [SerializeField] private List<GameObject> _cardBannerList;
@@ -66,7 +66,9 @@ public class CardScrollList : MonoBehaviour
     private GameObject CreateCardBanner(Card card)
     {
         GameObject cardBannerGO = MonoBehaviour.Instantiate(_cardBannerPF); // create instance of banner prefab
-        cardBannerGO.GetComponent<CardBanner>().UpdateBanner(card); // Update its data and UI representation
+        cardBannerGO.transform.Find("art").GetComponent<Image>().sprite = card.CardBannerArt;
+        cardBannerGO.transform.Find("card_name").GetComponent<Text>().text = card.Name;
+        cardBannerGO.GetComponent<CardBanner>().Card = card;
 
         return cardBannerGO;
     }

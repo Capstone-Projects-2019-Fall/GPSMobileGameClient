@@ -54,7 +54,8 @@ public class CardInventoryZone : MonoBehaviour
      * structures within the CardInventoryZone. This only creates the necessary GameObject. */
     private GameObject CreateCardImage(Card card)
     {
-        return null; 
+        GameObject cardImageGO = MonoBehaviour.Instantiate(_cardImagePF); // create instance from prefab
+
     }
 
     /* Initialize the CardScrollList's content using _myCards

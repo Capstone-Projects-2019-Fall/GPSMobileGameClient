@@ -11,11 +11,6 @@ public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHand
 {
     [SerializeField] private Transform _returnParent = null;
 
-    public Transform ReturnParent {
-        get => _returnParent;
-        set => _returnParent = value;
-    }
-
     public virtual void OnBeginDrag(PointerEventData data)
     {
         _returnParent = this.transform.parent;
