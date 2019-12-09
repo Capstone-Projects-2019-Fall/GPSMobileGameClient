@@ -126,18 +126,17 @@ public static class APIWrapper
      * cards is a list of the cards that will overwrite the server's collection, and callback
      * returns a string which is the server's response. Should return "OK" status code 200.
      */
-    public static IEnumerator syncPlayerDeck(string username, List<Card> cards, Callback<string> callback)
+    public static IEnumerator syncPlayerCollection(string username, JSONNode jsonNode, Callback<JSONNode> callback)
+    {
+        return POST(string.Format("{0}/user/{1}/library", baseURL, username), jsonNode.ToString(), callback);
+    }
+
+    public static IEnumerator syncPlayerState(string username, float health, double gold, Callback<JSONNode> callback)
     {
         JSONObject jsonObject = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        foreach(int cardId in CardFactory.CardsToIdArray(cards))
-        {
-            jsonArray.Add(cardId);
-        }
-        jsonObject["deck"] = jsonArray;
-        return POST(string.Format("{0}/user/{1}/deck", baseURL, username), jsonObject.ToString(), (jsonResponse) => {
-            callback(jsonResponse.ToString());
-        });
+        jsonObject["health"] = health;
+        jsonObject["gold"] = gold;
+        return POST(string.Format("{0}/user/update/{1}", baseURL, username), jsonObject.ToString(), callback);
     }
 
     public static IEnumerator updatePlayerHomebase(string username, double latitude, double longitude, Callback<string> callback)
@@ -201,5 +200,15 @@ public static class APIWrapper
     public static IEnumerator geocodeAddress(string address, Callback<JSONNode> callback)
     {
         return GET(string.Format("{0}/geocoding/v5/mapbox.places/{1}.json?access_token={2}&limit=1", mapboxBaseURL, address, mapboxAPIKey), callback);
+    }
+
+    public static IEnumerator getPlayerCollection(string username, Callback<JSONNode> callback)
+    {
+        return GET(string.Format("{0}/user/{1}/library", baseURL, username), callback);
+    }
+
+    public static IEnumerator getPlayerDeck(string username, Callback<JSONNode> callback)
+    {
+        return GET(string.Format("{0}/user/{1}/deck", baseURL, username), callback);
     }
 }
