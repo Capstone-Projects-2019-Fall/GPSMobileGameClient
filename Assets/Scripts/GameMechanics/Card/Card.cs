@@ -52,7 +52,7 @@ public abstract class Card : MonoBehaviour
         JSONObject jsnCard = new JSONObject();
         jsnCard["id"] = _Id;
         jsnCard["level"] = _Level;
-        jsnCard["in-deck"] = false;
+        jsnCard["inDeck"] = inDeck;
 
         return jsnCard;
     }
