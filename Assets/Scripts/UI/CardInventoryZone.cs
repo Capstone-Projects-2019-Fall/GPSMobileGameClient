@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.UI;
 
 /* CardInventoryZone Description:
  * A CardInventoryZone is a flexible UI element used for displaying a graphical list of Cards. Similar to the CardScrollList, the main use cases
@@ -55,13 +56,17 @@ public class CardInventoryZone : MonoBehaviour
     private GameObject CreateCardImage(Card card)
     {
         GameObject cardImageGO = MonoBehaviour.Instantiate(_cardImagePF); // create instance from prefab
+        cardImageGO.transform.Find("card_name").GetComponent<Text>().text = card.Name;
+        cardImageGO.transform.Find("cost").Find("cost_number").GetComponent<Text>().text = card.MemoryCost.ToString();
+        cardImageGO.transform.Find("art").GetComponent<Image>().sprite = card.CardArt;
+        cardImageGO.transform.Find("description").GetComponent<Text>().text = card.Detail;
 
+        return cardImageGO;
     }
 
     /* Initialize the CardScrollList's content using _myCards
      * NOTE: The CardScrollList will then populate itself with card images corresponding to its _myCards field
-     * NOTE: Cannot call AddCardToList, as this will throw an InvalidOperationException (modifying collection while enumerating over collection)
-     */
+     * NOTE: Cannot call AddCardToList, as this will throw an InvalidOperationException (modifying collection while enumerating over collection) */
     private void InitializeListContent()
     {
         foreach (Card c in _myCards.Cards)

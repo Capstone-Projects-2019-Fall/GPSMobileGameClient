@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
  */ 
 public class Drag : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    [SerializeField] private Transform _returnParent = null;
+    private Transform _returnParent = null;
 
     public virtual void OnBeginDrag(PointerEventData data)
     {
