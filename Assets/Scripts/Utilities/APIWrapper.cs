@@ -139,6 +139,17 @@ public static class APIWrapper
             callback(jsonResponse.ToString());
         });
     }
+
+    public static IEnumerator updatePlayerHomebase(string username, double latitude, double longitude, Callback<string> callback)
+    {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject["lon"] = longitude;
+        jsonObject["lat"] = latitude;
+        return POST(string.Format("{0}/user/{1}/homebase", baseURL, username), jsonObject.ToString(), (jsonResponse) => {
+            callback(jsonResponse.ToString());
+        });
+    }
+
      /*
      * Update the enemy health with enemy node id
      */
