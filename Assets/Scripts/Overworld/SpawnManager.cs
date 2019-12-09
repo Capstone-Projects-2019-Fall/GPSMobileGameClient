@@ -146,6 +146,18 @@ public class SpawnManager : Singleton<SpawnManager>
         nodeLocations.Add(myNode, latLon);
     }
 
+    public void SpawnHomeBase(string locationString, string nodeStruct, string name)
+    {
+        Vector2d latLon = Conversions.StringToLatLon(locationString);
+
+        GameObject myNode = NodeFactory.nCreateNode(locationString, NodeFactory.GetNodeStructureByString(nodeStruct), name);
+        // var instance = Instantiate(myNode);
+        myNode.transform.localPosition = _map.GeoToWorldPosition(latLon, true);
+        myNode.transform.localScale = _spawnScaleVector;
+
+        myNode.transform.localPosition += new Vector3(0, 5, 0);
+    }
+
     /*
      * Gets an already populated node GameObject based on the node's name.
      * Returns a GameObject or null if there is no existing node with that name.

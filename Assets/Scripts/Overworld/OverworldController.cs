@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class OverworldController : Singleton<OverworldController>
 {
     /// fields
-
+    private SpawnManager _mySpawnManager;
     private AbstractMap _map;
     
     /// accessors
@@ -29,7 +29,7 @@ public class OverworldController : Singleton<OverworldController>
             // TODO: Configure and instantiate a new map
         }
 
-        Debug.Log("OverworldCont: Initialize Static Classes.");
+        _mySpawnManager = transform.Find("Spawn Manager").GetComponent<SpawnManager>();
         // Static class initializations
         NodeFactory.InitializeFactory();
         GpsUtility.InitialzeUtility(_map);
@@ -39,6 +39,14 @@ public class OverworldController : Singleton<OverworldController>
     // Start will validate that all necessary scene objects/classes have been instantiated/initialized
     private void Start()
     {
+        // Spawn the home base marker
+        StartCoroutine(APIWrapper.getPlayer(PlayerPrefs.GetString(Player.usernameKey, "Bart"), (jsondata) => {
+            string lon = jsondata["homebase"]["coordinates"][0];
+            string lat = jsondata["homebase"]["coordinates"][1];
+            string latLon = string.Format("{0}, {1}", lat, lon);
+            Debug.Log(latLon);
+            _mySpawnManager.SpawnHomeBase(latLon, "HomeBase", "HomeBase");
+            }));
         
     }
 
