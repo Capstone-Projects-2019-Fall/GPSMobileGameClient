@@ -14,6 +14,7 @@ public class Strike : Card
     public double _UpgradeCost = 50;
     public int _DamageAmount = 20;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Strike");
+    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/strike-banner");
 
     public override int Id => _Id;
 
@@ -31,8 +32,12 @@ public class Strike : Card
 
     public override Sprite CardArt => _CardArt;
 
+    public override Sprite CardBannerArt => _CardBannerArt;
+
     public override void PlayCard(Player player, Enemy enemy)
     {
+        CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+
         if (player.Memory >= MemoryCost)
         {
             _cc.ChangeEnemyHealth(-player.CalculateDamage(enemy, _DamageAmount));

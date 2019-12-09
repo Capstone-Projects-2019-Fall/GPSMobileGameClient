@@ -14,6 +14,7 @@ public class DrawCards1: Card
     public double _UpgradeCost = 1000;
     public int _DrawAmount = 1;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Draw Cards");
+    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/draw_cards-banner");
 
     public override int Id => _Id;
 
@@ -31,8 +32,12 @@ public class DrawCards1: Card
 
     public override Sprite CardArt => _CardArt;
 
+    public override Sprite CardBannerArt => _CardBannerArt;
+
     public override void PlayCard(Player player, Enemy enemy)
     {
+        CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+
         if (player.Memory >= MemoryCost)
         {
             _cc.SelectedPlayerDrawCards(_DrawAmount);

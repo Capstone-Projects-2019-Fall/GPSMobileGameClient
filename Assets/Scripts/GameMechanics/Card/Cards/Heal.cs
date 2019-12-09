@@ -14,6 +14,7 @@ public class Heal : Card
     public double _UpgradeCost = 100;
     public int _HealAmount = 15;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Heal");
+    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/heal-banner");
 
     public override int Id => _Id;
 
@@ -31,8 +32,12 @@ public class Heal : Card
 
     public override Sprite CardArt => _CardArt;
 
+    public override Sprite CardBannerArt => _CardBannerArt;
+
     public override void PlayCard(Player player, Enemy enemy)
     {
+        CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+
         if (player.Memory >= MemoryCost)
         {
             // _cc.ChangePlayerHealth(_HealAmount);

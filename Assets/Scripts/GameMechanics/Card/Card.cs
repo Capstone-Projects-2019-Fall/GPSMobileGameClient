@@ -1,7 +1,5 @@
 ﻿using UnityEngine;
-using UnityEngine.Assertions;
-using UnityEngine.Networking;
-
+using SimpleJSON;
 
 [CreateAssetMenu(menuName ="Card")]
 public abstract class Card : MonoBehaviour
@@ -23,23 +21,13 @@ public abstract class Card : MonoBehaviour
     abstract public int MemoryCost { get; }
     abstract public double UpgradeCost { get; }
     abstract public Sprite CardArt { get; }
+    abstract public Sprite CardBannerArt { get;  }
 
-    // shared fields; common among all cards
-    static public CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
-    static public DeckManager _dm = GameObject.Find("CombatUtils").GetComponent<DeckManager>();
-
-    
     // Plays a card
     public virtual void PlayCard (Player p, Enemy e) { }
     
     // Returns the id of the card this card is upgrading to
     public virtual void UpgradeCard() { }
-
-    // Initializes this card
-    private void Awake()
-    {
-        Assert.IsNotNull(_cc);
-    }
 
     // String display of card. For debugging purposes.
     public string DisplayText()
@@ -51,6 +39,22 @@ public abstract class Card : MonoBehaviour
             + "\nLevel: " + Level
             + "\nMemory Cost: " + MemoryCost
             + "\nUpgrade Cost: " + UpgradeCost;
+    }
+
+    /* Simple utility method to JSONify a card
+     * Parameters:
+     *    -> bool inDeck: Used to indicate whether this particular Card is in the player's deck or not (this is important for the cards representation in our MongoDB collection)
+     *                    Pass in false if this card is part of some other collection (like the Collection! Caller beware!)
+     * Returns:
+     *    -> A JSONObject (often used in the Deck.JSONDeck method) */
+    public JSONObject JSONCard(bool inDeck)
+    {
+        JSONObject jsnCard = new JSONObject();
+        jsnCard["id"] = _Id;
+        jsnCard["level"] = _Level;
+        jsnCard["in-deck"] = false;
+
+        return jsnCard;
     }
 
     /*

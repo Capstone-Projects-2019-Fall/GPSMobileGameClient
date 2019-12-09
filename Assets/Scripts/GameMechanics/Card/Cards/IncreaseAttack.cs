@@ -14,6 +14,7 @@ public class IncreaseAttack : Card
     public double _UpgradeCost = 100;
     public float _AttackModifier = 1.1f;
     public Sprite _CardArt = Resources.Load<Sprite>("Sprites/UI/Card Art/Increase Attack");
+    public Sprite _CardBannerArt = Resources.Load<Sprite>("Sprites/UI/Card Art Banners/increase_attack-banner");
 
     public override int Id => _Id;
 
@@ -31,8 +32,12 @@ public class IncreaseAttack : Card
 
     public override Sprite CardArt => _CardArt;
 
+    public override Sprite CardBannerArt => _CardBannerArt;
+
     public override void PlayCard(Player player, Enemy enemy)
     {
+        CombatController _cc = GameObject.Find("CombatUtils").GetComponent<CombatController>();
+
         if (player.Memory >= MemoryCost)
         {
             _cc.BuffSelectedPlayer(new Buff(name: _AttackModifier.ToString("#.##") + "x Damage",attackModifier:_AttackModifier));
